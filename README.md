@@ -7,6 +7,7 @@ A .NET Wrapper around the IoTivity C SDK, and a higher-level API on top for simp
 - Only Windows Win32 support.
 - Library seems to work with UWP but network seems to be blocked.
 - Xamarin support is in the works...
+- Nuget packages with libraries for all platform supported also in the works.
 
 ####Usage
 

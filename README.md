@@ -2,6 +2,8 @@
 
 A .NET Wrapper around the IoTivity C SDK, and a higher-level API on top for simplicity.
 
+**NOTE: WORK IN PROGRESS!**
+
 ####Usage
 
 To use, first initialize the Iotivity service:

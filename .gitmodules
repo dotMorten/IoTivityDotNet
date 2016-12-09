@@ -1,0 +1,3 @@
+[submodule "Dependencies/Iotivity"]
+	path = Dependencies/Iotivity
+	url = https://gerrit.iotivity.org/gerrit/iotivity

@@ -3,6 +3,10 @@
 A .NET Wrapper around the IoTivity C SDK, and a higher-level API on top for simplicity.
 
 **NOTE: WORK IN PROGRESS!**
+- Only a limited set of features implemented for now.
+- Only Windows Win32 support.
+- Library seems to work with UWP but network seems to be blocked.
+- Xamarin support is in the works...
 
 ####Usage
 
@@ -12,7 +16,7 @@ To use, first initialize the Iotivity service:
  IotivityNet.Service.Initialize(IotivityNet.ServiceMode.Client);
 ```
 
-You can then search for devices using Device Discovery:
+You can then search for device resources using Device Discovery:
 
 ```csharp
 var svc = new IotivityNet.OC.DiscoverResource("/oic/res");

@@ -28,3 +28,5 @@ When you're done, shut down the Iotivity service:
 ```csharp
 await IotivityNet.Service.Shutdown();
 ```
+
+Make sure you deploy the obtbstack.dll file in the x86 and x64 folders (See the test app).

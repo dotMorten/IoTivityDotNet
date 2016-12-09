@@ -51,17 +51,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\Libs\octbstack\Win7\x64\octbstack.dll">
+    <Content Include="..\..\Libs\octbstack\Win7\x64\octbstack.dll">
       <Link>x64\octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\Libs\octbstack\Win7\x86\octbstack.dll">
+    <Content Include="..\..\Libs\octbstack\Win7\x86\octbstack.dll">
       <Link>x86\octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\IotivityDotNet\IotivityDotNet.csproj">
+    <ProjectReference Include="..\IotivityDotNet\IotivityDotNet.csproj">
       <Project>{993be408-db4e-4f1b-bb6f-b6276fc37136}</Project>
       <Name>IotivityDotNet</Name>
     </ProjectReference>

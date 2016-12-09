@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet.Interop", "IotivityDotNet.Interop\IotivityDotNet.Interop.csproj", "{79C16808-5FB5-456E-A31B-6F1B9A9F5474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet", "IotivityDotNet\IotivityDotNet.csproj", "{993BE408-DB4E-4F1B-BB6F-B6276FC37136}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTestApp", "ClientTestApp\ClientTestApp.csproj", "{73DFFAA3-80C2-4322-99E5-366F7CACE136}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79C16808-5FB5-456E-A31B-6F1B9A9F5474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C16808-5FB5-456E-A31B-6F1B9A9F5474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C16808-5FB5-456E-A31B-6F1B9A9F5474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C16808-5FB5-456E-A31B-6F1B9A9F5474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993BE408-DB4E-4F1B-BB6F-B6276FC37136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993BE408-DB4E-4F1B-BB6F-B6276FC37136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993BE408-DB4E-4F1B-BB6F-B6276FC37136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993BE408-DB4E-4F1B-BB6F-B6276FC37136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet", "IotivityD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTestApp", "ClientTestApp\ClientTestApp.csproj", "{73DFFAA3-80C2-4322-99E5-366F7CACE136}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet.Interop.Android", "IotivityDotNet.Android\IotivityDotNet.Interop.Android.csproj", "{288CB1FD-6954-47D9-8436-92BB46C92543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTestApp.Android", "ClientTestApp.Android\ClientTestApp.Android.csproj", "{CC1AFE12-4A41-4E12-B001-F489C8B9F506}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,16 @@ Global
 		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73DFFAA3-80C2-4322-99E5-366F7CACE136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{288CB1FD-6954-47D9-8436-92BB46C92543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{288CB1FD-6954-47D9-8436-92BB46C92543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{288CB1FD-6954-47D9-8436-92BB46C92543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{288CB1FD-6954-47D9-8436-92BB46C92543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1AFE12-4A41-4E12-B001-F489C8B9F506}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

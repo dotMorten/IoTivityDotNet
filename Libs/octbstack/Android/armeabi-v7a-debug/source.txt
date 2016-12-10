@@ -1,0 +1,1 @@
+https://build.iotivity.org/ci/view/iotivity-1.2-rel/job/iotivity-merge-1.2-rel-android/ws/out/android/armeabi/debug/

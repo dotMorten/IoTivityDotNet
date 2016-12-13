@@ -106,6 +106,12 @@ namespace IotivityNet.OC
                     {
                         _payload = new IotivityNet.OC.DiscoveryPayload(_response.payload) as T;
                     }
+                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_REPRESENTATION && typeof(T) == typeof(OC.RepPayload))
+                    {
+                        _payload = new IotivityNet.OC.RepPayload(_response.payload) as T;
+                    }
+                    else
+                        throw new NotImplementedException();
                 }
                 return _payload;
 

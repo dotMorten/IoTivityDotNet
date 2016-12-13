@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeviceAddress.cs" />
-    <Compile Include="DeviceObserver.cs" />
+    <Compile Include="ResourceClient.cs" />
     <Compile Include="DeviceResource.cs" />
     <Compile Include="DiscoverService.cs" />
     <Compile Include="DiscoveryPayload.cs" />

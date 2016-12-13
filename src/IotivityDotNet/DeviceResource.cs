@@ -41,7 +41,7 @@ namespace IotivityDotNet
                 if (entityHandlerRequest.method == OCMethod.OC_REST_GET)
                 {
                     payload.SetUri(_uri);
-                    foreach(var property in Properties)
+                    foreach (var property in Properties)
                     {
                         if (property.Value == null)
                         {
@@ -80,9 +80,18 @@ namespace IotivityDotNet
                 else if (entityHandlerRequest.method == OCMethod.OC_REST_POST)
                 {
                     //TODO
+                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
+                }
+                else if (entityHandlerRequest.method == OCMethod.OC_REST_PUT)
+                {
+                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
+                }
+                else
+                {
+                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
                 }
             }
-            return OCEntityHandlerResult.OC_EH_OK;
+            return result;
         }
 
         public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();

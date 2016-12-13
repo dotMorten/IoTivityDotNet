@@ -299,4 +299,10 @@ namespace IotivityDotNet.Interop
         /** Server sets to true for persistent response buffer,false for non-persistent response buffer*/
         public byte persistentBufferFlag;
     }
+
+    public class OCUUIdentity
+    {
+        [MarshalAs(UnmanagedType.LPArray, SizeConst = 16)]
+        public byte[] deviceId;
+    }
 }

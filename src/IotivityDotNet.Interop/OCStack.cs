@@ -44,7 +44,7 @@ namespace IotivityDotNet.Interop
         /// <returns>:OC_STACK_OK on success, some other value upon failure.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCStop();
-        
+
         /// <summary>
         /// This function starts receiving the multicast traffic. This can be only called
         /// when stack is in OC_STACK_INITIALIZED state but device is not receiving multicast
@@ -53,7 +53,7 @@ namespace IotivityDotNet.Interop
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCStartMulticastServer();
-        
+
         /// <summary>
         /// This function stops receiving the multicast traffic. The rest of the stack
         /// keeps working and no resource are deleted. Device can still receive the unicast
@@ -226,7 +226,7 @@ namespace IotivityDotNet.Interop
         *     ::OC_STACK_ERROR            stack process error.
         */
         //OCStackResult OCSetPlatformInfo(OCPlatformInfo platformInfo);
-        
+
         /// <summary>
         /// This function creates a resource.
         /// </summary>
@@ -246,7 +246,7 @@ namespace IotivityDotNet.Interop
                                OCEntityHandler entityHandler,
                                IntPtr callbackParam,
                                OCResourceProperty resourceProperties);
-        
+
         /// <summary>
         /// This function creates a resource.
         /// </summary>
@@ -286,7 +286,7 @@ namespace IotivityDotNet.Interop
         /// <returns>Bit combinations of supported OCTpsSchemeFlags.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCTpsSchemeFlags OCGetSupportedEndpointTpsFlags();
-        
+
         /// <summary>
         /// This function adds a resource to a collection resource. 
         /// </summary>
@@ -452,37 +452,37 @@ namespace IotivityDotNet.Interop
          */
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern string OCGetResourceInterfaceName(IntPtr handle, byte index);
-//
-//        /**
-//         * This function gets methods of resource interface of the resource.
-//         *
-//         * @param handle      Handle of resource.
-//         * @param index       Index of resource, 0 to Count - 1.
-//         *
-//         * @return Allowed methods if resource found or NULL if resource not found.
-//         */
-//        uint8_t OCGetResourceInterfaceAllowedMethods(OCResourceHandle handle, uint8_t index);
-//
-//        /**
-//         * This function gets resource handle from the collection resource by index.
-//         *
-//         * @param collectionHandle   Handle of collection resource.
-//         * @param index              Index of contained resource, 0 to Count - 1.
-//         *
-//         * @return Handle to contained resource if resource found or NULL if resource not found.
-//         */
-//        OCResourceHandle OCGetResourceHandleFromCollection(OCResourceHandle collectionHandle,
-//                uint8_t index);
-//
-//        /**
-//         * This function gets the entity handler for a resource.
-//         *
-//         * @param handle            Handle of resource.
-//         *
-//         * @return Entity handler if resource found or NULL resource not found.
-//         */
-//        OCEntityHandler OCGetResourceHandler(OCResourceHandle handle);
-//
+        //
+        //        /**
+        //         * This function gets methods of resource interface of the resource.
+        //         *
+        //         * @param handle      Handle of resource.
+        //         * @param index       Index of resource, 0 to Count - 1.
+        //         *
+        //         * @return Allowed methods if resource found or NULL if resource not found.
+        //         */
+        //        uint8_t OCGetResourceInterfaceAllowedMethods(OCResourceHandle handle, uint8_t index);
+        //
+        //        /**
+        //         * This function gets resource handle from the collection resource by index.
+        //         *
+        //         * @param collectionHandle   Handle of collection resource.
+        //         * @param index              Index of contained resource, 0 to Count - 1.
+        //         *
+        //         * @return Handle to contained resource if resource found or NULL if resource not found.
+        //         */
+        //        OCResourceHandle OCGetResourceHandleFromCollection(OCResourceHandle collectionHandle,
+        //                uint8_t index);
+        //
+        //        /**
+        //         * This function gets the entity handler for a resource.
+        //         *
+        //         * @param handle            Handle of resource.
+        //         *
+        //         * @return Entity handler if resource found or NULL resource not found.
+        //         */
+        //        OCEntityHandler OCGetResourceHandler(OCResourceHandle handle);
+        //
         /**
          * This function notify all registered observers that the resource representation has
          * changed. If observation includes a query the client is notified only if the query is valid after
@@ -495,32 +495,32 @@ namespace IotivityDotNet.Interop
          */
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCNotifyAllObservers(IntPtr handle, OCQualityOfService qos);
-//
-//        /**
-//         * Notify specific observers with updated value of representation.
-//         * Before this API is invoked by entity handler it has finished processing
-//         * queries for the associated observers.
-//         *
-//         * @param handle                    Handle of resource.
-//         * @param obsIdList                 List of observation IDs that need to be notified.
-//         * @param numberOfIds               Number of observation IDs included in obsIdList.
-//         * @param payload                   Object representing the notification
-//         * @param qos                       Desired quality of service of the observation notifications.
-//         *
-//         * @note: The memory for obsIdList and payload is managed by the entity invoking the API.
-//         * The maximum size of the notification is 1015 bytes for non-Arduino platforms. For Arduino
-//         * the maximum size is 247 bytes.
-//         *
-//         * @return ::OC_STACK_OK on success, some other value upon failure.
-//         */
-//        OCStackResult
-//        OCNotifyListOfObservers(OCResourceHandle handle,
-//                                 OCObservationId* obsIdList,
-//                                 uint8_t numberOfIds,
-//                         const OCRepPayload* payload,
-//                         OCQualityOfService qos);
-//
-//
+        //
+        //        /**
+        //         * Notify specific observers with updated value of representation.
+        //         * Before this API is invoked by entity handler it has finished processing
+        //         * queries for the associated observers.
+        //         *
+        //         * @param handle                    Handle of resource.
+        //         * @param obsIdList                 List of observation IDs that need to be notified.
+        //         * @param numberOfIds               Number of observation IDs included in obsIdList.
+        //         * @param payload                   Object representing the notification
+        //         * @param qos                       Desired quality of service of the observation notifications.
+        //         *
+        //         * @note: The memory for obsIdList and payload is managed by the entity invoking the API.
+        //         * The maximum size of the notification is 1015 bytes for non-Arduino platforms. For Arduino
+        //         * the maximum size is 247 bytes.
+        //         *
+        //         * @return ::OC_STACK_OK on success, some other value upon failure.
+        //         */
+        //        OCStackResult
+        //        OCNotifyListOfObservers(OCResourceHandle handle,
+        //                                 OCObservationId* obsIdList,
+        //                                 uint8_t numberOfIds,
+        //                         const OCRepPayload* payload,
+        //                         OCQualityOfService qos);
+        //
+        //
 
         /// <summary>
         /// This function sends a response to a request.
@@ -531,209 +531,209 @@ namespace IotivityDotNet.Interop
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCDoResponse(OCEntityHandlerResponse response);
-//
-//        //#ifdef DIRECT_PAIRING
-//        /**
-//         * The function is responsible for discovery of direct-pairing device is current subnet. It will list
-//         * all the device in subnet which support direct-pairing.
-//         * Caller must NOT free returned constant pointer
-//         *
-//         * @param[in] timeout Timeout in seconds, value till which function will listen to responses from
-//         *                    client before returning the list of devices.
-//         * @return OCDirectPairingDev_t pointer in case of success and NULL otherwise.
-//         */
-//        const OCDPDev_t* OCDiscoverDirectPairingDevices(unsigned short waittime);
-//
-//        /**
-//         * The function is responsible for return of paired device list via direct-pairing. It will list
-//         * all the device which is previousely paired with client.
-//         * Caller must NOT free returned constant pointer
-//         *
-//         * @return OCDirectPairingDev_t pointer in case of success and NULL otherwise.
-//         */
-//        const OCDPDev_t* OCGetDirectPairedDevices();
-//
-//        /**
-//         * The function is responsible for establishment of direct-pairing. It will proceed mode negotiation
-//         * and connect PIN based dtls session.
-//         *
-//         * @param[in] peer Target device to establish direct-pairing.
-//         * @param[in] pmSel Selected mode of pairing.
-//         * @param[in] pinNumber PIN number for authentication, pin lenght is defined DP_PIN_LENGTH(8).
-//         * @param[in] resultCallback Callback fucntion to event status of process.
-//         * @return OTM_SUCCESS in case of success and other value otherwise.
-//         */
-//        OCStackResult OCDoDirectPairing(void* ctx, OCDPDev_t* peer, OCPrm_t pmSel, char* pinNumber,
-//                                        OCDirectPairingCB resultCallback);
-//
-//        /**
-//         * This function sets uri being used for proxy.
-//         *
-//         * @param uri            NULL terminated resource uri for CoAP-HTTP Proxy.
-//         */
-//        OCStackResult OCSetProxyURI(const char* uri);
-//
-//#if RD_CLIENT || RD_SERVER
-//        /**
-//         * This function binds an resource unique id to the resource.
-//         *
-//         * @param handle            Handle to the resource that the contained resource is to be bound.
-//         * @param ins               Unique ID for resource.
-//         *
-//         * @return ::OC_STACK_OK on success, some other value upon failure.
-//         */
-//        OCStackResult OCBindResourceInsToResource(OCResourceHandle handle, uint8_t ins);
-//
-//        /**
-//         * This function gets the resource unique id for a resource.
-//         *
-//         * @param handle            Handle of resource.
-//         * @param ins               Unique ID for resource.
-//         *
-//         * @return Ins if resource found or 0 resource not found.
-//         */
-//        OCStackResult OCGetResourceIns(OCResourceHandle handle, uint8_t *ins);
-//
-//#endif
-//
-//        /**
-//        * This function gets a resource handle by resource uri.
-//        *
-//        * @param uri   Uri of Resource to get Resource handle.
-//        *
-//        * @return Found  resource handle or NULL if not found.
-//*/
-//        OCResourceHandle OCGetResourceHandleAtUri(const char* uri);
-//
-//# ifdef RD_SERVER
-//        /**
-//        * Search the RD database for queries.
-//        *
-//        * @param interfaceType is the interface type that is queried.
-//        * @param resourceType is the resource type that is queried.
-//        * @param discPayload is NULL if no resource found or else OCDiscoveryPayload with the details
-//        * about the resource.
-//        *
-//        * @return ::OC_STACK_OK in case of success or else other value.
-//*/
-//        OCStackResult OCRDDatabaseCheckResources(const char* interfaceType, const char* resourceType,
-//            OCDiscoveryPayload *discPayload);
-//#endif
-////#endif // DIRECT_PAIRING
-//
-//        /**
-//         *  Add a header option to the given header option array.
-//         *
-//         * @param ocHdrOpt            Pointer to existing options.
-//         * @param numOptions          Number of existing options.
-//         * @param optionID            COAP option ID.
-//         * @param optionData          Option data value.
-//         * @param optionDataLength    Size of Option data value.
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult OCSetHeaderOption(OCHeaderOption* ocHdrOpt,
-//                  size_t* numOptions,
-//                  uint16_t optionID,
-//                  void* optionData,
-//                  size_t optionDataLength);
-//
-//        /**
-//         *  Get data value of the option with specified option ID from given header option array.
-//         *
-//         * @param ocHdrOpt            Pointer to existing options.
-//         * @param numOptions          Number of existing options.
-//         * @param optionID            COAP option ID.
-//         * @param optionData          Pointer to option data.
-//         * @param optionDataLength    Size of option data value.
-//         * @param receivedDatalLength Pointer to the actual length of received data.
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult
-//        OCGetHeaderOption(OCHeaderOption* ocHdrOpt,
-//                          size_t numOptions,
-//                          uint16_t optionID,
-//                          void* optionData,
-//                          size_t optionDataLength,
-//                          uint16_t* receivedDatalLength);
-//
-//        /**
-//         * gets the deviceId of the client
-//         *
-//         * @param deviceId pointer.
-//         * @return Returns ::OC_STACK_OK if success.
-//         */
-//        OCStackResult OCGetDeviceId(OCUUIdentity* deviceId);
-//
-//        /**
-//         * sets the deviceId of the client
-//         *
-//         * @param deviceId pointer.
-//         * @return Returns ::OC_STACK_OK if success.
-//         */
-//        OCStackResult OCSetDeviceId(const OCUUIdentity* deviceId);
-//
-//        /**
-//         * Encode an address string to match RFC 6874.
-//         *
-//         * @param outputAddress    a char array to be written with the encoded string.
-//         *
-//         * @param outputSize       size of outputAddress buffer.
-//         *
-//         * @param inputAddress     a char array of size <= CA_MAX_URI_LENGTH
-//         *                         containing a valid IPv6 address string.
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult OCEncodeAddressForRFC6874(char* outputAddress,
-//                                                size_t outputSize,
-//                                        const char* inputAddress);
-//
-//        /**
-//         * Decode an address string according to RFC 6874.
-//         *
-//         * @param outputAddress    a char array to be written with the decoded string.
-//         *
-//         * @param outputSize       size of outputAddress buffer.
-//         *
-//         * @param inputAddress     a valid percent-encoded address string.
-//         *
-//         * @param end              NULL if the entire entire inputAddress is a null-terminated percent-
-//         *                         encoded address string.  Otherwise, a pointer to the first byte that
-//         *                         is not part of the address string (e.g., ']' in a URI).
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult OCDecodeAddressForRFC6874(char* outputAddress,
-//                                                size_t outputSize,
-//                                        const char* inputAddress,
-//                                        const char* end);
-//
-//        /**
-//         * Set the value of /oic/d and /oic/p properties. This function is a generic function that sets for
-//         * all OCF defined properties.
-//         *
-//         * @param type the payload type for device and platform as defined in @ref OCPayloadType.
-//         * @param propName the pre-defined property as per OCF spec.
-//         * @param value the value of the property to be set.
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult OCSetPropertyValue(OCPayloadType type, const char* propName, const void* value);
-//
-//        /**
-//         * Get the value of /oic/d and /oic/p properties. This function is a generic function that get value
-//         * for all OCF defined properties.
-//         *
-//         * @param type the payload type for device and platform as defined in @ref OCPayloadType.
-//         * @param propName the pre-defined as per OCF spec.
-//         * @param value this holds the return value.  In case of error will be set to NULL.
-//         *
-//         * @return ::OC_STACK_OK on success and other value otherwise.
-//         */
-//        OCStackResult OCGetPropertyValue(OCPayloadType type, const char* propName, void** value);
-//
+        //
+        //        //#ifdef DIRECT_PAIRING
+        //        /**
+        //         * The function is responsible for discovery of direct-pairing device is current subnet. It will list
+        //         * all the device in subnet which support direct-pairing.
+        //         * Caller must NOT free returned constant pointer
+        //         *
+        //         * @param[in] timeout Timeout in seconds, value till which function will listen to responses from
+        //         *                    client before returning the list of devices.
+        //         * @return OCDirectPairingDev_t pointer in case of success and NULL otherwise.
+        //         */
+        //        const OCDPDev_t* OCDiscoverDirectPairingDevices(unsigned short waittime);
+        //
+        //        /**
+        //         * The function is responsible for return of paired device list via direct-pairing. It will list
+        //         * all the device which is previousely paired with client.
+        //         * Caller must NOT free returned constant pointer
+        //         *
+        //         * @return OCDirectPairingDev_t pointer in case of success and NULL otherwise.
+        //         */
+        //        const OCDPDev_t* OCGetDirectPairedDevices();
+        //
+        //        /**
+        //         * The function is responsible for establishment of direct-pairing. It will proceed mode negotiation
+        //         * and connect PIN based dtls session.
+        //         *
+        //         * @param[in] peer Target device to establish direct-pairing.
+        //         * @param[in] pmSel Selected mode of pairing.
+        //         * @param[in] pinNumber PIN number for authentication, pin lenght is defined DP_PIN_LENGTH(8).
+        //         * @param[in] resultCallback Callback fucntion to event status of process.
+        //         * @return OTM_SUCCESS in case of success and other value otherwise.
+        //         */
+        //        OCStackResult OCDoDirectPairing(void* ctx, OCDPDev_t* peer, OCPrm_t pmSel, char* pinNumber,
+        //                                        OCDirectPairingCB resultCallback);
+        //
+        //        /**
+        //         * This function sets uri being used for proxy.
+        //         *
+        //         * @param uri            NULL terminated resource uri for CoAP-HTTP Proxy.
+        //         */
+        //        OCStackResult OCSetProxyURI(const char* uri);
+        //
+        //#if RD_CLIENT || RD_SERVER
+        //        /**
+        //         * This function binds an resource unique id to the resource.
+        //         *
+        //         * @param handle            Handle to the resource that the contained resource is to be bound.
+        //         * @param ins               Unique ID for resource.
+        //         *
+        //         * @return ::OC_STACK_OK on success, some other value upon failure.
+        //         */
+        //        OCStackResult OCBindResourceInsToResource(OCResourceHandle handle, uint8_t ins);
+        //
+        //        /**
+        //         * This function gets the resource unique id for a resource.
+        //         *
+        //         * @param handle            Handle of resource.
+        //         * @param ins               Unique ID for resource.
+        //         *
+        //         * @return Ins if resource found or 0 resource not found.
+        //         */
+        //        OCStackResult OCGetResourceIns(OCResourceHandle handle, uint8_t *ins);
+        //
+        //#endif
+        //
+        //        /**
+        //        * This function gets a resource handle by resource uri.
+        //        *
+        //        * @param uri   Uri of Resource to get Resource handle.
+        //        *
+        //        * @return Found  resource handle or NULL if not found.
+        //*/
+        //        OCResourceHandle OCGetResourceHandleAtUri(const char* uri);
+        //
+        //# ifdef RD_SERVER
+        //        /**
+        //        * Search the RD database for queries.
+        //        *
+        //        * @param interfaceType is the interface type that is queried.
+        //        * @param resourceType is the resource type that is queried.
+        //        * @param discPayload is NULL if no resource found or else OCDiscoveryPayload with the details
+        //        * about the resource.
+        //        *
+        //        * @return ::OC_STACK_OK in case of success or else other value.
+        //*/
+        //        OCStackResult OCRDDatabaseCheckResources(const char* interfaceType, const char* resourceType,
+        //            OCDiscoveryPayload *discPayload);
+        //#endif
+        ////#endif // DIRECT_PAIRING
+        //
+        //        /**
+        //         *  Add a header option to the given header option array.
+        //         *
+        //         * @param ocHdrOpt            Pointer to existing options.
+        //         * @param numOptions          Number of existing options.
+        //         * @param optionID            COAP option ID.
+        //         * @param optionData          Option data value.
+        //         * @param optionDataLength    Size of Option data value.
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult OCSetHeaderOption(OCHeaderOption* ocHdrOpt,
+        //                  size_t* numOptions,
+        //                  uint16_t optionID,
+        //                  void* optionData,
+        //                  size_t optionDataLength);
+        //
+        //        /**
+        //         *  Get data value of the option with specified option ID from given header option array.
+        //         *
+        //         * @param ocHdrOpt            Pointer to existing options.
+        //         * @param numOptions          Number of existing options.
+        //         * @param optionID            COAP option ID.
+        //         * @param optionData          Pointer to option data.
+        //         * @param optionDataLength    Size of option data value.
+        //         * @param receivedDatalLength Pointer to the actual length of received data.
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult
+        //        OCGetHeaderOption(OCHeaderOption* ocHdrOpt,
+        //                          size_t numOptions,
+        //                          uint16_t optionID,
+        //                          void* optionData,
+        //                          size_t optionDataLength,
+        //                          uint16_t* receivedDatalLength);
+
+        /// <summary>
+        ///  gets the deviceId of the client
+        /// </summary>
+        /// <param name="deviceId">deviceId pointer.</param>
+        /// <returns>:OC_STACK_OK if success.</returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern OCStackResult OCGetDeviceId(out OCUUIdentity deviceId);
+
+        /// <summary>
+        /// sets the deviceId of the client
+        /// </summary>
+        /// <param name="deviceId">deviceId pointer.</param>
+        /// <returns>OC_STACK_OK if success.</returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern OCStackResult OCSetDeviceId(OCUUIdentity deviceId);
+
+        //        /**
+        //         * Encode an address string to match RFC 6874.
+        //         *
+        //         * @param outputAddress    a char array to be written with the encoded string.
+        //         *
+        //         * @param outputSize       size of outputAddress buffer.
+        //         *
+        //         * @param inputAddress     a char array of size <= CA_MAX_URI_LENGTH
+        //         *                         containing a valid IPv6 address string.
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult OCEncodeAddressForRFC6874(char* outputAddress,
+        //                                                size_t outputSize,
+        //                                        const char* inputAddress);
+        //
+        //        /**
+        //         * Decode an address string according to RFC 6874.
+        //         *
+        //         * @param outputAddress    a char array to be written with the decoded string.
+        //         *
+        //         * @param outputSize       size of outputAddress buffer.
+        //         *
+        //         * @param inputAddress     a valid percent-encoded address string.
+        //         *
+        //         * @param end              NULL if the entire entire inputAddress is a null-terminated percent-
+        //         *                         encoded address string.  Otherwise, a pointer to the first byte that
+        //         *                         is not part of the address string (e.g., ']' in a URI).
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult OCDecodeAddressForRFC6874(char* outputAddress,
+        //                                                size_t outputSize,
+        //                                        const char* inputAddress,
+        //                                        const char* end);
+        //
+        //        /**
+        //         * Set the value of /oic/d and /oic/p properties. This function is a generic function that sets for
+        //         * all OCF defined properties.
+        //         *
+        //         * @param type the payload type for device and platform as defined in @ref OCPayloadType.
+        //         * @param propName the pre-defined property as per OCF spec.
+        //         * @param value the value of the property to be set.
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult OCSetPropertyValue(OCPayloadType type, const char* propName, const void* value);
+        //
+        //        /**
+        //         * Get the value of /oic/d and /oic/p properties. This function is a generic function that get value
+        //         * for all OCF defined properties.
+        //         *
+        //         * @param type the payload type for device and platform as defined in @ref OCPayloadType.
+        //         * @param propName the pre-defined as per OCF spec.
+        //         * @param value this holds the return value.  In case of error will be set to NULL.
+        //         *
+        //         * @return ::OC_STACK_OK on success and other value otherwise.
+        //         */
+        //        OCStackResult OCGetPropertyValue(OCPayloadType type, const char* propName, void** value);
+        //
 
     }
 }

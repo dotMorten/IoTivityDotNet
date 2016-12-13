@@ -17,7 +17,7 @@ namespace ClientTestApp
         {
             Console.WriteLine("Initializing...");
             IotivityNet.Service.Initialize(IotivityNet.ServiceMode.ClientServer);
-
+            
             Console.WriteLine("Creating devices...");
             server = new Server();
 

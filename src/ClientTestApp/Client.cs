@@ -12,8 +12,8 @@ namespace ClientTestApp
         public Client()
         {
             //Search for services
-            svc = new IotivityNet.OC.DiscoverResource("/oic/res");
-            svc.ResourceDiscovered += Svc_ResourceDiscovered;
+            svc = new IotivityNet.OC.DiscoverResource();
+            svc.ResourceDiscovered += ResourceDiscovered;
             svc.Start();
         }
 
@@ -22,7 +22,7 @@ namespace ClientTestApp
             svc.Stop();
         }
 
-        private void Svc_ResourceDiscovered(object sender, IotivityNet.OC.ClientResponseEventArgs<IotivityNet.OC.DiscoveryPayload> e)
+        private async void ResourceDiscovered(object sender, IotivityNet.OC.ClientResponseEventArgs<IotivityNet.OC.DiscoveryPayload> e)
         {
             Console.WriteLine($"Device Discovered @ {e.Response.DeviceAddress}");
             foreach (var r in e.Response.Payload.Resources)
@@ -44,20 +44,53 @@ namespace ClientTestApp
                     }
                     if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
                     {
-                        var observer = new IotivityDotNet.ResourceObserver(e.Response.DeviceAddress, r.Uri);
-                        observer.OnObserve += Observer_OnObserve;
+                        var client = new IotivityDotNet.ResourceClient(e.Response.DeviceAddress, r.Uri);
+                        //Get all the properties from the resource
+                        // var response = await client.GetAsync();
+                        // bool state;
+                        // if(response.Payload.TryGetBool("state", out state))
+                        // {
+                        //     Console.WriteLine("The state of the resource is: " + state.ToString());
+                        // }
+
+                        //Start observing the resource
+                        client.OnObserve += OnResourceObserved;
+
+                        //Update the resource
+                        /// Dictionary<string, object> data = new Dictionary<string, object>();
+                        /// data["state"] = false;
+                        /// await client.PostAsync(data);
                     }
                 }
             }
         }
-
-
-        private void Observer_OnObserve(object sender, IotivityNet.OC.RepPayload e)
+        private void OnResourceObserved(object sender, IotivityDotNet.ResourceObservationEventArgs e)
         {
+            var payload = e.Payload;
+            Console.WriteLine($"Resource observed @ {e.DeviceAddress} {e.ResourceUri}");
             bool state;
-            if (e.TryGetBool("state", out state))
+            double value;
+            string name;
+            if (payload.TryGetString("name", out name))
             {
-                Console.WriteLine($"State of device: {state}");
+                Console.WriteLine($"\tName: {name}");
+            }
+
+            if (payload.TryGetBool("state", out state))
+            {
+                Console.WriteLine($"\tState: {state}");
+            }
+            if(payload.TryGetDouble("hue", out value))
+            {
+                Console.WriteLine($"\tHue: {value}");
+            }
+            if (payload.TryGetDouble("brightness", out value))
+            {
+                Console.WriteLine($"\tBrightness: {value}");
+            }
+            if (payload.TryGetDouble("saturation", out value))
+            {
+                Console.WriteLine($"\tSaturation: {value}");
             }
         }
     }

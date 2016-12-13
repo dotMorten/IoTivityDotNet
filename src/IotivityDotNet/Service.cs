@@ -54,6 +54,33 @@ namespace IotivityNet
             });
         }
         
+        //public static byte[] DeviceId
+        //{
+        //    get
+        //    {
+        //        OCUUIdentity identity = null;
+        //        var result = OCStack.OCGetDeviceId(out identity);
+        //        if (result != OCStackResult.OC_STACK_OK)
+        //        {
+        //            throw new Exception(result.ToString());
+        //        }
+        //        return identity.deviceId;
+        //    }
+        //    set
+        //    {
+        //        if (value == null || value.Length > 16)
+        //        {
+        //            throw new ArgumentException(nameof(value));
+        //        }
+        //        var result = OCStack.OCSetDeviceId(new OCUUIdentity() { deviceId = value });
+        //        if (result != OCStackResult.OC_STACK_OK)
+        //        {
+        //            throw new Exception(result.ToString());
+        //        }
+        //    }
+        //}
+
+
         public static async Task Shutdown()
         {
             if (tcs == null) return;

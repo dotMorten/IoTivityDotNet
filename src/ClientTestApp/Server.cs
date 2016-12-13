@@ -26,10 +26,12 @@ namespace ClientTestApp
         {
             // Create switch
             _switchResource = new IotivityDotNet.DeviceResource("oic.r.switch.binary", "oic.if.baseline", "/BinarySwitchResURI");
-            _switchResource.Properties.Add("state", false);
+            _switchResource.Properties["name"] = "Mock Switch";
+            _switchResource.Properties["state"] = false;
 
             // Create light
             _lightResource = new IotivityDotNet.DeviceResource("core.light", "oic.if.baseline", "/light/1");
+            _lightResource.Properties["name"] = "Mock Light";
             _lightResource.Properties["state"] = true;
             _lightResource.Properties["hue"] = 90d;
             _lightResource.Properties["brightness"] = .5;

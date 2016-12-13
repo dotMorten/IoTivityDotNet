@@ -63,7 +63,14 @@ namespace IotivityNet.OC
         }
         public bool TryGetString(string name, out string value)
         {
-            return OCPayloadInterop.OCRepPayloadGetPropString(Handle, name, out value);
+            IntPtr ptr;
+            value = null;
+            bool result = OCPayloadInterop.OCRepPayloadGetPropString(Handle, name, out ptr);
+            if (result)
+            {
+                value = Marshal.PtrToStringAnsi(ptr);
+            }
+            return result;
         }
         public bool SetUri(string uri)
         {

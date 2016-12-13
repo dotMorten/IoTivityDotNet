@@ -104,7 +104,7 @@ namespace IotivityDotNet.Interop
         public static extern bool OCRepPayloadSetPropStringAsOwner(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET)]
-        public static extern bool OCRepPayloadGetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] out string value);
+        public static extern bool OCRepPayloadGetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out IntPtr value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern bool OCRepPayloadSetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, bool value);

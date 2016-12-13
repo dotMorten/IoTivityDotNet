@@ -112,6 +112,8 @@ namespace IotivityNet.OC
             }
         }
 
+        public OCConnectivityType ConnectivityType => _response.connType;
+
         public string ResourceUri => _response.resourceUri;
     }
 }

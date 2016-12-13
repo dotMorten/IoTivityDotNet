@@ -18,7 +18,6 @@ namespace IotivityDotNet.Interop
 
         [DllImport(Constants.DLL_IMPORT_TARGET, EntryPoint = "OCDiscoveryPayloadGetResource")]
         public static extern IntPtr OCDiscoveryPayloadGetResource(IntPtr handle, UIntPtr index);
-
         
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCPayloadDestroy(IntPtr handle);
@@ -29,35 +28,37 @@ namespace IotivityDotNet.Interop
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCRepPayloadClone(IntPtr payload);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
-        public static extern bool OCRepPayloadSetPropDouble(IntPtr payload, string name, double value);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
-        public static extern bool OCRepPayloadGetPropDouble(IntPtr payload, string name, out double value);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
-        public static extern bool OCRepPayloadSetPropBool(IntPtr payload, string name, bool value);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
-        public static extern bool OCRepPayloadGetPropBool(IntPtr payload, string name, out bool value);
 
 
         //       void OCRepPayloadAppend(OCRepPayload* parent, OCRepPayload* child);
-        //
-        //       bool OCRepPayloadSetUri(OCRepPayload* payload, const char* uri);
-        //
-        //       bool OCRepPayloadAddResourceType(OCRepPayload* payload, const char* resourceType);
+        
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetUri(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string uri);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadAddResourceType(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string resourceType);
+
         //       bool OCRepPayloadAddInterface(OCRepPayload* payload, const char* iface);
         //       bool OCRepPayloadAddModelVersion(OCRepPayload* payload, const char* dmv);
         //
         //       bool OCRepPayloadAddResourceTypeAsOwner(OCRepPayload* payload, char* resourceType);
         //       bool OCRepPayloadAddInterfaceAsOwner(OCRepPayload* payload, char* iface);
         //
-        //       bool OCRepPayloadIsNull(const OCRepPayload* payload, const char* name);
-        //       bool OCRepPayloadSetNull(OCRepPayload* payload, const char* name);
-        //
-        //       bool OCRepPayloadSetPropInt(OCRepPayload* payload, const char* name, int64_t value);
-        //       bool OCRepPayloadGetPropInt(const OCRepPayload* payload, const char* name, int64_t* value);
-        //
-        //       bool OCRepPayloadSetPropDouble(OCRepPayload* payload, const char* name, double value);
-        //       bool OCRepPayloadGetPropDouble(const OCRepPayload* payload, const char* name, double* value);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadIsNull(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetNull(IntPtr  payload, [MarshalAs(UnmanagedType.LPStr)] string name);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, long value);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadGetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out long value);
+
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, double value);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadGetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out double value);
         //
         //       /**
         //        * This function allocates memory for the byte string and sets it in the payload.
@@ -95,14 +96,22 @@ namespace IotivityDotNet.Interop
         //        */
         //       bool OCRepPayloadGetPropByteString(const OCRepPayload* payload, const char* name,
         //       OCByteString* value);
-        //
-        //       bool OCRepPayloadSetPropString(OCRepPayload* payload, const char* name, const char* value);
-        //       bool OCRepPayloadSetPropStringAsOwner(OCRepPayload* payload, const char* name, char* value);
-        //       bool OCRepPayloadGetPropString(const OCRepPayload* payload, const char* name, char** value);
-        //
-        //       bool OCRepPayloadSetPropBool(OCRepPayload* payload, const char* name, bool value);
-        //       bool OCRepPayloadGetPropBool(const OCRepPayload* payload, const char* name, bool* value);
-        //
+        
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetPropStringAsOwner(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadGetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] out string value);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, bool value);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadGetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, out bool value);
+
         //       bool OCRepPayloadSetPropObject(OCRepPayload* payload, const char* name, const OCRepPayload* value);
         //       bool OCRepPayloadSetPropObjectAsOwner(OCRepPayload* payload, const char* name, OCRepPayload* value);
         //       bool OCRepPayloadGetPropObject(const OCRepPayload* payload, const char* name, OCRepPayload** value);

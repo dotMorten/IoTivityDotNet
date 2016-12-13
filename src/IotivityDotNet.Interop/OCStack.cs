@@ -521,16 +521,16 @@ namespace IotivityDotNet.Interop
 //                         OCQualityOfService qos);
 //
 //
-//        /**
-//         * This function sends a response to a request.
-//         * The response can be a normal, slow, or block (i.e. a response that
-//         * is too large to be sent in a single PDU and must span multiple transmissions).
-//         *
-//         * @param response   Pointer to structure that contains response parameters.
-//         *
-//         * @return ::OC_STACK_OK on success, some other value upon failure.
-//         */
-//        OCStackResult OCDoResponse(OCEntityHandlerResponse* response);
+
+        /// <summary>
+        /// This function sends a response to a request.
+        /// The response can be a normal, slow, or block (i.e. a response that
+        /// is too large to be sent in a single PDU and must span multiple transmissions).
+        /// </summary>
+        /// <param name="response">Pointer to structure that contains response parameters.</param>
+        /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern OCStackResult OCDoResponse(OCEntityHandlerResponse response);
 //
 //        //#ifdef DIRECT_PAIRING
 //        /**

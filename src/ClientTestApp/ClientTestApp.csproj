@@ -44,23 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Libs\octbstack\Win7\x64\octbstack.dll">
-      <Link>x64\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Libs\octbstack\Win7\x86\octbstack.dll">
-      <Link>x86\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\IotivityDotNet.Interop\IotivityDotNet.Interop.csproj">
+      <Project>{79C16808-5FB5-456E-A31B-6F1B9A9F5474}</Project>
+      <Name>IotivityDotNet.Interop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IotivityDotNet\IotivityDotNet.csproj">
       <Project>{993be408-db4e-4f1b-bb6f-b6276fc37136}</Project>
       <Name>IotivityDotNet</Name>

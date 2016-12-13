@@ -23,6 +23,24 @@ namespace IotivityNet.OC
         {
             return new RepPayload(OCPayloadInterop.OCRepPayloadClone(Handle));
         }
+        public bool SetProperty(string name, long value)
+        {
+            return OCPayloadInterop.OCRepPayloadSetPropInt(Handle, name, value);
+        }
+        public bool TryGetInt64(string name, out long value)
+        {
+            return OCPayloadInterop.OCRepPayloadGetPropInt(Handle, name, out value);
+        }
+
+        public bool SetPropertyNull(string name)
+        {
+            return OCPayloadInterop.OCRepPayloadSetNull(Handle, name);
+        }
+        public bool TryGetPropertyIsNull(string name, out bool isNull)
+        {
+            isNull = OCPayloadInterop.OCRepPayloadIsNull(Handle, name);
+            return true;
+        }
         public bool SetProperty(string name, double value)
         {
             return OCPayloadInterop.OCRepPayloadSetPropDouble(Handle, name, value);
@@ -39,7 +57,21 @@ namespace IotivityNet.OC
         {
             return OCPayloadInterop.OCRepPayloadGetPropBool(Handle, name, out value);
         }
-
-
+        public bool SetProperty(string name, string value)
+        {
+            return OCPayloadInterop.OCRepPayloadSetPropString(Handle, name, value);
+        }
+        public bool TryGetString(string name, out string value)
+        {
+            return OCPayloadInterop.OCRepPayloadGetPropString(Handle, name, out value);
+        }
+        public bool SetUri(string uri)
+        {
+            return OCPayloadInterop.OCRepPayloadSetUri(Handle, uri);
+        }
+        public bool AddResourceType(string resourceType)
+        {
+            return OCPayloadInterop.OCRepPayloadAddResourceType(Handle, resourceType);
+        }
     }
 }

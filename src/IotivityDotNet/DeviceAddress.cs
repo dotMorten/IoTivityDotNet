@@ -7,16 +7,16 @@ namespace IotivityNet.OC
 {
     public class DeviceAddress
     {
-        private OCDevAddr _addr;
-
+        internal OCDevAddr OCDevAddr { get; }
+        
         internal DeviceAddress(OCDevAddr addr)
         {
-            _addr = addr;
+            OCDevAddr = addr;
         }
-        public string Address => _addr.addr;
+        public string Address => OCDevAddr.addr;
 
-        public ushort Port => _addr.port;
+        public ushort Port => OCDevAddr.port;
 
-        public override string ToString() => $"{_addr.addr}:{_addr.port}";
+        public override string ToString() => $"{OCDevAddr.addr}:{OCDevAddr.port}";
     }
 }

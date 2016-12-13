@@ -13,12 +13,15 @@ namespace IotivityNet.OC
         GCHandle gchandle;
         internal static Payload FromOCPayload(OCPayload payload)
         {
-            switch (payload.type)
+            if (payload != null)
             {
-                case OCPayloadType.PAYLOAD_TYPE_DISCOVERY:
-                    return new DiscoveryPayload(GCHandle.Alloc(payload));
-                case OCPayloadType.PAYLOAD_TYPE_REPRESENTATION:
-                    return new RepPayload(GCHandle.Alloc(payload));
+      	       switch (payload.type)
+       		   {
+                  case OCPayloadType.PAYLOAD_TYPE_DISCOVERY:
+                     return new DiscoveryPayload(GCHandle.Alloc(payload));
+                  case OCPayloadType.PAYLOAD_TYPE_REPRESENTATION:
+                     return new RepPayload(GCHandle.Alloc(payload));
+               }
             }
             return null;
         }
@@ -32,7 +35,7 @@ namespace IotivityNet.OC
             this.gchandle = gchandle;
         }
 
-        internal IntPtr Handle { get; }
+        public IntPtr Handle { get; }
 
         ~Payload()
         {

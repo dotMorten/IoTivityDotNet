@@ -49,10 +49,10 @@ namespace IotivityDotNet.Interop
     public class OCEntityHandlerRequest
     {
         /** Associated resource.*/
-        public IntPtr resource;
+        public IntPtr resource; //OCResourceHandle
 
         /** Associated request handle.*/
-        public IntPtr requestHandle;
+        public IntPtr requestHandle; //OCRequestHandle
 
         /** the REST method retrieved from received request PDU.*/
         public OCMethod method;
@@ -74,7 +74,7 @@ namespace IotivityDotNet.Interop
         public OCHeaderOption rcvdVendorSpecificHeaderOptions;
 
         /** Message id.*/
-        UInt16 messageID;
+        public UInt16 messageID;
 
         /** the payload from the request PDU.*/
         public OCPayload payload;
@@ -101,10 +101,7 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCHeaderOption
     {
-        public OCHeaderOption()
-        {
-            optionData = new byte[1024];
-        }
+
         /** The protocol ID this option applies to.*/
         public OCTransportProtocolID protocolID;
 
@@ -115,6 +112,7 @@ namespace IotivityDotNet.Interop
         public UInt16 optionLength;
 
         /** pointer to its data.*/
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
         public byte[] optionData;
 
 #if SUPPORTS_DEFAULT_CTOR
@@ -267,5 +265,38 @@ namespace IotivityDotNet.Interop
         /// The type of message that was received
         /// </summary>
         public OCPayloadType type;
+    }
+    /**
+    * Request handle is passed to server via the entity handler for each incoming request.
+    * Stack assigns when request is received, server sets to indicate what request response is for.
+*/
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class OCEntityHandlerResponse
+    {
+        /** Request handle.*/
+        public IntPtr requestHandle; //OCRequestHandle
+
+        /** Resource handle.*/
+        public IntPtr resourceHandle; //OCResourceHandle
+
+        /** Allow the entity handler to pass a result with the response.*/
+        public OCEntityHandlerResult ehResult;
+
+        /** This is the pointer to server payload data to be transferred.*/
+        public IntPtr payload;
+
+        /** number of the vendor specific header options .*/
+        public byte numSendVendorSpecificHeaderOptions;
+
+        /** An array of the vendor specific header options the entity handler wishes to use in response.*/
+        public IntPtr sendVendorSpecificHeaderOptions; // OCHeaderOption sendVendorSpecificHeaderOptions[MAX_HEADER_OPTIONS];
+
+        /** URI of new resource that entity handler might create.*/
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
+        public string resourceUri;
+
+        /** Server sets to true for persistent response buffer,false for non-persistent response buffer*/
+        public byte persistentBufferFlag;
     }
 }

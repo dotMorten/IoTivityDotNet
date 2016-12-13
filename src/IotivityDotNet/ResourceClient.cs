@@ -49,7 +49,7 @@ namespace IotivityDotNet
             var callbackData = new OCCallbackData();
             callbackData.cb = (context, handle, clientResponse) =>
             {
-                if (clientResponse.result != OCStackResult.OC_STACK_OK)
+                if (clientResponse.result >OCStackResult.OC_STACK_RESOURCE_CHANGED)
                 {
                     tcs.SetException(new Exception("Resource returned error: " + clientResponse.result.ToString()));
                 }
@@ -65,30 +65,7 @@ namespace IotivityDotNet
                 RepPayload payload = new RepPayload();
 
                 //payload.SetUri(_resourceUri);
-                foreach (var property in data)
-                {
-                    if (property.Value == null)
-                    {
-                        payload.SetPropertyNull(property.Key);
-                    }
-                    else if (property.Value.GetType() == typeof(bool))
-                    {
-                        payload.SetProperty(property.Key, (bool)property.Value);
-                    }
-                    else if (property.Value.GetType() == typeof(double))
-                    {
-                        payload.SetProperty(property.Key, (double)property.Value);
-                    }
-                    else if (property.Value.GetType() == typeof(long))
-                    {
-                        payload.SetProperty(property.Key, (long)property.Value);
-                    }
-                    else if (property.Value.GetType() == typeof(string))
-                    {
-                        payload.SetProperty(property.Key, (string)property.Value);
-                    }
-                    else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
-                }
+                payload.PopulateFromDictionary(data);
                 //payload.AddResourceType(_resourceTypeName);
                 payloadHandle = payload.Handle;
             }

@@ -28,6 +28,7 @@ namespace ClientTestApp
             _switchResource = new IotivityDotNet.DeviceResource("oic.r.switch.binary", "oic.if.baseline", "/BinarySwitchResURI");
             _switchResource.Properties["name"] = "Mock Switch";
             _switchResource.Properties["state"] = false;
+            _switchResource.OnPropertyUpdated += Resource_OnPropertyUpdated;
 
             // Create light
             _lightResource = new IotivityDotNet.DeviceResource("core.light", "oic.if.baseline", "/light/1");
@@ -36,6 +37,17 @@ namespace ClientTestApp
             _lightResource.Properties["hue"] = 90d;
             _lightResource.Properties["brightness"] = .5;
             _lightResource.Properties["saturation"] = 1d;
+            _lightResource.OnPropertyUpdated += Resource_OnPropertyUpdated;
+        }
+
+        private static void Resource_OnPropertyUpdated(object sender, IotivityNet.OC.RepPayload e)
+        {
+            bool state;
+            if(e.TryGetBool("state", out state))
+            {
+                (sender as IotivityDotNet.DeviceResource).Properties["state"] = state;
+                Console.WriteLine("State updated to :" + state);
+            }
         }
     }
 }

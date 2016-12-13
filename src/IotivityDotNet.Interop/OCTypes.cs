@@ -71,13 +71,13 @@ namespace IotivityDotNet.Interop
         public byte numRcvdVendorSpecificHeaderOptions;
 
         /** Pointer to the array of the received vendor specific header options.*/
-        public OCHeaderOption rcvdVendorSpecificHeaderOptions;
+        public IntPtr rcvdVendorSpecificHeaderOptions; //OCHeaderOption[]
 
         /** Message id.*/
         public UInt16 messageID;
 
         /** the payload from the request PDU.*/
-        public OCPayload payload;
+        public IntPtr payload; //OCPayload
 
     }
 

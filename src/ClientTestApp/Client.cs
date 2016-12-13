@@ -56,10 +56,7 @@ namespace ClientTestApp
                         //Start observing the resource
                         client.OnObserve += OnResourceObserved;
 
-                        //Update the resource
-                        /// Dictionary<string, object> data = new Dictionary<string, object>();
-                        /// data["state"] = false;
-                        /// await client.PostAsync(data);
+                      
                     }
                 }
             }
@@ -92,6 +89,11 @@ namespace ClientTestApp
             {
                 Console.WriteLine($"\tSaturation: {value}");
             }
+            //Update the resource
+            var client = sender as IotivityDotNet.ResourceClient;
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["state"] = !state;
+            client.PostAsync(data);
         }
     }
 }

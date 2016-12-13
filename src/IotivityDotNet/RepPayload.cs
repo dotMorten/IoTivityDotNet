@@ -19,6 +19,33 @@ namespace IotivityNet.OC
         public RepPayload() : this(OCPayloadInterop.OCRepPayloadCreate())
         { 
         }
+        public void PopulateFromDictionary(IDictionary<string,object> data)
+        {
+            foreach (var property in data)
+            {
+                if (property.Value == null)
+                {
+                    SetPropertyNull(property.Key);
+                }
+                else if (property.Value.GetType() == typeof(bool))
+                {
+                    SetProperty(property.Key, (bool)property.Value);
+                }
+                else if (property.Value.GetType() == typeof(double))
+                {
+                    SetProperty(property.Key, (double)property.Value);
+                }
+                else if (property.Value.GetType() == typeof(long))
+                {
+                    SetProperty(property.Key, (long)property.Value);
+                }
+                else if (property.Value.GetType() == typeof(string))
+                {
+                    SetProperty(property.Key, (string)property.Value);
+                }
+                else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
+            }
+        }
         public RepPayload Clone()
         {
             return new RepPayload(OCPayloadInterop.OCRepPayloadClone(Handle));

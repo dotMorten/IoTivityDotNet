@@ -35,61 +35,41 @@ namespace IotivityDotNet
         private OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
         {
             OCEntityHandlerResult result = OCEntityHandlerResult.OC_EH_OK;
-            var payload = new IotivityNet.OC.RepPayload();
+            IotivityNet.OC.Payload payload = null;
             if (entityHandlerRequest != null && (flag.HasFlag(OCEntityHandlerFlag.OC_REQUEST_FLAG)))
             {
-                if (entityHandlerRequest.method == OCMethod.OC_REST_GET)
+                switch (entityHandlerRequest.method)
                 {
-                    payload.SetUri(_uri);
-                    foreach (var property in Properties)
-                    {
-                        if (property.Value == null)
+                    case OCMethod.OC_REST_GET:
                         {
-                            payload.SetPropertyNull(property.Key);
+                            var rpayload = new IotivityNet.OC.RepPayload();
+                            rpayload.SetUri(_uri);
+                            rpayload.PopulateFromDictionary(Properties);
+                            rpayload.AddResourceType(_resourceTypeName);
+                            payload = rpayload;
                         }
-                        else if (property.Value.GetType() == typeof(bool))
+                        break;
+                    case OCMethod.OC_REST_POST:
+                    case OCMethod.OC_REST_PUT:
                         {
-                            payload.SetProperty(property.Key, (bool)property.Value);
+                            //var p = entityHandlerRequest.payload;
+                            OnPropertyUpdated(this, new IotivityNet.OC.RepPayload(entityHandlerRequest.payload));
                         }
-                        else if (property.Value.GetType() == typeof(double))
-                        {
-                            payload.SetProperty(property.Key, (double)property.Value);
-                        }
-                        else if (property.Value.GetType() == typeof(long))
-                        {
-                            payload.SetProperty(property.Key, (long)property.Value);
-                        }
-                        else if (property.Value.GetType() == typeof(string))
-                        {
-                            payload.SetProperty(property.Key, (string)property.Value);
-                        }
-                        else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
-                    }
-                    payload.AddResourceType(_resourceTypeName);
-                    var response = new OCEntityHandlerResponse();
-                    response.requestHandle = entityHandlerRequest.requestHandle;
-                    response.resourceHandle = entityHandlerRequest.resource;
-                    response.ehResult = result;
-                    response.payload = payload.Handle;// ocpayload;
-                    response.numSendVendorSpecificHeaderOptions = 0;
-                    response.sendVendorSpecificHeaderOptions = IntPtr.Zero;
-                    response.resourceUri = string.Empty;
-                    response.persistentBufferFlag = 0;
-                    IotivityDotNet.Interop.OCStack.OCDoResponse(response);
+                        break;
+                    default:
+                        result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
+                        break;
                 }
-                else if (entityHandlerRequest.method == OCMethod.OC_REST_POST)
-                {
-                    //TODO
-                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
-                }
-                else if (entityHandlerRequest.method == OCMethod.OC_REST_PUT)
-                {
-                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
-                }
-                else
-                {
-                    result = OCEntityHandlerResult.OC_EH_METHOD_NOT_ALLOWED;
-                }
+                var response = new OCEntityHandlerResponse();
+                response.requestHandle = entityHandlerRequest.requestHandle;
+                response.resourceHandle = entityHandlerRequest.resource;
+                response.ehResult = result;
+                response.payload = payload == null ? IntPtr.Zero : payload.Handle;
+                response.numSendVendorSpecificHeaderOptions = 0;
+                response.sendVendorSpecificHeaderOptions = IntPtr.Zero;
+                response.resourceUri = string.Empty;
+                response.persistentBufferFlag = 0;
+                OCStack.OCDoResponse(response);
             }
             return result;
         }
@@ -101,7 +81,7 @@ namespace IotivityDotNet
             throw new NotImplementedException();
         }
 
-        public event EventHandler<Dictionary<string, object>> OnPropertyUpdated;
+        public event EventHandler<IotivityNet.OC.RepPayload> OnPropertyUpdated;
     }
 }
  

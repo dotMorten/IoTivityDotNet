@@ -1,9 +1,6 @@
 ﻿using IotivityDotNet.Interop;
-using IotivityNet.OC;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IotivityDotNet
@@ -87,7 +84,7 @@ namespace IotivityDotNet
 
         private OCStackApplicationResult OnObserveCallback(IntPtr context, IntPtr handle, OCClientResponse clientResponse)
         {
-            var payload = new IotivityNet.OC.RepPayload(clientResponse.payload);
+            var payload = new RepPayload(clientResponse.payload);
             OnObserve?.Invoke(this, new ResourceObservationEventArgs(new DeviceAddress(clientResponse.devAddr), clientResponse.resourceUri, payload));
             return OCStackApplicationResult.OC_STACK_KEEP_TRANSACTION;
         }

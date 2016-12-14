@@ -63,18 +63,18 @@ namespace IotivityDotNet
         private OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
         {
             OCEntityHandlerResult result = OCEntityHandlerResult.OC_EH_OK;
-            IotivityNet.OC.Payload payload = null;
+            Payload payload = null;
             if (entityHandlerRequest != null && (flag.HasFlag(OCEntityHandlerFlag.OC_REQUEST_FLAG)))
             {
                 switch (entityHandlerRequest.method)
                 {
                     case OCMethod.OC_REST_GET:
                         {
-                            var rpayload = new IotivityNet.OC.RepPayload();
+                            var rpayload = new RepPayload();
                             rpayload.SetUri(_uri);
                             foreach (var resource in _resourceProperties)
                             {
-                                var repayload = new IotivityNet.OC.RepPayload(resource.Value);
+                                var repayload = new RepPayload(resource.Value);
                                 repayload.AddResourceType(resource.Key);
                                 rpayload.Append(repayload);
                             }
@@ -84,7 +84,7 @@ namespace IotivityDotNet
                     case OCMethod.OC_REST_POST:
                     case OCMethod.OC_REST_PUT:
                         {
-                            var p = new IotivityNet.OC.RepPayload(entityHandlerRequest.payload);
+                            var p = new RepPayload(entityHandlerRequest.payload);
                             result = OnPropertyUpdated(p);
                             PropertyUpdated?.Invoke(this, p);
                         }
@@ -114,12 +114,12 @@ namespace IotivityDotNet
             throw new NotImplementedException();
         }
 
-        protected virtual OCEntityHandlerResult OnPropertyUpdated(IotivityNet.OC.RepPayload payload)
+        protected virtual OCEntityHandlerResult OnPropertyUpdated(RepPayload payload)
         {
             return OCEntityHandlerResult.OC_EH_OK;
         }
 
-        public event EventHandler<IotivityNet.OC.RepPayload> PropertyUpdated;
+        public event EventHandler<RepPayload> PropertyUpdated;
     }
 }
  

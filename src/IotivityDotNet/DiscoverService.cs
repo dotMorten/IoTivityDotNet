@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace IotivityNet.OC
+namespace IotivityDotNet
 {
 
     public class DiscoverResource
@@ -54,14 +54,14 @@ namespace IotivityNet.OC
             {
                 return OCStackApplicationResult.OC_STACK_DELETE_TRANSACTION;
             }
-            ResourceDiscovered?.Invoke(this, new ClientResponseEventArgs<OC.DiscoveryPayload>(clientResponse, handle));
+            ResourceDiscovered?.Invoke(this, new ClientResponseEventArgs<DiscoveryPayload>(clientResponse, handle));
             return OCStackApplicationResult.OC_STACK_KEEP_TRANSACTION;
         }
 
-        public event EventHandler<ClientResponseEventArgs<OC.DiscoveryPayload>> ResourceDiscovered;
+        public event EventHandler<ClientResponseEventArgs<DiscoveryPayload>> ResourceDiscovered;
     }
 
-    public class ClientResponseEventArgs<T> : EventArgs where T : OC.Payload
+    public class ClientResponseEventArgs<T> : EventArgs where T : Payload
     {
         internal ClientResponseEventArgs(OCClientResponse clientResponse, IntPtr handle)
         {
@@ -74,7 +74,7 @@ namespace IotivityNet.OC
         public IntPtr Handle { get; }
     }
 
-    public class ClientResponse<T> where T : OC.Payload
+    public class ClientResponse<T> where T : Payload
     {
         private OCClientResponse _response;
         internal ClientResponse(OCClientResponse response)
@@ -102,13 +102,13 @@ namespace IotivityNet.OC
                 {
                     var pl = Marshal.PtrToStructure<OCPayload>(_response.payload);
                     //clientResponse.payload.
-                    if (pl.type == OCPayloadType.PAYLOAD_TYPE_DISCOVERY && typeof(T) == typeof(OC.DiscoveryPayload))
+                    if (pl.type == OCPayloadType.PAYLOAD_TYPE_DISCOVERY && typeof(T) == typeof(DiscoveryPayload))
                     {
-                        _payload = new IotivityNet.OC.DiscoveryPayload(_response.payload) as T;
+                        _payload = new DiscoveryPayload(_response.payload) as T;
                     }
-                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_REPRESENTATION && typeof(T) == typeof(OC.RepPayload))
+                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_REPRESENTATION && typeof(T) == typeof(RepPayload))
                     {
-                        _payload = new IotivityNet.OC.RepPayload(_response.payload) as T;
+                        _payload = new RepPayload(_response.payload) as T;
                     }
                     else
                         throw new NotImplementedException();

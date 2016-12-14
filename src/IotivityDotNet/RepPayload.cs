@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IotivityNet.OC
+namespace IotivityDotNet
 {
     public class RepPayload  : Payload
     {
@@ -103,7 +103,6 @@ namespace IotivityNet.OC
                             }
                         default:
                             throw new NotImplementedException(payloadValue.type.ToString());
-                            break;
                     }
                     values = payloadValue.next;
                 }

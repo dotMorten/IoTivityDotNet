@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IotivityNet.OC
+namespace IotivityDotNet
 {
     public class DeviceAddress
     {

@@ -8,10 +8,18 @@ namespace IotivityDotNet.Interop
 
     public enum OCMode
     {
+        /// <summary>
+        /// Client-only mode
+        /// </summary>
         OC_CLIENT = 0,
+        /// <summary>
+        /// Server-only mode
+        /// </summary>
         OC_SERVER,
+        /// <summary>
+        /// Client and server mode
+        /// </summary>
         OC_CLIENT_SERVER,
-
         /// <summary>
         /// Client server mode along with routing capabilities
         /// </summary>
@@ -24,7 +32,7 @@ namespace IotivityDotNet.Interop
     [Flags]
     public enum OCTransportFlags
     {
-        /** default flag is 0*/
+        /// <summary> default flag is</summary>
         OC_DEFAULT_FLAGS = 0,
 
         /** Insecure transport is the default (subject to change).*/

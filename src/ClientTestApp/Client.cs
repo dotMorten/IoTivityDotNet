@@ -8,11 +8,11 @@ namespace ClientTestApp
 {
     public class Client : IDisposable
     {
-        private IotivityNet.OC.DiscoverResource svc;
+        private IotivityDotNet.DiscoverResource svc;
         public Client()
         {
             //Search for services
-            svc = new IotivityNet.OC.DiscoverResource();
+            svc = new IotivityDotNet.DiscoverResource();
             svc.ResourceDiscovered += ResourceDiscovered;
             svc.Start();
         }
@@ -22,7 +22,7 @@ namespace ClientTestApp
             svc.Stop();
         }
 
-        private void ResourceDiscovered(object sender, IotivityNet.OC.ClientResponseEventArgs<IotivityNet.OC.DiscoveryPayload> e)
+        private void ResourceDiscovered(object sender, IotivityDotNet.ClientResponseEventArgs<IotivityDotNet.DiscoveryPayload> e)
         {
             Log.WriteLine($"Device Discovered @ {e.Response.DeviceAddress}");
             foreach (var r in e.Response.Payload.Resources)

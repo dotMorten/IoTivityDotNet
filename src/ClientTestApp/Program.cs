@@ -16,7 +16,7 @@ namespace ClientTestApp
         static void Main(string[] args)
         {
             Console.WriteLine("Initializing...");
-            IotivityNet.Service.Initialize(IotivityNet.ServiceMode.ClientServer);
+            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
             Log.OnLogEvent += (s, e) => Console.WriteLine(e);
 
             Console.WriteLine("Creating devices...");
@@ -32,7 +32,7 @@ namespace ClientTestApp
             client.Dispose();
             server.Dispose();
 
-            IotivityNet.Service.Shutdown().Wait();
+            IotivityDotNet.Service.Shutdown().Wait();
         }
     }
 }

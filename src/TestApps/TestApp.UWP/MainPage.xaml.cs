@@ -23,24 +23,26 @@ namespace TestApp.UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        Server server;
-        Client client;
+        private Server server;
+        private Client client;
+
         public MainPage()
         {
             this.InitializeComponent();
 
-            IotivityNet.Service.Initialize(IotivityNet.ServiceMode.ClientServer);
-            Log.OnLogEvent += (s, e) => { Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { logOutput.Text += e + "\n"; }); };
+            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
+            Log.OnLogEvent += (s, e) => { var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { logOutput.Text += e + "\n"; }); };
 
             server = new Server();
             client = new Client();
         }
+
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             client.Dispose();
             server.Dispose();
 
-            IotivityNet.Service.Shutdown();
+            var _ = IotivityDotNet.Service.Shutdown();
             base.OnNavigatingFrom(e);
         }
     }

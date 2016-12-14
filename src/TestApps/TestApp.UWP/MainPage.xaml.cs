@@ -30,6 +30,8 @@ namespace TestApp.UWP
             this.InitializeComponent();
 
             IotivityNet.Service.Initialize(IotivityNet.ServiceMode.ClientServer);
+            Log.OnLogEvent += (s, e) => { Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { logOutput.Text += e + "\n"; }); };
+
             server = new Server();
             client = new Client();
         }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IotivityDotNet.Interop
 {
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate OCStackApplicationResult OCClientResponseHandler(IntPtr context, IntPtr handle, OCClientResponse clientResponse);
 
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam);
     
     /// <summary>

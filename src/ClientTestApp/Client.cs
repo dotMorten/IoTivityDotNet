@@ -22,25 +22,25 @@ namespace ClientTestApp
             svc.Stop();
         }
 
-        private async void ResourceDiscovered(object sender, IotivityNet.OC.ClientResponseEventArgs<IotivityNet.OC.DiscoveryPayload> e)
+        private void ResourceDiscovered(object sender, IotivityNet.OC.ClientResponseEventArgs<IotivityNet.OC.DiscoveryPayload> e)
         {
-            Console.WriteLine($"Device Discovered @ {e.Response.DeviceAddress}");
+            Log.WriteLine($"Device Discovered @ {e.Response.DeviceAddress}");
             foreach (var r in e.Response.Payload.Resources)
             {
                 //Print out resources, their interfaces and types on the device
                 var uri = r.Uri;
                 if (!string.IsNullOrWhiteSpace(r.Uri) && !r.Uri.StartsWith("/oic/")) //Skips the generic oic ones
                 {
-                    Console.WriteLine("\t" + r.Uri + (r.Secure ? " (secure)" : ""));
-                    Console.WriteLine("\t\tInterfaces:");
+                    Log.WriteLine("\t" + r.Uri + (r.Secure ? " (secure)" : ""));
+                    Log.WriteLine("\t\tInterfaces:");
                     foreach (var iface in r.Interfaces)
                     {
-                        Console.WriteLine("\t\t\t" + iface);
+                        Log.WriteLine("\t\t\t" + iface);
                     }
-                    Console.WriteLine("\t\tTypes:");
+                    Log.WriteLine("\t\tTypes:");
                     foreach (var type in r.Types)
                     {
-                        Console.WriteLine("\t\t\t" + type);
+                        Log.WriteLine("\t\t\t" + type);
                     }
                     //if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
                     {
@@ -55,8 +55,6 @@ namespace ClientTestApp
 
                         //Start observing the resource
                         client.OnObserve += OnResourceObserved;
-
-                      
                     }
                 }
             }
@@ -64,20 +62,20 @@ namespace ClientTestApp
         private void OnResourceObserved(object sender, IotivityDotNet.ResourceObservationEventArgs e)
         {
             var payload = e.Payload;
-            Console.WriteLine($"Resource observed @ {e.DeviceAddress} {e.ResourceUri}");
+            Log.WriteLine($"Resource observed @ {e.DeviceAddress} {e.ResourceUri}");
             while (payload != null)
             {
                 foreach(var type in payload.Types)
                 {
-                    Console.WriteLine($"\t{type}");
+                    Log.WriteLine($"\t{type}");
                 }
                 foreach (var iface in payload.Interfaces)
                 {
-                    Console.WriteLine($"\t{iface}");
+                    Log.WriteLine($"\t{iface}");
                 }
                 foreach (var pair in payload.Values)
                 {
-                    Console.WriteLine($"\t\t{pair.Key}: {pair.Value}");
+                    Log.WriteLine($"\t\t{pair.Key}: {pair.Value}");
                 }
                 payload = payload.Next;
             }

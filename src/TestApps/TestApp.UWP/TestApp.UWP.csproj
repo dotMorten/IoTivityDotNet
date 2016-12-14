@@ -95,6 +95,9 @@
     <Compile Include="..\..\ClientTestApp\Client.cs">
       <Link>Client.cs</Link>
     </Compile>
+    <Compile Include="..\..\ClientTestApp\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
     <Compile Include="..\..\ClientTestApp\Server.cs">
       <Link>Server.cs</Link>
     </Compile>

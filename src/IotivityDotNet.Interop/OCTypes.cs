@@ -51,7 +51,7 @@ namespace IotivityDotNet.Interop
                 var ptr = types;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }
@@ -64,7 +64,7 @@ namespace IotivityDotNet.Interop
                 var ptr = interfaces;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }

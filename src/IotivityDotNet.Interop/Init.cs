@@ -25,16 +25,15 @@ namespace IotivityDotNet.Interop
                 {
                     try
                     {
-#if !__ANDROID__ && !NETFX_CORE
+#if !__ANDROID__ && !NETFX_CORE                        
                         bool is64bit = IntPtr.Size == 8;
-                        bool ok = SetDllDirectory(is64bit ? "x64" : "x86");
+                        bool ok = SetDllDirectory(is64bit ? "x64" : "x86"); //This is for .NET AnyCPU support. Returns false in UWP which is OK. Throws in Xamarin which we can ignore
 #endif
-                        isInitialized = true;
                     }
                     catch
                     {
-                        throw;
                     }
+                    isInitialized = true;
                 }
             }
         }

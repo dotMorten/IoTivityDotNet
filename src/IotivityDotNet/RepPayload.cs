@@ -14,7 +14,7 @@ namespace IotivityNet.OC
         
         internal RepPayload(IntPtr handle) : base(handle)
         {
-            ocpayload = Marshal.PtrToStructure(Handle, typeof(OCRepPayload)) as OCRepPayload;
+            ocpayload = Marshal.PtrToStructure<OCRepPayload>(Handle);
         }
 
         public IEnumerable<string> Types
@@ -24,7 +24,7 @@ namespace IotivityNet.OC
                 var ptr = ocpayload.types;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }
@@ -38,7 +38,7 @@ namespace IotivityNet.OC
                 var ptr = ocpayload.interfaces;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }
@@ -72,7 +72,7 @@ namespace IotivityNet.OC
                 while(values != IntPtr.Zero)
                 {
 
-                    var payloadValue = Marshal.PtrToStructure(values, typeof(OCRepPayloadValue)) as OCRepPayloadValue;
+                    var payloadValue = Marshal.PtrToStructure<OCRepPayloadValue>(values);
                     var ptr = payloadValue.value;
                     switch (payloadValue.type)
                     {

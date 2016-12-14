@@ -100,7 +100,7 @@ namespace IotivityNet.OC
             {
                 if (_payload == null)
                 {
-                    var pl = Marshal.PtrToStructure(_response.payload, typeof(OCPayload)) as OCPayload;
+                    var pl = Marshal.PtrToStructure<OCPayload>(_response.payload);
                     //clientResponse.payload.
                     if (pl.type == OCPayloadType.PAYLOAD_TYPE_DISCOVERY && typeof(T) == typeof(OC.DiscoveryPayload))
                     {

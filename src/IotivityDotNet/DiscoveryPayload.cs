@@ -22,7 +22,7 @@ namespace IotivityNet.OC
                 var ptr = _resource.types;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }
@@ -35,7 +35,7 @@ namespace IotivityNet.OC
                 var ptr = _resource.interfaces;
                 while (ptr != IntPtr.Zero)
                 {
-                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
                     ptr = resource.next;
                 }
@@ -81,7 +81,7 @@ namespace IotivityNet.OC
         public ResourcePayload GetResource(ulong index)
         {
             var ptr = OCPayloadInterop.OCDiscoveryPayloadGetResource(Handle, (UIntPtr)index);
-            var resource = Marshal.PtrToStructure(ptr, typeof(OCResourcePayload)) as OCResourcePayload;
+            var resource = Marshal.PtrToStructure<OCResourcePayload>(ptr);
             return new ResourcePayload(resource);
         }
 

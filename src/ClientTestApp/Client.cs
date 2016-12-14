@@ -42,7 +42,7 @@ namespace ClientTestApp
                     {
                         Console.WriteLine("\t\t\t" + type);
                     }
-                    if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
+                    //if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
                     {
                         var client = new IotivityDotNet.ResourceClient(e.Response.DeviceAddress, r.Uri);
                         //Get all the properties from the resource
@@ -65,35 +65,32 @@ namespace ClientTestApp
         {
             var payload = e.Payload;
             Console.WriteLine($"Resource observed @ {e.DeviceAddress} {e.ResourceUri}");
-            bool state;
-            double value;
-            string name;
-            if (payload.TryGetString("name", out name))
+            while (payload != null)
             {
-                Console.WriteLine($"\tName: {name}");
+                foreach(var type in payload.Types)
+                {
+                    Console.WriteLine($"\t{type}");
+                }
+                foreach (var iface in payload.Interfaces)
+                {
+                    Console.WriteLine($"\t{iface}");
+                }
+                foreach (var pair in payload.Values)
+                {
+                    Console.WriteLine($"\t\t{pair.Key}: {pair.Value}");
+                }
+                payload = payload.Next;
             }
 
-            if (payload.TryGetBool("state", out state))
-            {
-                Console.WriteLine($"\tState: {state}");
-            }
-            if(payload.TryGetDouble("hue", out value))
-            {
-                Console.WriteLine($"\tHue: {value}");
-            }
-            if (payload.TryGetDouble("brightness", out value))
-            {
-                Console.WriteLine($"\tBrightness: {value}");
-            }
-            if (payload.TryGetDouble("saturation", out value))
-            {
-                Console.WriteLine($"\tSaturation: {value}");
-            }
             //Update the resource
-            var client = sender as IotivityDotNet.ResourceClient;
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data["state"] = !state;
-            client.PostAsync(data);
+            //bool state = false;
+            //if (payload.TryGetBool("state", out state))
+            //{
+            //    var client = sender as IotivityDotNet.ResourceClient;
+            //    Dictionary<string, object> data = new Dictionary<string, object>();
+            //    data["state"] = !state;
+            //    client.PostAsync(data);
+            //}
         }
     }
 }

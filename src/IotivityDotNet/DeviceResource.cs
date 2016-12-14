@@ -9,27 +9,55 @@ namespace IotivityDotNet
 {
     public class DeviceResource : IDisposable
     {
-        private readonly IntPtr _handle;
+        private IntPtr _handle;
         private readonly string _uri;
-        private readonly string _resourceTypeName;
-        private readonly string _resourceInterfaceName;
+        private Dictionary<string, Dictionary<string, object>> _resourceProperties;
 
-        public DeviceResource(string resourceTypeName, string resourceInterfaceName, string uri)
+        public DeviceResource(string uri, string resourceTypeName, IDictionary<string,object> properties, string resourceInterfaceName = "oic.if.baseline")
         {
-            _uri = uri;
-            _resourceTypeName = resourceTypeName;
-            _resourceInterfaceName = resourceInterfaceName;
-
             OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, OCEntityHandler, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
-            if(result != OCStackResult.OC_STACK_OK)
+            if (result != OCStackResult.OC_STACK_OK)
             {
                 throw new Exception("Failed to create resource: " + result.ToString());
             }
+            _uri = uri;
+            _resourceProperties = new Dictionary<string, Dictionary<string, object>>();
+            _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
+        }
+
+        protected void BindInterface(string resourceInterfaceName)
+        {
+            OCStackResult result = OCStack.OCBindResourceInterfaceToResource(_handle, resourceInterfaceName);
+            if (result != OCStackResult.OC_STACK_OK)
+            {
+                throw new Exception("Failed to bind interface name: " + result.ToString());
+            }
+        }
+
+        public void SetProperty(string resourceTypeName, string property, object value)
+        {
+            _resourceProperties[resourceTypeName][property] = value;
+        }
+        public object GetProperty(string resourceTypeName, string property)
+        {
+            return _resourceProperties[resourceTypeName][property];
+        }
+        public IEnumerable<string> ResourceTypes => _resourceProperties.Keys;
+
+        public void AddResourceType(string resourceTypeName, IDictionary<string, object> properties)
+        {
+            OCStackResult result = OCStack.OCBindResourceTypeToResource(_handle, resourceTypeName);
+            if (result != OCStackResult.OC_STACK_OK)
+            {
+                throw new Exception("Failed to create resource: " + result.ToString());
+            }
+            _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
         }
 
         public void Dispose()
         {
             OCStack.OCDeleteResource(_handle);
+            _resourceProperties = null;
         }
 
         private OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
@@ -44,16 +72,21 @@ namespace IotivityDotNet
                         {
                             var rpayload = new IotivityNet.OC.RepPayload();
                             rpayload.SetUri(_uri);
-                            rpayload.PopulateFromDictionary(Properties);
-                            rpayload.AddResourceType(_resourceTypeName);
+                            foreach (var resource in _resourceProperties)
+                            {
+                                var repayload = new IotivityNet.OC.RepPayload(resource.Value);
+                                repayload.AddResourceType(resource.Key);
+                                rpayload.Append(repayload);
+                            }
                             payload = rpayload;
                         }
                         break;
                     case OCMethod.OC_REST_POST:
                     case OCMethod.OC_REST_PUT:
                         {
-                            //var p = entityHandlerRequest.payload;
-                            OnPropertyUpdated(this, new IotivityNet.OC.RepPayload(entityHandlerRequest.payload));
+                            var p = new IotivityNet.OC.RepPayload(entityHandlerRequest.payload);
+                            result = OnPropertyUpdated(p);
+                            PropertyUpdated?.Invoke(this, p);
                         }
                         break;
                     default:
@@ -74,14 +107,19 @@ namespace IotivityDotNet
             return result;
         }
 
-        public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
+        //public Dictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
         public void NotifyPropertyChanged(string name)
         {
             throw new NotImplementedException();
         }
 
-        public event EventHandler<IotivityNet.OC.RepPayload> OnPropertyUpdated;
+        protected virtual OCEntityHandlerResult OnPropertyUpdated(IotivityNet.OC.RepPayload payload)
+        {
+            return OCEntityHandlerResult.OC_EH_OK;
+        }
+
+        public event EventHandler<IotivityNet.OC.RepPayload> PropertyUpdated;
     }
 }
  

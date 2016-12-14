@@ -183,17 +183,18 @@ namespace IotivityDotNet.Interop
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCStopPresence();
 
-        /**
- * This function sets default device entity handler.
- *
- * @param entityHandler      Entity handler function that is called by ocstack to handle requests
- *                           for any undefined resources or default actions.If NULL is passed it
- *                           removes the device default entity handler.
- * @param callbackParameter  Parameter passed back when entityHandler is called.
- *
- * @return ::OC_STACK_OK on success, some other value upon failure.
- */
-        // OCStackResult OCSetDefaultDeviceEntityHandler(OCDeviceEntityHandler entityHandler, void* callbackParameter);
+        /// <summary>
+        /// This function sets default device entity handler.
+        /// </summary>
+        /// <param name="entityHandler">
+        /// Entity handler function that is called by ocstack to handle requests
+        /// for any undefined resources or default actions.If NULL is passed it
+        /// removes the device default entity handler.
+        /// </param>
+        /// <param name="callbackParameter"Parameter passed back when entityHandler is called.></param>
+        /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern OCStackResult OCSetDefaultDeviceEntityHandler(OCEntityHandler entityHandler, IntPtr callbackParameter);
 
         /**
         * This function sets device information.
@@ -315,17 +316,16 @@ namespace IotivityDotNet.Interop
          */
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCBindResourceTypeToResource(IntPtr handle, string resourceTypeName);
-        //        /**
-        //         * This function binds a resource interface to a resource.
-        //         *
-        //         * @param handle                  Handle to the resource.
-        //         * @param resourceInterfaceName   Name of resource interface.  Example: "core.rw".
-        //         *
-        //         * @return ::OC_STACK_OK on success, some other value upon failure.
-        //         */
-        //        OCStackResult OCBindResourceInterfaceToResource(OCResourceHandle handle,
-        //                                                const char* resourceInterfaceName);
-        //
+
+        /// <summary>
+        /// This function binds a resource interface to a resource.
+        /// </summary>
+        /// <param name="handle">Handle to the resource.</param>
+        /// <param name="resourceInterfaceName">Name of resource interface.  Example: "core.rw".</param>
+        /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern OCStackResult OCBindResourceInterfaceToResource(IntPtr handle, string resourceInterfaceName);
+
         //        /**
         //         * This function binds an entity handler to the resource.
         //         *
@@ -339,23 +339,20 @@ namespace IotivityDotNet.Interop
         //                                            OCEntityHandler entityHandler,
         //                                            void* callbackParameter);
         //
-        /**
-         * This function gets the number of resources that have been created in the stack.
-         *
-         * @param numResources    Pointer to count variable.
-         *
-         * @return ::OC_STACK_OK on success, some other value upon failure.
-         */
+        
+        /// <summary>
+        /// This function gets the number of resources that have been created in the stack.
+        /// </summary>
+        /// <param name="numResources">Pointer to count variable.</param>
+        /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern OCStackResult OCGetNumberOfResources([Out] out byte numResources);
-
-        /**
-         * This function gets a resource handle by index.
-         *
-         * @param index   Index of resource, 0 to Count - 1.
-         *
-         * @return Found  resource handle or NULL if not found.
-         */
+        
+        /// <summary>
+        /// This function gets a resource handle by index.
+        /// </summary>
+        /// <param name="index">Index of resource, 0 to Count - 1.</param>
+        /// <returns> Found  resource handle or NULL if not found.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCGetResourceHandle(byte index);
 

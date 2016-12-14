@@ -22,15 +22,15 @@ namespace IotivityDotNet.Interop
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCPayloadDestroy(IntPtr handle);
 
+
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCRepPayloadCreate();
 
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern IntPtr OCRepPayloadClone(IntPtr payload);
-
-
-
-        //       void OCRepPayloadAppend(OCRepPayload* parent, OCRepPayload* child);
+        
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern void OCRepPayloadAppend(IntPtr parent, IntPtr child);
         
         [DllImport(Constants.DLL_IMPORT_TARGET)]
         public static extern bool OCRepPayloadSetUri(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string uri);

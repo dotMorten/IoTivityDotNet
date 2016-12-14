@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IotivityDotNet.Interop;
+using IotivityNet.OC;
+using IotivityDotNet;
 
 namespace ClientTestApp
 {
@@ -15,39 +18,76 @@ namespace ClientTestApp
 
         public void Dispose()
         {
-            _switchResource.Dispose();
-            _lightResource.Dispose();
+            light.Dispose();
+            bswitch.Dispose();
         }
 
-        private static IotivityDotNet.DeviceResource _switchResource;
-        private static IotivityDotNet.DeviceResource _lightResource;
+        static LightDevice light;
+        static BinarySwitchDevice bswitch;
 
         private static void CreateResources()
         {
-            // Create switch
-            _switchResource = new IotivityDotNet.DeviceResource("oic.r.switch.binary", "oic.if.baseline", "/BinarySwitchResURI");
-            _switchResource.Properties["name"] = "Mock Switch";
-            _switchResource.Properties["state"] = false;
-            _switchResource.OnPropertyUpdated += Resource_OnPropertyUpdated;
-
-            // Create light
-            _lightResource = new IotivityDotNet.DeviceResource("core.light", "oic.if.baseline", "/light/1");
-            _lightResource.Properties["name"] = "Mock Light";
-            _lightResource.Properties["state"] = true;
-            _lightResource.Properties["hue"] = 90d;
-            _lightResource.Properties["brightness"] = .5;
-            _lightResource.Properties["saturation"] = 1d;
-            _lightResource.OnPropertyUpdated += Resource_OnPropertyUpdated;
+            bswitch = new BinarySwitchDevice("/switch/1");
+            light = new LightDevice("/light/1");
         }
-
-        private static void Resource_OnPropertyUpdated(object sender, IotivityNet.OC.RepPayload e)
+    }
+    internal static class OicDeviceTypeConstants
+    {
+        internal const string Bridge = "oic.d.bridge";
+        internal const string Switch = "oic.d.switch";
+        internal const string Light = "oic.d.light";
+        internal const string Fan = "oic.d.fan";
+    }
+    internal static class OicResourceTypeConstants
+    {
+        internal const string SwitchBinary = "oic.r.switch.binary";
+        internal const string SwitchTemperature = "oic.r.switch.temperature";
+        internal const string OperationalState = "oic.r.operational.state";
+        internal const string LightBrightness = "oic.r.light.brightness";
+        internal const string ColourChroma = "oic.r.colour.chroma"; //No I didn't come up with this stupid spelling ;-)
+    }
+    public class BinarySwitchDevice : DeviceResource
+    {
+        
+        public BinarySwitchDevice(string uri) : base(uri, OicResourceTypeConstants.SwitchBinary, new Dictionary<string, object> { ["state"] = false })
+        {
+            BindInterface(OicDeviceTypeConstants.Switch);
+        }
+        protected override OCEntityHandlerResult OnPropertyUpdated(RepPayload payload)
         {
             bool state;
-            if(e.TryGetBool("state", out state))
+            if (payload.TryGetBool("state", out state))
             {
-                (sender as IotivityDotNet.DeviceResource).Properties["state"] = state;
-                Console.WriteLine("State updated to :" + state);
+                SetProperty(OicResourceTypeConstants.SwitchBinary, "state", state);
+                return OCEntityHandlerResult.OC_EH_OK;
             }
+            return OCEntityHandlerResult.OC_EH_NOT_ACCEPTABLE;
+        }
+    }
+
+    public class LightDevice : BinarySwitchDevice
+    {
+        public LightDevice(string uri, bool isDimmable = true) : base(uri)
+        {
+            BindInterface(OicDeviceTypeConstants.Light);
+            if (isDimmable)
+                AddResourceType(OicResourceTypeConstants.LightBrightness, new Dictionary<string, object> { ["brightness"] = 100L });
+            AddResourceType(OicResourceTypeConstants.ColourChroma, new Dictionary<string, object> { ["hue"] = 0L, ["saturation"] = 0L, ["csc"] = new double[] { 0d, 0d }, ["ct"] = 0L });
+        }
+
+        protected override OCEntityHandlerResult OnPropertyUpdated(RepPayload payload)
+        {
+            long brightness;
+            if (payload.TryGetInt64("brightness", out brightness))
+            {
+                if (brightness < 0 || brightness > 100)
+                    return OCEntityHandlerResult.OC_EH_NOT_ACCEPTABLE;
+
+                SetProperty(OicResourceTypeConstants.LightBrightness, "brightness", brightness);
+
+                return OCEntityHandlerResult.OC_EH_OK;
+            }
+            return base.OnPropertyUpdated(payload);
         }
     }
 }

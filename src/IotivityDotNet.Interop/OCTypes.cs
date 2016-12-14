@@ -31,6 +31,46 @@ namespace IotivityDotNet.Interop
         public IntPtr next; //OCResourcePayload
         public IntPtr eps; //OCEndpointPayload
     }
+    /// <summary>
+    /// used inside a discovery payload
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public class OCRepPayload
+    {
+        public IntPtr basePayload;
+        public string uri;
+        public IntPtr types; //OCStringLL
+        public IntPtr interfaces; //OCStringLL
+        public IntPtr values; //  values;
+        public IntPtr next; // OCRepPayload next;
+
+        public IEnumerable<string> Types
+        {
+            get
+            {
+                var ptr = types;
+                while (ptr != IntPtr.Zero)
+                {
+                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    yield return resource.value;
+                    ptr = resource.next;
+                }
+            }
+        }
+        public IEnumerable<string> Interfaces
+        {
+            get
+            {
+                var ptr = interfaces;
+                while (ptr != IntPtr.Zero)
+                {
+                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    yield return resource.value;
+                    ptr = resource.next;
+                }
+            }
+        }
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     public class OCStringLL
@@ -300,9 +340,74 @@ namespace IotivityDotNet.Interop
         public byte persistentBufferFlag;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public class OCUUIdentity
     {
         [MarshalAs(UnmanagedType.LPArray, SizeConst = 16)]
         public byte[] deviceId;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class OCRepPayloadValue
+    {
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string name;
+        
+        public OCRepPayloadPropType type;
+
+        //public OCRepPayloadValueUnion value;
+        // [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        // public byte[] data;
+        //MarshalAs(UnmanagedType.Struct, SizeConst = 8)]
+        public OCRepPayloadValueUnion value;
+        //union
+        //{
+        //    int64_t i;
+        //    double d;
+        //    bool b;
+        //    char* str;
+
+        //    /** ByteString object.*/
+        //    OCByteString ocByteStr;
+
+        //    struct OCRepPayload* obj;
+        //    OCRepPayloadValueArray arr;
+        //};
+        public IntPtr next;
+    }
+    [StructLayout(LayoutKind.Explicit, Size =40)]
+    public struct OCRepPayloadValueUnion
+    {
+        [FieldOffset(0)]
+        public Int64 i;
+
+        [FieldOffset(0)]
+        public double d;
+        
+        [FieldOffset(0)]
+        public bool b;
+         
+        // [FieldOffset(0)]
+        // [MarshalAs(UnmanagedType.LPStr)]
+        // public string str;
+        // 
+        [FieldOffset(0)]
+        public IntPtr ocByteStr;
+
+        // [FieldOffset(0)]
+        // public IntPtr obj;
+        // [FieldOffset(0)]
+        // public IntPtr arr;
+    }
+    public enum OCRepPayloadPropType
+    {
+        OCREP_PROP_NULL,
+        OCREP_PROP_INT,
+        OCREP_PROP_DOUBLE,
+        OCREP_PROP_BOOL,
+        OCREP_PROP_STRING,
+        OCREP_PROP_BYTE_STRING,
+        OCREP_PROP_OBJECT,
+        OCREP_PROP_ARRAY
     }
 }

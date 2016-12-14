@@ -26,11 +26,7 @@ namespace IotivityDotNet.Interop
                     try
                     {
 #if !__ANDROID__ && !NETFX_CORE
-#if NETSTANDARD
                         bool is64bit = IntPtr.Size == 8;
-#else
-                        bool is64bit = Environment.Is64BitProcess;
-#endif
                         bool ok = SetDllDirectory(is64bit ? "x64" : "x86");
 #endif
                         isInitialized = true;

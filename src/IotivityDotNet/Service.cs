@@ -24,19 +24,21 @@ namespace IotivityNet
         public static void Initialize(ServiceMode mode)
         {
             var result = OCStack.OCInit(null, 0, (OCMode)mode);
-            //var result = OCStack.OCInit1((OCMode)mode, OCTransportFlags.OC_DEFAULT_FLAGS, OCTransportFlags.OC_DEFAULT_FLAGS);
+            
             if(result != OCStackResult.OC_STACK_OK)
             {
                 throw new Exception(result.ToString());
             }
+            result = OCStack.OCSetDefaultDeviceEntityHandler(OCDefaultDeviceEntityHandler, IntPtr.Zero);
+            if (result != OCStackResult.OC_STACK_OK)
+            {
+                throw new Exception(result.ToString());
+            }
+
             ct = new CancellationTokenSource();
             tcs = new TaskCompletionSource<object>();
 
-#if NETFX_CORE
             Task.Run(async () =>
-#else
-            ThreadPool.QueueUserWorkItem(async (s) =>
-#endif
             {
                 while (!ct.IsCancellationRequested)
                 {
@@ -53,7 +55,7 @@ namespace IotivityNet
                 ct = null;
             });
         }
-        
+
         //public static byte[] DeviceId
         //{
         //    get
@@ -80,6 +82,10 @@ namespace IotivityNet
         //    }
         //}
 
+        private static OCEntityHandlerResult OCDefaultDeviceEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
+        {
+            return OCEntityHandlerResult.OC_EH_OK;
+        }
 
         public static async Task Shutdown()
         {

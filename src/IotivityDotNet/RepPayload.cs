@@ -10,14 +10,104 @@ namespace IotivityNet.OC
 {
     public class RepPayload  : Payload
     {
+        OCRepPayload ocpayload;
+        
         internal RepPayload(IntPtr handle) : base(handle)
         {
+            ocpayload = Marshal.PtrToStructure(Handle, typeof(OCRepPayload)) as OCRepPayload;
+        }
+
+        public IEnumerable<string> Types
+        {
+            get
+            {
+                var ptr = ocpayload.types;
+                while (ptr != IntPtr.Zero)
+                {
+                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    yield return resource.value;
+                    ptr = resource.next;
+                }
+            }
+        }
+
+        public IEnumerable<string> Interfaces
+        {
+            get
+            {
+                var ptr = ocpayload.interfaces;
+                while (ptr != IntPtr.Zero)
+                {
+                    var resource = Marshal.PtrToStructure(ptr, typeof(OCStringLL)) as OCStringLL;
+                    yield return resource.value;
+                    ptr = resource.next;
+                }
+            }
         }
         internal RepPayload(GCHandle handle) : base(handle)
         {
         }
-        public RepPayload() : this(OCPayloadInterop.OCRepPayloadCreate())
-        { 
+        public RepPayload(IDictionary<string, object> data = null) : this(OCPayloadInterop.OCRepPayloadCreate())
+        {
+            if(data != null)
+                PopulateFromDictionary(data);
+        }
+        public RepPayload Next
+        {
+            get
+            {
+                var ptr = ocpayload.next;
+                if(ptr != IntPtr.Zero)
+                {
+                    return new RepPayload(ptr);
+                }
+                return null;
+            }
+        }
+        public IEnumerable<KeyValuePair<string,object>> Values
+        {
+            get
+            {
+                var values = ocpayload.values;
+                while(values != IntPtr.Zero)
+                {
+
+                    var payloadValue = Marshal.PtrToStructure(values, typeof(OCRepPayloadValue)) as OCRepPayloadValue;
+                    var ptr = payloadValue.value;
+                    switch (payloadValue.type)
+                    {
+                        case OCRepPayloadPropType.OCREP_PROP_NULL:
+                            yield return new KeyValuePair<string, object>(payloadValue.name, null); break;
+                        case OCRepPayloadPropType.OCREP_PROP_STRING:
+                            {
+                                var strvalue = Marshal.PtrToStringAnsi(ptr.ocByteStr);
+                                yield return new KeyValuePair<string, object>(payloadValue.name, strvalue); break;
+                            }
+                        case OCRepPayloadPropType.OCREP_PROP_BOOL:
+                            {
+                                bool bvalue = payloadValue.value.b;
+                                yield return new KeyValuePair<string, object>(payloadValue.name, bvalue);
+                                break;
+                            }
+                        case OCRepPayloadPropType.OCREP_PROP_DOUBLE:
+                            {
+                                double dvalue = payloadValue.value.d;
+                                yield return new KeyValuePair<string, object>(payloadValue.name, dvalue);
+                                break;
+                            }
+                        case OCRepPayloadPropType.OCREP_PROP_INT:
+                            {
+                                long lvalue = payloadValue.value.i;
+                                yield return new KeyValuePair<string, object>(payloadValue.name, lvalue);
+                                break;
+                            }
+                        default:
+                            throw new NotImplementedException(payloadValue.type.ToString());
+                            break;
+                    }
+                    values = payloadValue.next;
+                }
+            }
         }
         public void PopulateFromDictionary(IDictionary<string,object> data)
         {
@@ -42,6 +132,10 @@ namespace IotivityNet.OC
                 else if (property.Value.GetType() == typeof(string))
                 {
                     SetProperty(property.Key, (string)property.Value);
+                }
+                else if (property.Value.GetType().IsArray)
+                {
+                    //TODO
                 }
                 else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
             }
@@ -106,6 +200,10 @@ namespace IotivityNet.OC
         public bool AddResourceType(string resourceType)
         {
             return OCPayloadInterop.OCRepPayloadAddResourceType(Handle, resourceType);
+        }
+        public void Append(RepPayload child)
+        {
+            OCPayloadInterop.OCRepPayloadAppend(Handle, child.Handle);
         }
     }
 }

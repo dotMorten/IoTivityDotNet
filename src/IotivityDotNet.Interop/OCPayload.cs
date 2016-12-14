@@ -173,10 +173,12 @@ namespace IotivityDotNet.Interop
         //
         //               bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayload* payload, const char* name,
         //               double* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadSetDoubleArray(OCRepPayload* payload, const char* name,
-        //               const double* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetDoubleArray(const OCRepPayload* payload, const char* name,
-        //               double** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadSetDoubleArray(IntPtr payload, string name,
+                       double[] array, UIntPtr[] dimensions);
+        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        public static extern bool OCRepPayloadGetDoubleArray(IntPtr payload, string name,
+                       out double[] array, UIntPtr[] dimensions);
         //
         //       bool OCRepPayloadSetStringArrayAsOwner(OCRepPayload* payload, const char* name,
         //               char** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);

@@ -77,18 +77,19 @@ namespace ClientTestApp
                 {
                     Log.WriteLine($"\t\t{pair.Key}: {pair.Value}");
                 }
+                //Update the resource switch state (flip it)
+                bool isSwitch = payload.Types.Contains("oic.r.switch.binary");
+                bool state = false;
+                if (isSwitch && payload.TryGetBool("state", out state))
+                {
+                    var client = sender as IotivityDotNet.ResourceClient;
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data["state"] = !state;
+                    client.PostAsync("oic.r.switch.binary", data);
+                }
+
                 payload = payload.Next;
             }
-
-            //Update the resource
-            //bool state = false;
-            //if (payload.TryGetBool("state", out state))
-            //{
-            //    var client = sender as IotivityDotNet.ResourceClient;
-            //    Dictionary<string, object> data = new Dictionary<string, object>();
-            //    data["state"] = !state;
-            //    client.PostAsync(data);
-            //}
         }
     }
 }

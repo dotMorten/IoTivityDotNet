@@ -101,6 +101,12 @@ namespace IotivityDotNet
                                 yield return new KeyValuePair<string, object>(payloadValue.name, lvalue);
                                 break;
                             }
+                        case OCRepPayloadPropType.OCREP_PROP_ARRAY:
+                            {
+                                IntPtr arr = payloadValue.value.ocByteStr;
+                                //var a = Marshal.PtrToStructure<double[]>(arr);
+                                break;
+                            }
                         default:
                             throw new NotImplementedException(payloadValue.type.ToString());
                     }
@@ -128,12 +134,16 @@ namespace IotivityDotNet
                 {
                     SetProperty(property.Key, (long)property.Value);
                 }
-                else if (property.Value.GetType() == typeof(string))
+                else if (property.Value is string)
                 {
                     SetProperty(property.Key, (string)property.Value);
                 }
                 else if (property.Value.GetType().IsArray)
                 {
+                    if(property.Value is double[])
+                    {
+                        SetProperty(property.Key, (double[])property.Value);
+                    }
                     //TODO
                 }
                 else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
@@ -180,6 +190,10 @@ namespace IotivityDotNet
         public bool SetProperty(string name, string value)
         {
             return OCPayloadInterop.OCRepPayloadSetPropString(Handle, name, value);
+        }
+        public bool SetProperty(string name, double[] value)
+        {
+            return OCPayloadInterop.OCRepPayloadSetDoubleArray(Handle, name, value, new UIntPtr[] { (UIntPtr)value.Length });
         }
         public bool TryGetString(string name, out string value)
         {

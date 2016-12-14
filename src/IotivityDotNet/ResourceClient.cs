@@ -25,22 +25,22 @@ namespace IotivityDotNet
             }
         }
 
-        public Task<ClientResponse<RepPayload>> PostAsync(Dictionary<string, object> data)
+        public Task<ClientResponse<RepPayload>> PostAsync(string resourceTypeName, Dictionary<string, object> data)
         {
-            return SendAsync(data, OCMethod.OC_REST_POST);
+            return SendAsync(resourceTypeName, data, OCMethod.OC_REST_POST);
         }
 
-        public Task<ClientResponse<RepPayload>> PutAsync(Dictionary<string, object> data)
+        public Task<ClientResponse<RepPayload>> PutAsync(string resourceTypeName, Dictionary<string, object> data)
         {
-            return SendAsync(data, OCMethod.OC_REST_PUT);
+            return SendAsync(resourceTypeName, data, OCMethod.OC_REST_PUT);
         }
 
-        public Task<ClientResponse<RepPayload>> GetAsync()
+        public Task<ClientResponse<RepPayload>> GetAsync(string resourceTypeName)
         {
-            return SendAsync(null, OCMethod.OC_REST_GET);
+            return SendAsync(resourceTypeName, null, OCMethod.OC_REST_GET);
         }
 
-        private async Task<ClientResponse<RepPayload>> SendAsync(Dictionary<string, object> data, OCMethod method)
+        private async Task<ClientResponse<RepPayload>> SendAsync(string resourceTypeName, Dictionary<string, object> data, OCMethod method)
         {
             var tcs = new TaskCompletionSource<ClientResponse<RepPayload>>();
             var callbackData = new OCCallbackData();
@@ -61,9 +61,9 @@ namespace IotivityDotNet
             {
                 RepPayload payload = new RepPayload();
 
-                //payload.SetUri(_resourceUri);
+                payload.SetUri(_resourceUri);
                 payload.PopulateFromDictionary(data);
-                //payload.AddResourceType(_resourceTypeName);
+                payload.AddResourceType(resourceTypeName);
                 payloadHandle = payload.Handle;
             }
 

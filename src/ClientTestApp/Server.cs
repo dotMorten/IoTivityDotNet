@@ -23,7 +23,7 @@ namespace ClientTestApp
 
         private static void CreateResources()
         {
-            bswitch = new BinarySwitchDevice("/switch/1");
+            bswitch = new BinarySwitchDevice("/switch/1", false);
             light = new LightDevice("/light/1");
         }
     }
@@ -43,9 +43,8 @@ namespace ClientTestApp
         internal const string ColourChroma = "oic.r.colour.chroma"; //No I didn't come up with this stupid spelling ;-)
     }
     public class BinarySwitchDevice : DeviceResource
-    {
-        
-        public BinarySwitchDevice(string uri) : base(uri, OicResourceTypeConstants.SwitchBinary, new Dictionary<string, object> { ["state"] = false })
+    {        
+        public BinarySwitchDevice(string uri, bool isOn) : base(uri, OicResourceTypeConstants.SwitchBinary, new Dictionary<string, object> { ["state"] = isOn })
         {
             BindInterface(OicDeviceTypeConstants.Switch);
         }
@@ -55,6 +54,7 @@ namespace ClientTestApp
             if (payload.TryGetBool("state", out state))
             {
                 SetProperty(OicResourceTypeConstants.SwitchBinary, "state", state);
+                Log.WriteLine($"Switch state updated to '{state}'");
                 return OCEntityHandlerResult.OC_EH_OK;
             }
             return OCEntityHandlerResult.OC_EH_NOT_ACCEPTABLE;
@@ -63,7 +63,7 @@ namespace ClientTestApp
 
     public class LightDevice : BinarySwitchDevice
     {
-        public LightDevice(string uri, bool isDimmable = true) : base(uri)
+        public LightDevice(string uri, bool isDimmable = true) : base(uri, true)
         {
             BindInterface(OicDeviceTypeConstants.Light);
             if (isDimmable)

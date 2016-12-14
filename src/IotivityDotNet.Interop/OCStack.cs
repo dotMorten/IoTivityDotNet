@@ -19,7 +19,7 @@ namespace IotivityDotNet.Interop
         /// <param name="serverFlags">OCTransportFlags Default server transport flags.</param>
         /// <param name="clientFlags">OCTransportFlags Default client transport flags.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCInit1(OCMode mode, OCTransportFlags serverFlags, OCTransportFlags clientFlags);
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace IotivityDotNet.Interop
         /// <param name="port">Port of host device. Deprecated parameter.</param>
         /// <param name="mode">OCMode Host device is client, server, or client-server.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCInit([MarshalAs(UnmanagedType.LPStr)] string ipAddr, UInt16 port, OCMode mode);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace IotivityDotNet.Interop
         /// deleted.
         /// </remarks>
         /// <returns>:OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCStop();
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace IotivityDotNet.Interop
         /// traffic.
         /// </summary>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCStartMulticastServer();
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace IotivityDotNet.Interop
         /// device. This is to be used for devices that uses other entity to push resources.
         /// </summary>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCStopMulticastServer();
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace IotivityDotNet.Interop
         /// Allows low-level processing of stack services.
         /// </summary>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCProcess();
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace IotivityDotNet.Interop
         /// </param>
         /// <param name="numOptions">Number of header options to be included.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCDoResource(out IntPtr handle,
                                    OCMethod method,
                            [MarshalAs(UnmanagedType.LPStr)] string requestUri,
@@ -131,7 +131,7 @@ namespace IotivityDotNet.Interop
         /// <param name="options">Used to specify vendor specific header options when sending explicit observe cancellation.</param>
         /// <param name="numOptions">Number of header options to be included.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCCancel(IntPtr handle,
                                OCQualityOfService qos,
                                OCHeaderOption options,
@@ -146,7 +146,7 @@ namespace IotivityDotNet.Interop
         *     OC_STACK_OK                    No errors; Success.
         *     OC_STACK_INVALID_PARAM         Invalid parameter.
         */
-        //  [DllImport(Constants.DLL_IMPORT_TARGET)]
+        //  [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         //  public static extern OCStackResult OCRegisterPersistentStorageHandler(OCPersistentStorage* persistentStorageHandler);
 
         /**
@@ -165,7 +165,7 @@ namespace IotivityDotNet.Interop
         *
         * @return ::OC_STACK_OK on success, some other value upon failure.
         */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCStartPresence(UInt32 ttl);
 
         /**
@@ -180,7 +180,7 @@ namespace IotivityDotNet.Interop
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCStopPresence();
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace IotivityDotNet.Interop
         /// </param>
         /// <param name="callbackParameter"Parameter passed back when entityHandler is called.></param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCSetDefaultDeviceEntityHandler(OCEntityHandler entityHandler, IntPtr callbackParameter);
 
         /**
@@ -239,7 +239,7 @@ namespace IotivityDotNet.Interop
         /// <param name="callbackParam">parameter passed back when entityHandler is called.</param>
         /// <param name="resourceProperties"> Properties supported by resource. Example: ::OC_DISCOVERABLE|::OC_OBSERVABLE.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCCreateResource([Out] out IntPtr handle,
                                [MarshalAs(UnmanagedType.LPStr)] string resourceTypeName,
                                [MarshalAs(UnmanagedType.LPStr)] string resourceInterfaceName,
@@ -271,7 +271,7 @@ namespace IotivityDotNet.Interop
         /// Example: "OC_COAP | OC_COAP_TCP"
         /// </param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCCreateResourceWithEp([Out] out IntPtr handle,
                                      [MarshalAs(UnmanagedType.LPStr)] string resourceTypeName,
                                      [MarshalAs(UnmanagedType.LPStr)] string resourceInterfaceName,
@@ -285,7 +285,7 @@ namespace IotivityDotNet.Interop
         /// This function returns flags of supported endpoint TPS on stack.
         /// </summary>
         /// <returns>Bit combinations of supported OCTpsSchemeFlags.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCTpsSchemeFlags OCGetSupportedEndpointTpsFlags();
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace IotivityDotNet.Interop
         /// <param name="collectionHandle"> Handle to the collection resource.</param>
         /// <param name="resourceHandle">Handle to resource to be added to the collection resource.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCBindResource(IntPtr collectionHandle, IntPtr resourceHandle);
 
         /// <summary>
@@ -303,7 +303,7 @@ namespace IotivityDotNet.Interop
         /// <param name="collectionHandle"> Handle to the collection resource.</param>
         /// <param name="resourceHandle">Handle to resource to be removed from the collection resource.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCUnBindResource(IntPtr collectionHandle, IntPtr resourceHandle);
 
         /**
@@ -314,7 +314,7 @@ namespace IotivityDotNet.Interop
          *
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCBindResourceTypeToResource(IntPtr handle, string resourceTypeName);
 
         /// <summary>
@@ -323,7 +323,7 @@ namespace IotivityDotNet.Interop
         /// <param name="handle">Handle to the resource.</param>
         /// <param name="resourceInterfaceName">Name of resource interface.  Example: "core.rw".</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCBindResourceInterfaceToResource(IntPtr handle, string resourceInterfaceName);
 
         //        /**
@@ -345,7 +345,7 @@ namespace IotivityDotNet.Interop
         /// </summary>
         /// <param name="numResources">Pointer to count variable.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCGetNumberOfResources([Out] out byte numResources);
         
         /// <summary>
@@ -353,7 +353,7 @@ namespace IotivityDotNet.Interop
         /// </summary>
         /// <param name="index">Index of resource, 0 to Count - 1.</param>
         /// <returns> Found  resource handle or NULL if not found.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCGetResourceHandle(byte index);
 
         /**
@@ -367,7 +367,7 @@ namespace IotivityDotNet.Interop
          *
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCDeleteResource(IntPtr handle);
 
         /**
@@ -380,7 +380,7 @@ namespace IotivityDotNet.Interop
          *
          * @return A string representation  the server instance ID.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern string OCGetServerInstanceIDString();
 
         /**
@@ -390,7 +390,7 @@ namespace IotivityDotNet.Interop
          *
          * @return URI string if resource found or NULL if not found.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern string OCGetResourceUri(IntPtr handle);
         //
         //        /**
@@ -413,7 +413,7 @@ namespace IotivityDotNet.Interop
          *
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCGetNumberOfResourceTypes(IntPtr handle, [Out] out byte numResourceTypes);
 
         /**
@@ -424,7 +424,7 @@ namespace IotivityDotNet.Interop
          *
          * @return Resource type name if resource found or NULL if resource not found.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern string OCGetResourceTypeName(IntPtr handle, byte index);
 
         /**
@@ -435,7 +435,7 @@ namespace IotivityDotNet.Interop
          *
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCGetNumberOfResourceInterfaces(IntPtr handle,
                 [Out] out byte numResourceInterfaces);
 
@@ -447,7 +447,7 @@ namespace IotivityDotNet.Interop
          *
          * @return Resource interface name if resource found or NULL if resource not found.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern string OCGetResourceInterfaceName(IntPtr handle, byte index);
         //
         //        /**
@@ -490,7 +490,7 @@ namespace IotivityDotNet.Interop
          *
          * @return ::OC_STACK_OK on success, some other value upon failure.
          */
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCNotifyAllObservers(IntPtr handle, OCQualityOfService qos);
         //
         //        /**
@@ -526,7 +526,7 @@ namespace IotivityDotNet.Interop
         /// </summary>
         /// <param name="response">Pointer to structure that contains response parameters.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCDoResponse(OCEntityHandlerResponse response);
         //
         //        //#ifdef DIRECT_PAIRING
@@ -660,7 +660,7 @@ namespace IotivityDotNet.Interop
         /// </summary>
         /// <param name="deviceId">deviceId pointer.</param>
         /// <returns>:OC_STACK_OK if success.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCGetDeviceId(out OCUUIdentity deviceId);
 
         /// <summary>
@@ -668,7 +668,7 @@ namespace IotivityDotNet.Interop
         /// </summary>
         /// <param name="deviceId">deviceId pointer.</param>
         /// <returns>OC_STACK_OK if success.</returns>
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCSetDeviceId(OCUUIdentity deviceId);
 
         //        /**

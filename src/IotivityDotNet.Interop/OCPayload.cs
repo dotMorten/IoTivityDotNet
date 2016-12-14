@@ -10,32 +10,32 @@ namespace IotivityDotNet.Interop
 {
     public static class OCPayloadInterop
     {
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCDiscoveryPayloadCreate();
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern UIntPtr OCDiscoveryPayloadGetResourceCount(IntPtr handle);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET, EntryPoint = "OCDiscoveryPayloadGetResource")]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCDiscoveryPayloadGetResource(IntPtr handle, UIntPtr index);
         
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCPayloadDestroy(IntPtr handle);
 
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCRepPayloadCreate();
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCRepPayloadClone(IntPtr payload);
         
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern void OCRepPayloadAppend(IntPtr parent, IntPtr child);
         
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetUri(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string uri);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadAddResourceType(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string resourceType);
 
         //       bool OCRepPayloadAddInterface(OCRepPayload* payload, const char* iface);
@@ -44,20 +44,20 @@ namespace IotivityDotNet.Interop
         //       bool OCRepPayloadAddResourceTypeAsOwner(OCRepPayload* payload, char* resourceType);
         //       bool OCRepPayloadAddInterfaceAsOwner(OCRepPayload* payload, char* iface);
         //
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadIsNull(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetNull(IntPtr  payload, [MarshalAs(UnmanagedType.LPStr)] string name);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, long value);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out long value);
 
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, double value);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out double value);
         //
         //       /**
@@ -97,19 +97,19 @@ namespace IotivityDotNet.Interop
         //       bool OCRepPayloadGetPropByteString(const OCRepPayload* payload, const char* name,
         //       OCByteString* value);
         
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetPropStringAsOwner(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out IntPtr value);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, bool value);
 
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, out bool value);
 
         //       bool OCRepPayloadSetPropObject(OCRepPayload* payload, const char* name, const OCRepPayload* value);
@@ -173,10 +173,10 @@ namespace IotivityDotNet.Interop
         //
         //               bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayload* payload, const char* name,
         //               double* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetDoubleArray(IntPtr payload, string name,
                        double[] array, UIntPtr[] dimensions);
-        [DllImport(Constants.DLL_IMPORT_TARGET)]
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetDoubleArray(IntPtr payload, string name,
                        out double[] array, UIntPtr[] dimensions);
         //

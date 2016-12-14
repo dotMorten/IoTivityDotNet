@@ -375,7 +375,7 @@ namespace IotivityDotNet.Interop
         //};
         public IntPtr next;
     }
-    [StructLayout(LayoutKind.Explicit, Size =40)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct OCRepPayloadValueUnion
     {
         [FieldOffset(0)]

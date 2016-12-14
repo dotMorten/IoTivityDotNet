@@ -18,7 +18,7 @@
     </references>
     <dependencies>
       <group targetFramework=".NETStandard1.2">
-	    <dependency id="dotMorten.IotivityDotNet.Interop" version="$version$" />
+        <dependency id="dotMorten.IotivityDotNet.Interop" version="$version$" />
       </group>
     </dependencies>
   </metadata>

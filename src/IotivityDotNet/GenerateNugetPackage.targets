@@ -12,8 +12,8 @@
 			IF EXIST "$(NuGetToolsPath)\package\" (RMDIR "$(NuGetToolsPath)\package\" /S /Q)
 			IF NOT EXIST "$(PackageOutputDir)" (MKDIR "$(PackageOutputDir)")
 			XCOPY "$(MSBuildThisFileDirectory)nuget" "$(NuGetToolsPath)\package\" /Y /S
-			XCOPY "$(TargetPath)" "$(NuGetToolsPath)\package\lib\netstandard12\" /Y
-			IF EXIST "$(DocumentationFile)" (XCOPY "$(DocumentationFile)" "$(NuGetToolsPath)\package\lib\netstandard12\" /Y)
+			XCOPY "$(TargetPath)" "$(NuGetToolsPath)\package\lib\netstandard1.2\" /Y
+			IF EXIST "$(DocumentationFile)" (XCOPY "$(DocumentationFile)" "$(NuGetToolsPath)\package\lib\netstandard1.2\" /Y)
 			"$(NuGetExePath)" pack "$(NuGetToolsPath)\package\$(NugetPackageID).nuspec" /Properties Version=$(PackageVersion) -o "$(PackageOutputDir)"
 		</BuildCommand>
 

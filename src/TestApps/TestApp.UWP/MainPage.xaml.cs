@@ -30,11 +30,16 @@ namespace TestApp.UWP
         {
             this.InitializeComponent();
 
-            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
             Log.OnLogEvent += (s, e) => { var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { logOutput.Text += e + "\n"; }); };
+            Log.WriteLine("Initializing OCSTACK...");
+            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
+            Log.WriteLine("Initialized");
 
+            Log.WriteLine("Creating devices...");
             server = new Server();
+            Log.WriteLine("Starting client...");
             client = new Client();
+            Log.WriteLine("Ready");
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

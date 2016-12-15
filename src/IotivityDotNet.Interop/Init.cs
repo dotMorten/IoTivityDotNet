@@ -25,15 +25,28 @@ namespace IotivityDotNet.Interop
                 {
                     try
                     {
-#if !__ANDROID__ && !NETFX_CORE                        
-                        bool is64bit = IntPtr.Size == 8;
-                        bool ok = SetDllDirectory(is64bit ? "x64" : "x86"); //This is for .NET AnyCPU support. Returns false in UWP which is OK. Throws in Xamarin which we can ignore
+#if !__ANDROID__ && !NETFX_CORE
+                        bool ok = true;
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            //This is for .NET AnyCPU support. Returns false in UWP which is OK. Throws in Xamarin which we can ignore
+                            switch (System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture)
+                            {
+                                case Architecture.X64:
+                                    ok = SetDllDirectory("x64"); break;
+                                case Architecture.X86:
+                                    ok = SetDllDirectory("x86"); break;
+                                default:
+                                    break;
+                            }
+                        }
 #endif
                     }
                     catch
                     {
                     }
                     isInitialized = true;
+                    System.Diagnostics.Debug.WriteLine("************************ Interop initialized ************************");
                 }
             }
         }

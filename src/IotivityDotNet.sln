@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet.Interop", "I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotivityDotNet", "IotivityDotNet\IotivityDotNet.csproj", "{993BE408-DB4E-4F1B-BB6F-B6276FC37136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientTestApp", "ClientTestApp\ClientTestApp.csproj", "{73DFFAA3-80C2-4322-99E5-366F7CACE136}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.NET45", "TestApps\TestApp.NET45\TestApp.NET45.csproj", "{73DFFAA3-80C2-4322-99E5-366F7CACE136}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.UWP", "TestApps\TestApp.UWP\TestApp.UWP.csproj", "{B06B0AFA-BA6F-4247-B740-06390A6CAD72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApps", "TestApps", "{DAFAC2B8-1F56-49CA-B8C1-F057895FABB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,5 +98,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{73DFFAA3-80C2-4322-99E5-366F7CACE136} = {DAFAC2B8-1F56-49CA-B8C1-F057895FABB2}
+		{B06B0AFA-BA6F-4247-B740-06390A6CAD72} = {DAFAC2B8-1F56-49CA-B8C1-F057895FABB2}
 	EndGlobalSection
 EndGlobal

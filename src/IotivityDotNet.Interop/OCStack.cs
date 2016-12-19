@@ -196,23 +196,21 @@ namespace IotivityDotNet.Interop
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCStackResult OCSetDefaultDeviceEntityHandler(OCEntityHandler entityHandler, IntPtr callbackParameter);
 
-        /**
-        * This function sets device information.
-        *
-        * Upon call to OCInit, the default Device Type (i.e. "rt") has already been set to the default
-        * Device Type "oic.wk.d". You do not have to specify "oic.wk.d" in the OCDeviceInfo.types linked
-        * list. The default Device Type is mandatory and always specified by this Device as the first
-        * Device Type.
-        *
-        * @param deviceInfo   Structure passed by the server application containing the device
-        *                     information.
-        *
-        * @return
-        *     ::OC_STACK_OK               no errors.
-        *     ::OC_STACK_INVALID_PARAM    invalid parameter.
-        *     ::OC_STACK_ERROR            stack process error.
-        */
-        //OCStackResult OCSetDeviceInfo(OCDeviceInfo deviceInfo);
+        /// <summary>
+        /// This function sets device information.
+        /// Upon call to OCInit, the default Device Type (i.e. "rt") has already been set to the default
+        /// Device Type "oic.wk.d". You do not have to specify "oic.wk.d" in the OCDeviceInfo.types linked
+        /// list. The default Device Type is mandatory and always specified by this Device as the first
+        /// Device Type.
+        /// </summary>
+        /// <param name="deviceInfo">Structure passed by the server application containing the device information</param>
+        /// <returns>
+        /// OC_STACK_OK               no errors.
+        /// OC_STACK_INVALID_PARAM    invalid parameter.
+        /// OC_STACK_ERROR            stack process error.
+        /// </returns>
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern OCStackResult OCSetDeviceInfo(OCDeviceInfo deviceInfo);
 
         /**
         * This function sets platform information.

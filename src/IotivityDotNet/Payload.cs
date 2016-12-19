@@ -28,6 +28,8 @@ namespace IotivityDotNet
 
         protected Payload(IntPtr handle)
         {
+            if (handle == IntPtr.Zero)
+                throw new ArgumentNullException(nameof(handle));
             Handle = handle;
         }
         protected Payload(GCHandle gchandle) : this(GCHandle.ToIntPtr(gchandle))

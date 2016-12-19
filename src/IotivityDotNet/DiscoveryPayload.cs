@@ -20,12 +20,12 @@ namespace IotivityDotNet
             get
             {
                 var ptr = _resource.types;
-                while (ptr != IntPtr.Zero)
+                if(ptr != IntPtr.Zero)
                 {
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    yield return resource.value;
-                    ptr = resource.next;
+                    return resource.Values;
                 }
+                return new string[] { };
             }
         }
         public IEnumerable<string> Interfaces
@@ -33,12 +33,12 @@ namespace IotivityDotNet
             get
             {
                 var ptr = _resource.interfaces;
-                while (ptr != IntPtr.Zero)
+                if (ptr != IntPtr.Zero)
                 {
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    yield return resource.value;
-                    ptr = resource.next;
+                    return resource.Values;
                 }
+                return new string[] { };
             }
         }
         

@@ -17,6 +17,7 @@ namespace ClientTestApp
         {
             Console.WriteLine("Initializing...");
             IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
+            IotivityDotNet.Service.SetDeviceInfo(".NET Console Test App", new string[] { "oic.wk.d" }, null, null);
             Log.OnLogEvent += (s, e) => Console.WriteLine(e);
 
             Console.WriteLine("Creating devices...");

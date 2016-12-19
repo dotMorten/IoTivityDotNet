@@ -22,12 +22,12 @@ namespace IotivityDotNet
             get
             {
                 var ptr = ocpayload.types;
-                while (ptr != IntPtr.Zero)
+                if (ptr != IntPtr.Zero)
                 {
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    yield return resource.value;
-                    ptr = resource.next;
+                    return resource.Values;
                 }
+                return new string[] { };
             }
         }
 
@@ -36,12 +36,12 @@ namespace IotivityDotNet
             get
             {
                 var ptr = ocpayload.interfaces;
-                while (ptr != IntPtr.Zero)
+                if (ptr != IntPtr.Zero)
                 {
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    yield return resource.value;
-                    ptr = resource.next;
+                    return resource.Values;
                 }
+                return new string[] { };
             }
         }
         internal RepPayload(GCHandle handle) : base(handle)

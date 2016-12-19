@@ -82,6 +82,31 @@ namespace IotivityDotNet
         //    }
         //}
 
+        /// <summary>
+        /// This function sets device information.
+        /// Upon call to OCInit, the default Device Type (i.e. "rt") has already been set to the default
+        /// Device Type "oic.wk.d". You do not have to specify "oic.wk.d" in the OCDeviceInfo.types linked
+        /// list. The default Device Type is mandatory and always specified by this Device as the first
+        /// Device Type.
+        /// </summary>
+        public static void SetDeviceInfo(string deviceName, IEnumerable<string> types, string specVersion, IEnumerable<string> dataModelVersions)
+        {
+            OCStringLL octypes = OCStringLL.Create(types);
+            OCStringLL ocdataModelVersions = OCStringLL.Create(dataModelVersions);
+            var info = new OCDeviceInfo()
+            {
+                deviceName = deviceName,
+                types = octypes,
+                dataModelVersions = ocdataModelVersions,
+                specVersion = specVersion
+            };
+            var result = OCStack.OCSetDeviceInfo(info);
+            if (result != OCStackResult.OC_STACK_OK)
+            {
+                throw new Exception(result.ToString());
+            }
+        }
+
         private static OCEntityHandlerResult OCDefaultDeviceEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
         {
             return OCEntityHandlerResult.OC_EH_OK;

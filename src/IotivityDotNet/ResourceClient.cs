@@ -84,7 +84,7 @@ namespace IotivityDotNet
 
         private OCStackApplicationResult OnObserveCallback(IntPtr context, IntPtr handle, OCClientResponse clientResponse)
         {
-            var payload = new RepPayload(clientResponse.payload);
+            var payload = clientResponse.payload == IntPtr.Zero ? null : new RepPayload(clientResponse.payload);
             OnObserve?.Invoke(this, new ResourceObservationEventArgs(new DeviceAddress(clientResponse.devAddr), clientResponse.resourceUri, payload));
             return OCStackApplicationResult.OC_STACK_KEEP_TRANSACTION;
         }

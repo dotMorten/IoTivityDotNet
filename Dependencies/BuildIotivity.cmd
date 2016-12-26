@@ -1,11 +1,17 @@
 @ECHO OFF
 REM BUILD PREREQS:
-REM PYTHON2.7, 7-ZIP, CMake
+REM Python 2.x (3.x won't work!) http://www.python.org
+REM scons Windows Installer (into 2.x python when asked): http://scons.org/pages/download.html
+REM 7-ZIP
+REM CMake
+REM Pull AllJoyn submodule.
+REM At first build you might be asked to pull more repos
+
 SET PATH=%PATH%;C:\Python27\;C:\Python27\Scripts;C:\Program Files\CMake\bin;C:\Program Files\7-Zip;c:\Program Files (x86)\Git\bin
 
 ECHO ********************************** BUILDING x86 Release **********************************
 CD iotivity
-scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
+CALL scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
 MD ..\..\Libs\octbstack\Windows\x86\
 COPY out\windows\x86\release\resource\csdk\octbstack.dll ..\..\Libs\octbstack\Windows\x86\ /Y
 

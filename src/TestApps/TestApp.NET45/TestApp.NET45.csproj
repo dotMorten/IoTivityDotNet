@@ -136,19 +136,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\libs\octbstack\win7\x64\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
       <Link>x64\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x86\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
       <Link>x86\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x64-debug\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
       <Link>x64\octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x86-debug\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
       <Link>x86\octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

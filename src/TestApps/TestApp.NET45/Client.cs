@@ -22,7 +22,7 @@ namespace ClientTestApp
             svc.Stop();
         }
 
-        private void ResourceDiscovered(object sender, IotivityDotNet.ClientResponseEventArgs<IotivityDotNet.DiscoveryPayload> e)
+        private async void ResourceDiscovered(object sender, IotivityDotNet.ClientResponseEventArgs<IotivityDotNet.DiscoveryPayload> e)
         {
             Log.WriteLine($"Device Discovered @ {e.Response.DeviceAddress}");
             foreach (var r in e.Response.Payload.Resources)
@@ -41,25 +41,25 @@ namespace ClientTestApp
                     foreach (var type in r.Types)
                     {
                         Log.WriteLine("\t\t\t" + type);
-                    }
-                    //if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
-                    {
-                        var client = new IotivityDotNet.ResourceClient(e.Response.DeviceAddress, r.Uri);
-                        //Get all the properties from the resource
-                        // var response = await client.GetAsync();
-                        // bool state;
-                        // if(response.Payload.TryGetBool("state", out state))
-                        // {
-                        //     Console.WriteLine("The state of the resource is: " + state.ToString());
-                        // }
+                        //if (r.Uri == "/BinarySwitchResURI" || r.Uri == "/light/1")
+                        {
+                            var client = new IotivityDotNet.ResourceClient(e.Response.DeviceAddress, r.Uri);
+                            //Get all the properties from the resource
+                            var response = await client.GetAsync(type);
+                            bool state;
+                            if (response.Payload.TryGetBool("state", out state))
+                            {
+                                Console.WriteLine("The state of the resource is: " + state.ToString());
+                            }
 
-                        //Start observing the resource
-                        client.OnObserve += OnResourceObserved;
+                            //Start observing the resource
+                            client.OnObserve += OnResourceObserved;
+                        }
                     }
                 }
             }
         }
-        private void OnResourceObserved(object sender, IotivityDotNet.ResourceObservationEventArgs e)
+        private async void OnResourceObserved(object sender, IotivityDotNet.ResourceObservationEventArgs e)
         {
             var payload = e.Payload;
             Log.WriteLine($"Resource observed @ {e.DeviceAddress} {e.ResourceUri}");
@@ -85,7 +85,7 @@ namespace ClientTestApp
                     var client = sender as IotivityDotNet.ResourceClient;
                     Dictionary<string, object> data = new Dictionary<string, object>();
                     data["state"] = !state;
-                    client.PostAsync("oic.r.switch.binary", data);
+                    await client.PostAsync("oic.r.switch.binary", data);
                 }
 
                 payload = payload.Next;

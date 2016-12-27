@@ -12,10 +12,17 @@ namespace IotivityDotNet
         private IntPtr _handle;
         private readonly string _uri;
         private Dictionary<string, Dictionary<string, object>> _resourceProperties;
+        private OCEntityHandler _resourceCallback; // Pins the delegate into memory
+
+        ~DeviceResource()
+        {
+            OCStack.OCDeleteResource(_handle);
+        }
 
         public DeviceResource(string uri, string resourceTypeName, IDictionary<string,object> properties, string resourceInterfaceName = "oic.if.baseline")
         {
-            OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, OCEntityHandler, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
+            _resourceCallback = this.OCEntityHandler;
+            OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
             if (result != OCStackResult.OC_STACK_OK)
             {
                 throw new Exception("Failed to create resource: " + result.ToString());

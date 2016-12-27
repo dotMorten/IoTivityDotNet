@@ -9,24 +9,24 @@ REM At first build you might be asked to pull more repos
 
 SET PATH=%PATH%;C:\Python27\;C:\Python27\Scripts;C:\Program Files\CMake\bin;C:\Program Files\7-Zip;c:\Program Files (x86)\Git\bin
 
-ECHO ********************************** BUILDING x86 Release **********************************
 CD iotivity
-CALL scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
+ECHO ********************************** BUILDING x86 Release **********************************
+CALL scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=1 resource/csdk
 MD ..\..\Libs\octbstack\Windows\x86\
 COPY out\windows\x86\release\resource\csdk\octbstack.dll ..\..\Libs\octbstack\Windows\x86\ /Y
 
 ECHO ********************************** BUILDING x64 Release **********************************
-CALL scons TARGET_OS=windows TARGET_ARCH=amd64 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
+CALL scons TARGET_OS=windows TARGET_ARCH=amd64 RELEASE=1 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=1 resource/csdk
 MD ..\..\Libs\octbstack\Windows\x64\
 COPY out\windows\amd64\release\resource\csdk\octbstack.dll ..\..\Libs\octbstack\Windows\x64\ /Y
 
 ECHO ********************************** BUILDING x86 Debug **********************************
-CALL scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=0 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
+CALL scons TARGET_OS=windows TARGET_ARCH=x86 RELEASE=0 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=1 resource/csdk
 MD ..\..\Libs\octbstack\Windows\x86-debug\
 COPY out\windows\x86\debug\resource\csdk\octbstack.dll ..\..\Libs\octbstack\Windows\x86-debug\ /Y
 
 ECHO ********************************** BUILDING x64 Debug **********************************
-CALL scons TARGET_OS=windows TARGET_ARCH=amd64 RELEASE=0 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=0 resource/csdk
+CALL scons TARGET_OS=windows TARGET_ARCH=amd64 RELEASE=0 WITH_RA=0 TARGET_TRANSPORT=IP SECURED=0 WITH_TCP=0 BUILD_SAMPLE=OFF LOGGING=OFF TEST=1 resource/csdk
 MD ..\..\Libs\octbstack\Windows\x64-debug\
 COPY out\windows\amd64\debug\resource\csdk\octbstack.dll ..\..\Libs\octbstack\Windows\x64-debug\ /Y
 

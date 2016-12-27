@@ -149,30 +149,22 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\..\..\libs\octbstack\win7\x64\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll">
+      <Link>octbstack.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content> 
+   <!--  <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition="'$(Platform)' == 'x64'">
       <Link>octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x86\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition="'$(Platform)' == 'x86'">
       <Link>octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\arm\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    </Content> 
+    <Content Include="..\..\..\libs\octbstack\Windows\arm\octbstack.dll" Condition="'$(Platform)' == 'ARM'">
       <Link>octbstack.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x64-debug\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\x86-debug\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\win7\arm-debug\octbstack.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Content>-->
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

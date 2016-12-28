@@ -69,9 +69,8 @@ namespace IotivityDotNet
             get
             {
                 var values = ocpayload.values;
-                while(values != IntPtr.Zero)
+                while (values != IntPtr.Zero)
                 {
-
                     var payloadValue = Marshal.PtrToStructure<OCRepPayloadValue>(values);
                     var ptr = payloadValue.value;
                     switch (payloadValue.type)

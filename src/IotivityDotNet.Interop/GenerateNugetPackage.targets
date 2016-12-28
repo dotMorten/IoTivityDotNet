@@ -14,9 +14,9 @@
 			XCOPY "$(MSBuildThisFileDirectory)nuget" "$(NuGetToolsPath)\package\" /Y /S
 			XCOPY "$(TargetPath)" "$(NuGetToolsPath)\package\lib\netstandard1.2\" /Y
 			IF EXIST "$(DocumentationFile)" (XCOPY "$(DocumentationFile)" "$(NuGetToolsPath)\package\lib\netstandard1.2\" /Y)
-			XCOPY "..\..\libs\octbstack\win7\x86\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-x86\native\" /Y
-			XCOPY "..\..\libs\octbstack\win7\x64\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-x64\native\" /Y
-			XCOPY "..\..\libs\octbstack\win7\arm\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-arm\native\" /Y
+			XCOPY "..\..\libs\octbstack\Windows\x86\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-x86\native\" /Y
+			XCOPY "..\..\libs\octbstack\Windows\x64\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-x64\native\" /Y
+			REM XCOPY "..\..\libs\octbstack\Windows\arm\octbstack.dll" "$(NuGetToolsPath)\package\runtimes\win10-arm\native\" /Y
 
 			"$(NuGetExePath)" pack "$(NuGetToolsPath)\package\$(NugetPackageID).nuspec" /Properties Version=$(PackageVersion) -o "$(PackageOutputDir)"
 		</BuildCommand>

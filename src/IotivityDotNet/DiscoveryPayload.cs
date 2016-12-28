@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace IotivityDotNet
 {
-    public class ResourcePayload
+    public class ResourcePayload : Payload
     {
         private OCResourcePayload _resource;
-        internal ResourcePayload(OCResourcePayload resource)
+        internal ResourcePayload(IntPtr ptr) : base(ptr)
         {
-            _resource = resource;
+            _resource = Marshal.PtrToStructure<OCResourcePayload>(ptr);
         }
         public IEnumerable<string> Types
         {
@@ -81,8 +81,7 @@ namespace IotivityDotNet
         public ResourcePayload GetResource(ulong index)
         {
             var ptr = OCPayloadInterop.OCDiscoveryPayloadGetResource(Handle, (UIntPtr)index);
-            var resource = Marshal.PtrToStructure<OCResourcePayload>(ptr);
-            return new ResourcePayload(resource);
+            return new ResourcePayload(ptr);
         }
 
         

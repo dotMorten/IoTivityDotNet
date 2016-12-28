@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+//Using alias for pointers to easier see what type of pointer is returned
+using OCRepPayloadPtr = System.IntPtr; 
 
 namespace IotivityDotNet.Interop
 {
@@ -22,44 +24,43 @@ namespace IotivityDotNet.Interop
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr OCPayloadDestroy(IntPtr handle);
 
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern OCRepPayloadPtr OCRepPayloadCreate();
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr OCRepPayloadCreate();
-
-        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr OCRepPayloadClone(IntPtr payload);
+        public static extern OCRepPayloadPtr OCRepPayloadClone(OCRepPayloadPtr payload);
         
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OCRepPayloadAppend(IntPtr parent, IntPtr child);
+        public static extern void OCRepPayloadAppend(OCRepPayloadPtr parent, IntPtr child);
         
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetUri(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string uri);
+        public static extern bool OCRepPayloadSetUri(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string uri);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadAddResourceType(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string resourceType);
+        public static extern bool OCRepPayloadAddResourceType(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string resourceType);
 
-        //       bool OCRepPayloadAddInterface(OCRepPayload* payload, const char* iface);
-        //       bool OCRepPayloadAddModelVersion(OCRepPayload* payload, const char* dmv);
+        //       bool OCRepPayloadAddInterface(OCRepPayloadPtr payload, const char* iface);
+        //       bool OCRepPayloadAddModelVersion(OCRepPayloadPtr payload, const char* dmv);
         //
-        //       bool OCRepPayloadAddResourceTypeAsOwner(OCRepPayload* payload, char* resourceType);
-        //       bool OCRepPayloadAddInterfaceAsOwner(OCRepPayload* payload, char* iface);
-        //
-        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadIsNull(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name);
-        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetNull(IntPtr  payload, [MarshalAs(UnmanagedType.LPStr)] string name);
+        //       bool OCRepPayloadAddResourceTypeAsOwner(OCRepPayloadPtr payload, char* resourceType);
+        //       bool OCRepPayloadAddInterfaceAsOwner(OCRepPayloadPtr payload, char* iface);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, long value);
+        public static extern bool OCRepPayloadIsNull(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name);
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadGetPropInt(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out long value);
+        public static extern bool OCRepPayloadSetNull(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadSetPropInt(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, long value);
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadGetPropInt(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out long value);
 
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, double value);
+        public static extern bool OCRepPayloadSetPropDouble(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, double value);
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadGetPropDouble(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out double value);
-        //
+        public static extern bool OCRepPayloadGetPropDouble(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out double value);
+
         //       /**
         //        * This function allocates memory for the byte string and sets it in the payload.
         //        *
@@ -69,7 +70,7 @@ namespace IotivityDotNet.Interop
         //        *
         //        * @return true on success, false upon failure.
         //        */
-        //       bool OCRepPayloadSetPropByteString(OCRepPayload* payload, const char* name, OCByteString value);
+        //       bool OCRepPayloadSetPropByteString(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, OCByteString value);
         //
         //       /**
         //        * This function sets the byte string in the payload.
@@ -80,7 +81,7 @@ namespace IotivityDotNet.Interop
         //        *
         //        * @return true on success, false upon failure.
         //        */
-        //       bool OCRepPayloadSetPropByteStringAsOwner(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetPropByteStringAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //       OCByteString* value);
         //
         //       /**
@@ -94,32 +95,32 @@ namespace IotivityDotNet.Interop
         //        *
         //        * @return true on success, false upon failure.
         //        */
-        //       bool OCRepPayloadGetPropByteString(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetPropByteString(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //       OCByteString* value);
-        
-        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetPropStringAsOwner(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+        public static extern bool OCRepPayloadSetPropString(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadGetPropString(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out IntPtr value);
+        public static extern bool OCRepPayloadSetPropStringAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, bool value);
+        public static extern bool OCRepPayloadGetPropString(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, out IntPtr value);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadGetPropBool(IntPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, out bool value);
+        public static extern bool OCRepPayloadSetPropBool(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, bool value);
 
-        //       bool OCRepPayloadSetPropObject(OCRepPayload* payload, const char* name, const OCRepPayload* value);
-        //       bool OCRepPayloadSetPropObjectAsOwner(OCRepPayload* payload, const char* name, OCRepPayload* value);
-        //       bool OCRepPayloadGetPropObject(const OCRepPayload* payload, const char* name, OCRepPayload** value);
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadGetPropBool(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)]  string name, out bool value);
+
+        //       bool OCRepPayloadSetPropObject(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, const OCRepPayload* value);
+        //       bool OCRepPayloadSetPropObjectAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, OCRepPayload* value);
+        //       bool OCRepPayloadGetPropObject(const OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, OCRepPayload** value);
         //
         //       #ifdef __WITH_TLS__
-        //       bool OCRepPayloadSetPropPubDataType(OCRepPayload* payload, const char* name, const OicSecKey_t* value);
-        //               bool OCRepPayloadSetPropPubDataTypeAsOwner(OCRepPayload* payload, const char* name, const OicSecKey_t* value);
-        //               bool OCRepPayloadGetPropPubDataType(const OCRepPayload* payload, const char* name, OicSecKey_t *value);
+        //       bool OCRepPayloadSetPropPubDataType(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, const OicSecKey_t* value);
+        //               bool OCRepPayloadSetPropPubDataTypeAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, const OicSecKey_t* value);
+        //               bool OCRepPayloadGetPropPubDataType(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name, OicSecKey_t *value);
         //       #endif
         //
         //   /**
@@ -132,7 +133,7 @@ namespace IotivityDotNet.Interop
         //    *
         //    * @return true on success, false upon failure.
         //    */
-        //   bool OCRepPayloadSetByteStringArrayAsOwner(OCRepPayload* payload, const char* name,
+        //   bool OCRepPayloadSetByteStringArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //           OCByteString* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
         //       /**
@@ -145,7 +146,7 @@ namespace IotivityDotNet.Interop
         //        *
         //        * @return true on success, false upon failure.
         //        */
-        //       bool OCRepPayloadSetByteStringArray(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetByteStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //       const OCByteString* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
         //       /**
@@ -161,46 +162,46 @@ namespace IotivityDotNet.Interop
         //        *
         //        * @return true on success, false upon failure.
         //        */
-        //       bool OCRepPayloadGetByteStringArray(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetByteStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               OCByteString** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
-        //               bool OCRepPayloadSetIntArrayAsOwner(OCRepPayload* payload, const char* name,
+        //               bool OCRepPayloadSetIntArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //                       int64_t* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //               bool OCRepPayloadSetIntArray(OCRepPayload* payload, const char* name,
+        //               bool OCRepPayloadSetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               const int64_t* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetIntArray(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               int64_t** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
-        //               bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayload* payload, const char* name,
+        //               bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               double* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadSetDoubleArray(IntPtr payload, string name,
+        public static extern bool OCRepPayloadSetDoubleArray(OCRepPayloadPtr payload, string name,
                        double[] array, UIntPtr[] dimensions);
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool OCRepPayloadGetDoubleArray(IntPtr payload, string name,
+        public static extern bool OCRepPayloadGetDoubleArray(OCRepPayloadPtr payload, string name,
                        out double[] array, UIntPtr[] dimensions);
         //
-        //       bool OCRepPayloadSetStringArrayAsOwner(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetStringArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               char** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadSetStringArray(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               const char** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetStringArray(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               char*** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
-        //       bool OCRepPayloadSetBoolArrayAsOwner(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetBoolArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               bool* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadSetBoolArray(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               const bool* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetBoolArray(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               bool** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
-        //       bool OCRepPayloadSetPropObjectArrayAsOwner(OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadSetPropObjectArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               OCRepPayload** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //               bool OCRepPayloadSetPropObjectArray(OCRepPayload* payload, const char* name,
+        //               bool OCRepPayloadSetPropObjectArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               const OCRepPayload** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetPropObjectArray(const OCRepPayload* payload, const char* name,
+        //       bool OCRepPayloadGetPropObjectArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               OCRepPayload*** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //
-        //               void OCRepPayloadDestroy(OCRepPayload* payload);
+        //               void OCRepPayloadDestroy(OCRepPayloadPtr payload);
     }
 }

@@ -23,10 +23,7 @@ namespace IotivityDotNet
         {
             _resourceCallback = this.OCEntityHandler;
             OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception("Failed to create resource: " + result.ToString());
-            }
+            OCStackException.ThrowIfError(result, "Failed to create resource");
             _uri = uri;
             _resourceProperties = new Dictionary<string, Dictionary<string, object>>();
             _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
@@ -35,10 +32,7 @@ namespace IotivityDotNet
         protected void BindInterface(string resourceInterfaceName)
         {
             OCStackResult result = OCStack.OCBindResourceInterfaceToResource(_handle, resourceInterfaceName);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception("Failed to bind interface name: " + result.ToString());
-            }
+            OCStackException.ThrowIfError(result, "Failed to bind interface");
         }
 
         public void SetProperty(string resourceTypeName, string property, object value)
@@ -54,10 +48,7 @@ namespace IotivityDotNet
         public void AddResourceType(string resourceTypeName, IDictionary<string, object> properties)
         {
             OCStackResult result = OCStack.OCBindResourceTypeToResource(_handle, resourceTypeName);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception("Failed to create resource: " + result.ToString());
-            }
+            OCStackException.ThrowIfError(result, "Failed to add resource type");
             _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
         }
 

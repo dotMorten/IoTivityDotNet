@@ -19,10 +19,7 @@ namespace IotivityDotNet
             _resourceUri = resourceUri;
             _address = address;
             var result = OCStack.OCDoResource(out _handle, OCMethod.OC_REST_OBSERVE, resourceUri, address.OCDevAddr, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, _observeCallbackData, null, 0);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception("Failed to observe resource: " + result.ToString());
-            }
+            OCStackException.ThrowIfError(result, "Failed to observe resource");
         }
 
         public Task<ClientResponse<RepPayload>> PostAsync(string resourceTypeName, Dictionary<string, object> data)
@@ -68,10 +65,7 @@ namespace IotivityDotNet
             }
 
             var result = OCStack.OCDoResource(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                tcs.TrySetException(new Exception("Failed to send to resource: " + result.ToString()));
-            }
+            OCStackException.ThrowIfError(result, "Failed to send to resource");
             var response = await tcs.Task.ConfigureAwait(false);
             GC.KeepAlive(callbackData);
             return response;

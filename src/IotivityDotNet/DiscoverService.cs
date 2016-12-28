@@ -6,7 +6,6 @@ using System.Text;
 
 namespace IotivityDotNet
 {
-
     public class DiscoverResource
     {
         private string requestUri;
@@ -33,8 +32,7 @@ namespace IotivityDotNet
                 return;
 
             var ret = OCStack.OCDoResource(out handle, OCMethod.OC_REST_DISCOVER, requestUri, null, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, cbData, null, 0);
-            if (ret != OCStackResult.OC_STACK_OK)
-                throw new Exception(ret.ToString());
+            OCStackException.ThrowIfError(ret);
         }
 
         public void Stop()
@@ -42,8 +40,7 @@ namespace IotivityDotNet
             if(handle != IntPtr.Zero)
             {
                 var ret = OCStack.OCCancel(handle, OCQualityOfService.OC_LOW_QOS, null, 0);
-                if (ret != OCStackResult.OC_STACK_OK)
-                    throw new Exception(ret.ToString());
+                OCStackException.ThrowIfError(ret);
                 handle = IntPtr.Zero;
             }
         }

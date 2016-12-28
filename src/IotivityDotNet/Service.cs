@@ -24,16 +24,9 @@ namespace IotivityDotNet
         public static void Initialize(ServiceMode mode)
         {
             var result = OCStack.OCInit(null, 0, (OCMode)mode);
-            
-            if(result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception(result.ToString());
-            }
+            OCStackException.ThrowIfError(result);
             result = OCStack.OCSetDefaultDeviceEntityHandler(OCDefaultDeviceEntityHandler, IntPtr.Zero);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception(result.ToString());
-            }
+            OCStackException.ThrowIfError(result, "Failed to send to resource");
 
             ct = new CancellationTokenSource();
             tcs = new TaskCompletionSource<object>();
@@ -101,10 +94,7 @@ namespace IotivityDotNet
                 specVersion = specVersion
             };
             var result = OCStack.OCSetDeviceInfo(info);
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception(result.ToString());
-            }
+            OCStackException.ThrowIfError(result);
         }
 
         private static OCEntityHandlerResult OCDefaultDeviceEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
@@ -118,10 +108,7 @@ namespace IotivityDotNet
             ct.Cancel();
             await tcs.Task;
             var result = OCStack.OCStop();
-            if (result != OCStackResult.OC_STACK_OK)
-            {
-                throw new Exception(result.ToString());
-            }
+            OCStackException.ThrowIfError(result);
         }
     }
 }

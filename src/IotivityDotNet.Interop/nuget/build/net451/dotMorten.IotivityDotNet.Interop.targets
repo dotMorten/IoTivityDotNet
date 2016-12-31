@@ -2,10 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <IotivityDeploymentRoot>$(MSBuildThisFileDirectory)..\..\lib\net452\$(ArcGISRuntimeFolder)\</IotivityDeploymentRoot>
-  </PropertyGroup>
-  
-  <PropertyGroup>
     <BuildDependsOn>$(BuildDependsOn);DeployIotivity</BuildDependsOn>
     <CleanDependsOn>$(CleanDependsOn);CleanIotivity</CleanDependsOn>
   </PropertyGroup>
@@ -13,7 +9,7 @@
   <Target Name="DeployIotivity">
     <ItemGroup>
         <IotivitySourceX86 Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-x86\native\octbstack.dll" />
-    		<IotivitySourceX64 Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-x64\native\octbstack.dll" />
+   		<IotivitySourceX64 Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-x64\native\octbstack.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(IotivitySourceX86)" DestinationFolder="$(TargetDir)\x86\" SkipUnchangedFiles="true"
 		  Condition="'$(PlatformTarget)' == 'x86' OR '$(PlatformTarget)' == 'AnyCPU'" />

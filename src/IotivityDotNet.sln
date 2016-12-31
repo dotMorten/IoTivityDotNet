@@ -13,6 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp.UWP", "TestApps\Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestApps", "TestApps", "{DAFAC2B8-1F56-49CA-B8C1-F057895FABB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSDK Headers", "CSDK Headers", "{875FB223-CE95-4631-84BE-4B6AFA945D2C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Dependencies\iotivity\resource\csdk\stack\include\ocpayload.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocpayload.h
+		..\Dependencies\iotivity\resource\csdk\stack\include\ocpresence.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocpresence.h
+		..\Dependencies\iotivity\resource\csdk\stack\include\ocstack.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocstack.h
+		..\Dependencies\iotivity\resource\csdk\stack\include\ocstackconfig.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocstackconfig.h
+		..\Dependencies\iotivity\resource\csdk\stack\include\octypes.h = ..\Dependencies\iotivity\resource\csdk\stack\include\octypes.h
+		..\Dependencies\iotivity\resource\csdk\stack\include\payload_logging.h = ..\Dependencies\iotivity\resource\csdk\stack\include\payload_logging.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

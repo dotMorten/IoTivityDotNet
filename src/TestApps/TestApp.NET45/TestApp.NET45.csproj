@@ -33,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -123,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DeployNativeResources.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -135,24 +137,7 @@
       <Name>IotivityDotNet</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
-      <Link>x64\octbstack.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(Configuration)' == 'Release' ">
-      <Link>x86\octbstack.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
-      <Link>x64\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(Configuration)' == 'Debug' ">
-      <Link>x86\octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <Import Project="DeployNativeResources.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

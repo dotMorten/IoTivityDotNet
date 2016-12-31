@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+	<IotivityDeployX86 Condition="'$(PlatformTarget)' == 'x86' OR '$(PlatformTarget)' == 'AnyCPU'" >true</IotivityDeployX86>
+	<IotivityDeployX64 Condition="('$(Prefer32Bit)' == 'false' and '$(PlatformTarget)' == 'AnyCPU') or '$(PlatformTarget)' == 'x64'" >true</IotivityDeployX64>
+  </PropertyGroup>
+  
+  
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
+      <Link>x64\octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
+      <Link>x86\octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64-debug\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
+      <Link>x64\octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\libs\octbstack\Windows\x86-debug\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
+      <Link>x86\octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

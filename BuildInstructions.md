@@ -1,6 +1,6 @@
 ### Build Instructions
 
-First make sure the iotivity submodule is cloned into Dependencies\iotivity
+First make sure the [iotivity submodule](https://github.com/dotMorten/IoTivity) is cloned into Dependencies\iotivity
 
 
 ### Prerequisites

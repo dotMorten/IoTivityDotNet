@@ -89,6 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="DeployNativeResources.targets">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -145,27 +148,10 @@
       <Name>IotivityDotNet</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="DeployNativeResources.targets" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content> 
-   <!--  <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition="'$(Platform)' == 'x64'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition="'$(Platform)' == 'x86'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content> 
-    <Content Include="..\..\..\libs\octbstack\Windows\arm\octbstack.dll" Condition="'$(Platform)' == 'ARM'">
-      <Link>octbstack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>-->
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

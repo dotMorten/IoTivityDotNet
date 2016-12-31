@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(PlatformTarget)' == 'x64' ">
+      <Link>octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(PlatformTarget)' == 'x86' ">
+      <Link>octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Content Include="..\..\..\libs\octbstack\Windows\x64-debug\octbstack.dll" Condition=" '$(PlatformTarget)' == 'x64' ">
+      <Link>octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\libs\octbstack\Windows\x86-debug\octbstack.dll" Condition=" '$(PlatformTarget)' == 'x86' ">
+      <Link>octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -45,6 +45,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defines.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="OCEnums.cs" />
     <Compile Include="OCImports.cs" />

@@ -15,7 +15,7 @@ namespace IotivityDotNet
         private GCHandle gchandle;
         private GCHandle gchandle2;
         OCClientResponseHandler onDiscoverHandler;
-        public DiscoverResource(string requestUri = "/oic/res")
+        public DiscoverResource(string requestUri = Interop.Defines.OC_RSRVD_WELL_KNOWN_URI)
         {
             onDiscoverHandler = OnDiscover;
             gchandle2 = GCHandle.Alloc(onDiscoverHandler);

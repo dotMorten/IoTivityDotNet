@@ -84,14 +84,14 @@ namespace IotivityDotNet
         /// </summary>
         public static void SetDeviceInfo(string deviceName, IEnumerable<string> types, string specVersion, IEnumerable<string> dataModelVersions)
         {
-            OCStringLL octypes = OCStringLL.Create(types);
-            OCStringLL ocdataModelVersions = OCStringLL.Create(dataModelVersions);
+            IntPtr octypes = OCStringLL.Create(types);
+            IntPtr ocdataModelVersions = OCStringLL.Create(dataModelVersions);
             var info = new OCDeviceInfo()
             {
-                deviceName = deviceName,
+                deviceName =  deviceName,
                 types = octypes,
-                dataModelVersions = ocdataModelVersions,
-                specVersion = specVersion
+                specVersion = specVersion,
+                dataModelVersions = ocdataModelVersions
             };
             var result = OCStack.OCSetDeviceInfo(info);
             OCStackException.ThrowIfError(result);

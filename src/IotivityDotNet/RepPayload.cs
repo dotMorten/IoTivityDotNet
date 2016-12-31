@@ -27,7 +27,7 @@ namespace IotivityDotNet
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     return resource.Values;
                 }
-                return new string[] { };
+                return Enumerable.Empty<string>();
             }
         }
 
@@ -41,17 +41,19 @@ namespace IotivityDotNet
                     var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     return resource.Values;
                 }
-                return new string[] { };
+                return Enumerable.Empty<string>();
             }
         }
         internal RepPayload(GCHandle handle) : base(handle)
         {
         }
+
         public RepPayload(IDictionary<string, object> data = null) : this(OCPayloadInterop.OCRepPayloadCreate())
         {
             if(data != null)
                 PopulateFromDictionary(data);
         }
+
         public RepPayload Next
         {
             get

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,16 +21,28 @@ namespace IotivityDotNet.Interop
     public class OCResourcePayload
     {
         public string uri;
-        public IntPtr types; //OCStringLL
-        public IntPtr interfaces; //OCStringLL
+        /// <summary>
+        /// Type: OCStringLL
+        /// </summary>
+        public IntPtr types;
+        /// <summary>
+        /// Type: OCStringLL
+        /// </summary>
+        public IntPtr interfaces;
         public byte bitmap;
         public bool secure;
         public UInt16 port;
 #if TCP_ADAPTER
         public UInt16 tcpPort;
 #endif
-        public IntPtr next; //OCResourcePayload
-        public IntPtr eps; //OCEndpointPayload
+        /// <summary>
+        /// Type: OCResourcePayload
+        /// </summary>
+        public IntPtr next;
+        /// <summary>
+        /// Type: OCEndpointPayload
+        /// </summary>
+        public IntPtr eps;
     }
     /// <summary>
     /// used inside a discovery payload
@@ -37,12 +50,27 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCRepPayload
     {
+        /// <summary>
+        /// Type: OCPayload
+        /// </summary>
         public IntPtr basePayload;
         public string uri;
-        public IntPtr types; //OCStringLL
-        public IntPtr interfaces; //OCStringLL
-        public IntPtr values; //  values;
-        public IntPtr next; // OCRepPayload next;
+        /// <summary>
+        /// Type: OCStringLL
+        /// </summary>
+        public IntPtr types;
+        /// <summary>
+        /// Type: OCStringLL
+        /// </summary>
+        public IntPtr interfaces;
+        /// <summary>
+        /// Type: OCRepPayloadValue
+        /// </summary>
+        public IntPtr values;
+        /// <summary>
+        /// Type: OCRepPayload
+        /// </summary>
+        public IntPtr next;
 
         public IEnumerable<string> Types
         {
@@ -72,25 +100,44 @@ namespace IotivityDotNet.Interop
         }
     }
 
+    /// <summary>
+    /// Represents an enumerable collection of strings, each instance pointing to the <see cref="next"/> string instance.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class OCStringLL
+    public class OCStringLL : IEnumerable<string>
     {
-        public static OCStringLL Create(IEnumerable<string> values)
+        public static IntPtr Create(IEnumerable<string> values)
         {
-            if (values == null) return null;
+            if (values == null) return IntPtr.Zero;
             IntPtr next = IntPtr.Zero;
             OCStringLL nextInstance = null;
+            IntPtr ptr = IntPtr.Zero;
             foreach(var item in values.Reverse())
             {
-                var ptr = Marshal.AllocCoTaskMem(IntPtr.Size * 2);
+                ptr = Marshal.AllocCoTaskMem(IntPtr.Size * 2);
                 Marshal.WriteIntPtr(ptr, next);
                 Marshal.WriteIntPtr(ptr, IntPtr.Size, Marshal.StringToCoTaskMemAnsi(item));
                 nextInstance = new OCStringLL() { value = item, next = next };
                 next = ptr;
             }
-            return nextInstance;
+            return ptr;
         }
-        public IntPtr next; //OCStringLL
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            return Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Values.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Type: OCStringLL
+        /// </summary>
+        public IntPtr next;
+
         public string value;
 
         public OCStringLL Next
@@ -127,49 +174,73 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCEntityHandlerRequest
     {
-        /** Associated resource.*/
-        public IntPtr resource; //OCResourceHandle
+        /// <summary>
+        /// Associated resource. (Type: OCResourceHandle)
+        /// </summary>
+        public IntPtr resource;
 
-        /** Associated request handle.*/
-        public IntPtr requestHandle; //OCRequestHandle
+        /// <summary>
+        /// Associated request handle. (Type: OCRequestHandle)
+        /// </summary>
+        public IntPtr requestHandle;
 
-        /** the REST method retrieved from received request PDU.*/
+        /// <summary>
+        /// the REST method retrieved from received request PDU.
+        /// </summary>
         public OCMethod method;
 
-        /** description of endpoint that sent the request.*/
+        /// <summary>
+        /// description of endpoint that sent the request.
+        /// </summary>
         public OCDevAddr devAddr;
 
-        /** resource query send by client.*/
+        /// <summary>
+        /// resource query send by client.
+        /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public string query;
 
-        /** Information associated with observation - valid only when OCEntityHandler flag includes ::OC_OBSERVE_FLAG.*/
+        /// <summary>
+        /// Information associated with observation - valid only when OCEntityHandler flag includes ::OC_OBSERVE_FLAG.
+        /// </summary>
         public OCObservationInfo obsInfo;
 
-        /** Number of the received vendor specific header options.*/
+        /// <summary>
+        /// Number of the received vendor specific header options.
+        /// </summary>
         public byte numRcvdVendorSpecificHeaderOptions;
 
-        /** Pointer to the array of the received vendor specific header options.*/
-        public IntPtr rcvdVendorSpecificHeaderOptions; //OCHeaderOption[]
+        /// <summary>
+        /// Pointer to the array of the received vendor specific header options. (type: OCHeaderOption[])
+        /// </summary>
+        public IntPtr rcvdVendorSpecificHeaderOptions; 
 
-        /** Message id.*/
+        /// <summary>
+        /// Message id.
+        /// </summary>
         public UInt16 messageID;
 
-        /** the payload from the request PDU.*/
+        /// <summary>
+        /// the payload from the request PDU.
+        /// </summary>
         public IntPtr payload; //OCPayload
 
     }
 
-    /**
-      * Possible returned values from entity handler.
-      */
+    /// <summary>
+    /// Possible returned values from entity handler.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class OCObservationInfo
     {
-        /** Action associated with observation request.*/
+        /// <summary>
+        /// Action associated with observation request.
+        /// </summary>
         OCObserveAction action;
 
-        /** Identifier for observation being registered/deregistered.*/
+        /// <summary>
+        /// Identifier for observation being registered/deregistered.
+        /// </summary>
         byte obsId;
     }
     
@@ -181,16 +252,24 @@ namespace IotivityDotNet.Interop
     public class OCHeaderOption
     {
 
-        /** The protocol ID this option applies to.*/
+        /// <summary>
+        /// The protocol ID this option applies to.
+        /// </summary>
         public OCTransportProtocolID protocolID;
 
-        /** The header option ID which will be added to communication packets.*/
+        /// <summary>
+        /// The header option ID which will be added to communication packets.
+        /// </summary>
         public UInt16 optionID;
 
-        /** its length 191.*/
+        /// <summary>
+        /// its length 191.
+        /// </summary>
         public UInt16 optionLength;
 
-        /** pointer to its data.*/
+        /// <summary>
+        /// pointer to its data.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1024)]
         public byte[] optionData;
 
@@ -238,36 +317,56 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCClientResponse
     {
-        /** Address of remote server.*/
-        public OCDevAddr devAddr; //
+        /// <summary>
+        /// Address of remote server.
+        /// </summary>
+        public OCDevAddr devAddr;
 
-        /** backward compatibility (points to devAddr).*/
+        /// <summary>
+        /// backward compatibility (points to devAddr).
+        /// </summary>
         private IntPtr addr;
 
-        /** backward compatibility.*/
+        /// <summary>
+        /// backward compatibility.
+        /// </summary>
         public OCConnectivityType connType;
 
-        /** the security identity of the remote server.*/
+        /// <summary>
+        /// the security identity of the remote server.
+        /// </summary>
         public OCIdentity identity;
 
-        /** the is the result of our stack, OCStackResult should contain coap/other error codes.*/
+        /// <summary>
+        /// the is the result of our stack, OCStackResult should contain coap/other error codes.
+        /// </summary>
         public OCStackResult result;
 
-        /** If associated with observe, this will represent the sequence of notifications from server.*/
+        /// <summary>
+        /// If associated with observe, this will represent the sequence of notifications from server.
+        /// </summary>
         public UInt32 sequenceNumber;
 
-        /** resourceURI.*/
+        /// <summary>
+        /// resourceURI.
+        /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public string resourceUri;
 
-        /** the payload for the response PDU.*/
+        /// <summary>
+        /// the payload for the response PDU.
+        /// </summary>
         public IntPtr payload;
 
-        /** Number of the received vendor specific header options.*/
+        /// <summary>
+        /// Number of the received vendor specific header options.
+        /// </summary>
         public byte numRcvdVendorSpecificHeaderOptions;
 
-        /** An array of the received vendor specific header options.*/
-        public IntPtr rcvdVendorSpecificHeaderOptions; //Type: OCHeaderOption[], Size:50
+        /// <summary>
+        /// An array of the received vendor specific header options. Type: OCHeaderOption[], Size:50
+        /// </summary>
+        public IntPtr rcvdVendorSpecificHeaderOptions;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -311,30 +410,43 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCDevAddr
     {
-        /** adapter type.*/
+        /// <summary>
+        /// adapter type.
+        /// </summary>
         public OCTransportAdapter adapter;
 
-        /** transport modifiers.*/
+        /// <summary>
+        /// transport modifiers.
+        /// </summary>
         public OCTransportFlags flags;
 
-        /** for IP.*/
+        /// <summary>
+        /// for IP.
+        /// </summary>
         public UInt16 port;
 
-        /** address for all adapters.*/
+        /// <summary>
+        /// address for all adapters.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 66)]
         public string addr;
 
-        /** usually zero for default interface.*/
+        /// <summary>
+        /// usually zero for default interface.
+        /// </summary>
         public UInt32 ifindex;
 
-        /** destination GatewayID:ClientId.*/
+        /// <summary>
+        /// destination GatewayID:ClientId.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 66)]
         public string routeData;
 
-        /** destination DeviceID.*/
+        /// <summary>
+        /// destination DeviceID.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 37)]
-        public string deviceId; 
-
+        public string deviceId;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -345,37 +457,54 @@ namespace IotivityDotNet.Interop
         /// </summary>
         public OCPayloadType type;
     }
-    /**
-    * Request handle is passed to server via the entity handler for each incoming request.
-    * Stack assigns when request is received, server sets to indicate what request response is for.
-*/
 
+    /// <summary>
+    /// Request handle is passed to server via the entity handler for each incoming request.
+    /// Stack assigns when request is received, server sets to indicate what request response is for.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class OCEntityHandlerResponse
     {
-        /** Request handle.*/
-        public IntPtr requestHandle; //OCRequestHandle
+        /// <summary>
+        /// Request handle (OCRequestHandle).
+        /// </summary>
+        public IntPtr requestHandle;
 
-        /** Resource handle.*/
-        public IntPtr resourceHandle; //OCResourceHandle
+        /// <summary>
+        /// Resource handle (OCResourceHandle).
+        /// </summary>
+        public IntPtr resourceHandle;
 
-        /** Allow the entity handler to pass a result with the response.*/
+        /// <summary>
+        /// Allow the entity handler to pass a result with the response.
+        /// </summary>
         public OCEntityHandlerResult ehResult;
 
-        /** This is the pointer to server payload data to be transferred.*/
+        /// <summary>
+        /// This is the pointer to server payload data to be transferred.
+        /// </summary>
         public IntPtr payload;
 
-        /** number of the vendor specific header options .*/
+        /// <summary>
+        /// number of the vendor specific header options.
+        /// </summary>
         public byte numSendVendorSpecificHeaderOptions;
 
-        /** An array of the vendor specific header options the entity handler wishes to use in response.*/
-        public IntPtr sendVendorSpecificHeaderOptions; // OCHeaderOption sendVendorSpecificHeaderOptions[MAX_HEADER_OPTIONS];
+        /// <summary>
+        /// An array of the vendor specific header options the entity handler wishes to use in response.
+        /// OCHeaderOption sendVendorSpecificHeaderOptions[MAX_HEADER_OPTIONS];
+        /// </summary>
+        public IntPtr sendVendorSpecificHeaderOptions;
 
-        /** URI of new resource that entity handler might create.*/
+        /// <summary>
+        /// URI of new resource that entity handler might create.
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 512)]
         public string resourceUri;
 
-        /** Server sets to true for persistent response buffer,false for non-persistent response buffer*/
+        /// <summary>
+        /// Server sets to true for persistent response buffer, false for non-persistent response buffer
+        /// </summary>
         public byte persistentBufferFlag;
     }
 
@@ -461,19 +590,21 @@ namespace IotivityDotNet.Interop
         /// <summary>
         /// Pointer to the device name
         /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
         public string deviceName;
         /// <summary>
         /// Pointer to the types.
         /// </summary>
-        public OCStringLL types;
+        public IntPtr types;
         /// <summary>
         /// Pointer to the device specification version.
         /// </summary>
+        [MarshalAs(UnmanagedType.LPStr)]
         public string specVersion;
         /// <summary>
         /// Pointer to the device data model versions (in CSV format).
         /// </summary>
-        public OCStringLL dataModelVersions;
+        public IntPtr dataModelVersions;
     }
 
 }

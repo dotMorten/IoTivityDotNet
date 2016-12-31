@@ -6,23 +6,25 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 //Using alias for pointers to easier see what type of pointer is returned
-using OCRepPayloadPtr = System.IntPtr; 
+using OCDiscoveryPayloadPtr = System.IntPtr;
+using OCRepPayloadPtr = System.IntPtr;
+using OCResourcePayloadPtr = System.IntPtr;
 
 namespace IotivityDotNet.Interop
 {
     public static class OCPayloadInterop
     {
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr OCDiscoveryPayloadCreate();
+        public static extern OCDiscoveryPayloadPtr OCDiscoveryPayloadCreate();
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern UIntPtr OCDiscoveryPayloadGetResourceCount(IntPtr handle);
+        public static extern UIntPtr OCDiscoveryPayloadGetResourceCount(OCDiscoveryPayloadPtr handle);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr OCDiscoveryPayloadGetResource(IntPtr handle, UIntPtr index);
+        public static extern OCResourcePayloadPtr OCDiscoveryPayloadGetResource(OCDiscoveryPayloadPtr handle, UIntPtr index);
         
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr OCPayloadDestroy(IntPtr handle);
+        public static extern void OCPayloadDestroy(OCDiscoveryPayloadPtr handle);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCRepPayloadPtr OCRepPayloadCreate();

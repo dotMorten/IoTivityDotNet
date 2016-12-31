@@ -12,10 +12,13 @@ namespace IotivityDotNet
         private OCCallbackData cbData;
         private IntPtr handle;
         private GCHandle gchandle;
-
+        private GCHandle gchandle2;
+        OCClientResponseHandler onDiscoverHandler;
         public DiscoverResource(string requestUri = "/oic/res")
         {
-            cbData = new OCCallbackData() { cb = OnDiscover };
+            onDiscoverHandler = OnDiscover;
+            gchandle2 = GCHandle.Alloc(onDiscoverHandler);
+            cbData = new OCCallbackData() { cb = onDiscoverHandler };
             this.requestUri = requestUri;
             gchandle = GCHandle.Alloc(cbData);
         }
@@ -24,6 +27,7 @@ namespace IotivityDotNet
         {
             Stop();
             gchandle.Free();
+            gchandle2.Free();
         }
 
         public void Start()

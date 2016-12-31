@@ -1,6 +1,7 @@
 ﻿using IotivityDotNet.Interop;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace IotivityDotNet
@@ -9,17 +10,23 @@ namespace IotivityDotNet
     {
         private IntPtr _handle;
         private OCCallbackData _observeCallbackData;
+        private OCClientResponseHandler _observeCallbackHandler;
         private string _resourceUri;
         private DeviceAddress _address;
 
         public ResourceClient(DeviceAddress address, string resourceUri)
         {
             _observeCallbackData = new OCCallbackData();
-            _observeCallbackData.cb = OnObserveCallback;
+            _observeCallbackData.cb = _observeCallbackHandler = OnObserveCallback;
             _resourceUri = resourceUri;
             _address = address;
             var result = OCStack.OCDoResource(out _handle, OCMethod.OC_REST_OBSERVE, resourceUri, address.OCDevAddr, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, _observeCallbackData, null, 0);
             OCStackException.ThrowIfError(result, "Failed to observe resource");
+        }
+
+        ~ResourceClient()
+        {
+            OCStack.OCDeleteResource(_handle);
         }
 
         public Task<ClientResponse<RepPayload>> PostAsync(string resourceTypeName, Dictionary<string, object> data)
@@ -41,9 +48,10 @@ namespace IotivityDotNet
         {
             var tcs = new TaskCompletionSource<ClientResponse<RepPayload>>();
             var callbackData = new OCCallbackData();
-            callbackData.cb = (context, handle, clientResponse) =>
+            OCClientResponseHandler handler = (context, handle, clientResponse) =>
             {
-                if (clientResponse.result >OCStackResult.OC_STACK_RESOURCE_CHANGED)
+                GCHandle.FromIntPtr(context).Free();
+                if (clientResponse.result > OCStackResult.OC_STACK_RESOURCE_CHANGED)
                 {
                     tcs.SetException(new Exception("Resource returned error: " + clientResponse.result.ToString()));
                 }
@@ -53,6 +61,10 @@ namespace IotivityDotNet
                 }
                 return OCStackApplicationResult.OC_STACK_DELETE_TRANSACTION;
             };
+            var gcHandle = GCHandle.Alloc(handler);
+            callbackData.cb = handler;
+            callbackData.context = GCHandle.ToIntPtr(gcHandle);
+            
             IntPtr payloadHandle = IntPtr.Zero;
             if (data != null)
             {
@@ -67,7 +79,7 @@ namespace IotivityDotNet
             var result = OCStack.OCDoResource(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
             OCStackException.ThrowIfError(result, "Failed to send to resource");
             var response = await tcs.Task.ConfigureAwait(false);
-            GC.KeepAlive(callbackData);
+            
             return response;
         }
 

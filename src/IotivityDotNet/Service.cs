@@ -20,12 +20,14 @@ namespace IotivityDotNet
     {
         private static CancellationTokenSource ct;
         private static TaskCompletionSource<object> tcs;
+        static OCEntityHandler globalHandler;
 
         public static void Initialize(ServiceMode mode)
         {
             var result = OCStack.OCInit(null, 0, (OCMode)mode);
             OCStackException.ThrowIfError(result);
-            result = OCStack.OCSetDefaultDeviceEntityHandler(OCDefaultDeviceEntityHandler, IntPtr.Zero);
+            globalHandler = OCDefaultDeviceEntityHandler;
+            result = OCStack.OCSetDefaultDeviceEntityHandler(globalHandler, IntPtr.Zero);
             OCStackException.ThrowIfError(result, "Failed to send to resource");
 
             ct = new CancellationTokenSource();

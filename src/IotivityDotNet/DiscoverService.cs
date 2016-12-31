@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace IotivityDotNet
 {
@@ -29,18 +30,26 @@ namespace IotivityDotNet
             gchandle.Free();
             gchandle2.Free();
         }
+        bool isRunning;
 
-        public void Start()
+        public async void Start()
         {
+            isRunning = true;
             if (handle != IntPtr.Zero)
                 return;
-
-            var ret = OCStack.OCDoResource(out handle, OCMethod.OC_REST_DISCOVER, requestUri, null, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, cbData, null, 0);
-            OCStackException.ThrowIfError(ret);
+            while (isRunning)
+            {
+                var ret = OCStack.OCDoResource(out handle, OCMethod.OC_REST_DISCOVER, requestUri, null, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, cbData, null, 0);
+                OCStackException.ThrowIfError(ret);
+                await Task.Delay(5000);
+                ret = OCStack.OCCancel(handle, OCQualityOfService.OC_LOW_QOS, null, 0);
+                handle = IntPtr.Zero;
+            }
         }
 
         public void Stop()
         {
+            isRunning = false;
             if(handle != IntPtr.Zero)
             {
                 var ret = OCStack.OCCancel(handle, OCQualityOfService.OC_LOW_QOS, null, 0);
@@ -55,11 +64,38 @@ namespace IotivityDotNet
             {
                 return OCStackApplicationResult.OC_STACK_DELETE_TRANSACTION;
             }
-            ResourceDiscovered?.Invoke(this, new ClientResponseEventArgs<DiscoveryPayload>(clientResponse, handle));
+            var response = new ClientResponse<DiscoveryPayload>(clientResponse);
+            var addr = response.DeviceAddress; // new DeviceAddress(clientResponse.devAddr);
+            foreach (var item in response.Payload.Resources)
+            {
+                string key = $"{addr.Address}:{addr.Port}{item.Uri}";
+                if (!discoveredResources.ContainsKey(key))
+                {
+                    discoveredResources[key] = DateTimeOffset.UtcNow;
+                    ResourceDiscovered?.Invoke(this, new ResourceDiscoveredEventArgs(addr, item));
+                }
+            }
             return OCStackApplicationResult.OC_STACK_KEEP_TRANSACTION;
         }
 
-        public event EventHandler<ClientResponseEventArgs<DiscoveryPayload>> ResourceDiscovered;
+        public event EventHandler<ResourceDiscoveredEventArgs> ResourceDiscovered;
+
+        private Dictionary<string, DateTimeOffset> discoveredResources = new Dictionary<string, DateTimeOffset>();
+    }
+
+    public class ResourceDiscoveredEventArgs : EventArgs
+    {
+        internal ResourceDiscoveredEventArgs(DeviceAddress address, ResourcePayload payload)
+        {
+            Address = address;
+            Payload = payload;
+        }
+
+        public DeviceAddress Address { get; }
+
+        public string Uri => Payload.Uri;
+
+        public ResourcePayload Payload { get; }
     }
 
     public class ClientResponseEventArgs<T> : EventArgs where T : Payload

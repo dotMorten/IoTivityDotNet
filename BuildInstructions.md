@@ -13,7 +13,7 @@ Install SCONS
 Install 7-ZIP (build script is set for the x64 version, so install that, or update path in build script)
 
 From a command prompt execute `\Dependencies\BuildIotivity.cmd`
-The first build you might be asked to pull more repos. Just run the git command you're told to clone, then rerun the `BuildIotivity` script
+The first build you might be asked to pull more repos. Just run the git command you're told to clone, then rerun the `BuildIotivity` script. If the script fails, double-check the `SET PATH` part is setting the right paths for the installed dependencies (in case you didn't use defaults).
 
 Once built, you can open, build and run `\src\IotivityDotNet.sln`
 

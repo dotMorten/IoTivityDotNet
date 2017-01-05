@@ -66,11 +66,12 @@ namespace IotivityDotNet
             callbackData.context = GCHandle.ToIntPtr(gcHandle);
             
             IntPtr payloadHandle = IntPtr.Zero;
-            if (data != null)
+            if (resourceTypeName != null)
             {
                 RepPayload payload = new RepPayload();
 
                 payload.SetUri(_resourceUri);
+                if (data != null)
                 payload.PopulateFromDictionary(data);
                 payload.AddResourceType(resourceTypeName);
                 payloadHandle = payload.Handle;

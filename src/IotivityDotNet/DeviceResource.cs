@@ -19,7 +19,7 @@ namespace IotivityDotNet
             OCStack.OCDeleteResource(_handle);
         }
 
-        public DeviceResource(string uri, string resourceTypeName, IDictionary<string,object> properties, string resourceInterfaceName = "oic.if.baseline")
+        public DeviceResource(string uri, string resourceTypeName, IDictionary<string,object> properties, string resourceInterfaceName = IotivityDotNet.Interop.Defines.OC_RSRVD_INTERFACE_DEFAULT)
         {
             _resourceCallback = this.OCEntityHandler;
             OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);

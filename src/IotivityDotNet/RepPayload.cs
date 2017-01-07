@@ -43,14 +43,17 @@ namespace IotivityDotNet
         
         public RepPayload(IDictionary<string, object> data = null) : this()
         {
-            Values = new IotivityValueDictionary(data);
+            if (data is IotivityValueDictionary)
+                Values = data;
+            else
+                Values = new IotivityValueDictionary(data);
         }
 
         public RepPayload Next { get; set; }
 
         public IDictionary<string,object> Values { get; }
 
-        public void PopulateFromDictionary(IDictionary<string,object> data)
+        public void AddValues(IEnumerable<KeyValuePair<string,object>> data)
         {
             foreach (var property in data)
             {

@@ -9,10 +9,10 @@ namespace IotivityDotNet
 {
     public class DeviceResource : IDisposable
     {
-        private IntPtr _handle;
+        private readonly IntPtr _handle;
         private readonly string _uri;
-        private Dictionary<string, Dictionary<string, object>> _resourceProperties;
-        private OCEntityHandler _resourceCallback; // Pins the delegate into memory
+        private readonly Dictionary<string, IotivityValueDictionary> _resourceProperties;
+        private readonly OCEntityHandler _resourceCallback; // Pins the delegate into memory
 
         ~DeviceResource()
         {
@@ -25,9 +25,9 @@ namespace IotivityDotNet
             OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
             OCStackException.ThrowIfError(result, "Failed to create resource");
             _uri = uri;
-            _resourceProperties = new Dictionary<string, Dictionary<string, object>>();
+            _resourceProperties = new Dictionary<string, IotivityValueDictionary>();
             if(properties != null)
-                _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
+                _resourceProperties.Add(resourceTypeName, new IotivityValueDictionary(properties));
         }
 
         protected void BindInterface(string resourceInterfaceName)
@@ -50,13 +50,12 @@ namespace IotivityDotNet
         {
             OCStackResult result = OCStack.OCBindResourceTypeToResource(_handle, resourceTypeName);
             OCStackException.ThrowIfError(result, "Failed to add resource type");
-            _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
+            _resourceProperties.Add(resourceTypeName, new IotivityValueDictionary(properties));
         }
 
         public void Dispose()
         {
             OCStack.OCDeleteResource(_handle);
-            _resourceProperties = null;
         }
 
         private OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)

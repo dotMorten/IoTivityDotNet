@@ -10,11 +10,18 @@ using OCPayloadPtr = System.IntPtr;
 using OCDiscoveryPayloadPtr = System.IntPtr;
 using OCRepPayloadPtr = System.IntPtr;
 using OCResourcePayloadPtr = System.IntPtr;
+using OCSecurityPayloadPtr = System.IntPtr;
 
 namespace IotivityDotNet.Interop
 {
     public static class OCPayloadInterop
     {
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern OCSecurityPayloadPtr OCSecurityPayloadCreate(byte[] securityData, UIntPtr size);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OCSecurityPayloadDestroy(OCSecurityPayloadPtr payload);
+
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCDiscoveryPayloadPtr OCDiscoveryPayloadCreate();
 

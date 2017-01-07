@@ -64,15 +64,22 @@ namespace IotivityDotNet
             {
                 return OCStackApplicationResult.OC_STACK_DELETE_TRANSACTION;
             }
-            var response = new ClientResponse<DiscoveryPayload>(clientResponse);
-            var addr = response.DeviceAddress; // new DeviceAddress(clientResponse.devAddr);
-            foreach (var item in response.Payload.Resources)
+            var response = new ClientResponse<Payload>(clientResponse);
+            if (response.Payload != null)
             {
-                string key = $"{addr.Address}:{addr.Port}{item.Uri}";
-                if (!discoveredResources.ContainsKey(key))
+                if (response.Payload is DiscoveryPayload)
                 {
-                    discoveredResources[key] = DateTimeOffset.UtcNow;
-                    ResourceDiscovered?.Invoke(this, new ResourceDiscoveredEventArgs(addr, item));
+                    var dpayload = (DiscoveryPayload)response.Payload;
+                    var addr = response.DeviceAddress; // new DeviceAddress(clientResponse.devAddr);
+                    foreach (var item in dpayload.Resources)
+                    {
+                        string key = $"{addr.Address}:{addr.Port}{item.Uri}";
+                        if (!discoveredResources.ContainsKey(key))
+                        {
+                            discoveredResources[key] = DateTimeOffset.UtcNow;
+                            ResourceDiscovered?.Invoke(this, new ResourceDiscoveredEventArgs(addr, item));
+                        }
+                    }
                 }
             }
             return OCStackApplicationResult.OC_STACK_KEEP_TRANSACTION;
@@ -139,13 +146,18 @@ namespace IotivityDotNet
                 {
                     var pl = Marshal.PtrToStructure<OCPayload>(_response.payload);
                     //clientResponse.payload.
-                    if (pl.type == OCPayloadType.PAYLOAD_TYPE_DISCOVERY && typeof(T) == typeof(DiscoveryPayload))
+                    if (pl.type == OCPayloadType.PAYLOAD_TYPE_DISCOVERY && (typeof(T) == typeof(DiscoveryPayload) || typeof(T) == typeof(Payload)))
                     {
                         _payload = new DiscoveryPayload(_response.payload) as T;
                     }
-                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_REPRESENTATION && typeof(T) == typeof(RepPayload))
+                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_REPRESENTATION && (typeof(T) == typeof(RepPayload) || typeof(T) == typeof(Payload)))
                     {
                         _payload = new RepPayload(_response.payload) as T;
+                    }
+                    else if (pl.type == OCPayloadType.PAYLOAD_TYPE_SECURITY && (typeof(T) == typeof(SecurityPayload) || typeof(T) == typeof(Payload)))
+                    {
+                        var payload = new SecurityPayload(_response.payload);
+                        return payload as T;
                     }
                     else
                         throw new NotImplementedException();

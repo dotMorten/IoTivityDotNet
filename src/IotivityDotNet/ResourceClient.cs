@@ -29,24 +29,24 @@ namespace IotivityDotNet
             OCStack.OCDeleteResource(_handle);
         }
 
-        public Task<ClientResponse<RepPayload>> PostAsync(string resourceTypeName, Dictionary<string, object> data)
+        public Task<ClientResponse<Payload>> PostAsync(string resourceTypeName, Dictionary<string, object> data)
         {
             return SendAsync(resourceTypeName, data, OCMethod.OC_REST_POST);
         }
 
-        public Task<ClientResponse<RepPayload>> PutAsync(string resourceTypeName, Dictionary<string, object> data)
+        public Task<ClientResponse<Payload>> PutAsync(string resourceTypeName, Dictionary<string, object> data)
         {
             return SendAsync(resourceTypeName, data, OCMethod.OC_REST_PUT);
         }
 
-        public Task<ClientResponse<RepPayload>> GetAsync(string resourceTypeName)
+        public Task<ClientResponse<Payload>> GetAsync(string resourceTypeName)
         {
             return SendAsync(resourceTypeName, null, OCMethod.OC_REST_GET);
         }
 
-        private async Task<ClientResponse<RepPayload>> SendAsync(string resourceTypeName, Dictionary<string, object> data, OCMethod method)
+        private async Task<ClientResponse<Payload>> SendAsync(string resourceTypeName, Dictionary<string, object> data, OCMethod method)
         {
-            var tcs = new TaskCompletionSource<ClientResponse<RepPayload>>();
+            var tcs = new TaskCompletionSource<ClientResponse<Payload>>();
             var callbackData = new OCCallbackData();
             OCClientResponseHandler handler = (context, handle, clientResponse) =>
             {
@@ -57,7 +57,7 @@ namespace IotivityDotNet
                 }
                 else
                 {
-                    tcs.SetResult(new ClientResponse<RepPayload>(clientResponse));
+                    tcs.SetResult(new ClientResponse<Payload>(clientResponse));
                 }
                 return OCStackApplicationResult.OC_STACK_DELETE_TRANSACTION;
             };

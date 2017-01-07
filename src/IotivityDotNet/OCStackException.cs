@@ -19,11 +19,19 @@ namespace IotivityDotNet
             return message + " (" + result.ToString() + ")";
         }
 
+        [System.Diagnostics.DebuggerHiddenAttribute]
         internal static void ThrowIfError(OCStackResult result, string message = null)
         {
             if (result == OCStackResult.OC_STACK_OK)
                 return;
-            throw new OCStackException(result, message);
+            Exception exception = new OCStackException(result, message);
+            if (result == OCStackResult.OC_STACK_INVALID_PARAM)
+                exception = new ArgumentException(message, exception);
+            else if (result == OCStackResult.OC_STACK_INVALID_METHOD)
+                exception = new InvalidOperationException(message, exception);
+            else if (result == OCStackResult.OC_STACK_UNAUTHORIZED_REQ)
+                exception = new UnauthorizedAccessException(message, exception);
+            throw exception;
         }
     }
 }

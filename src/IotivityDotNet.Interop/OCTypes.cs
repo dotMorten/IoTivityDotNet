@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using OCPayloadPtr = System.IntPtr;
 
 namespace IotivityDotNet.Interop
 {
@@ -53,7 +54,7 @@ namespace IotivityDotNet.Interop
         /// <summary>
         /// Type: OCPayload
         /// </summary>
-        public IntPtr basePayload;
+        public OCPayloadPtr basePayload;
         public string uri;
         /// <summary>
         /// Type: OCStringLL
@@ -98,6 +99,25 @@ namespace IotivityDotNet.Interop
                 return new string[] { };
             }
         }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class OCSecurityPayload
+    {
+        public OCPayloadPtr basePayload;
+        // [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)]
+        // public byte[] securityData;
+        public IntPtr securityData;
+        public byte[] SecurityData
+        {
+            get
+            {
+                byte[] b = new byte[(int)payloadSize];
+                Marshal.Copy(securityData, b, 0, b.Length);
+                return b;
+            }
+        }
+        public UIntPtr payloadSize;
     }
 
     /// <summary>

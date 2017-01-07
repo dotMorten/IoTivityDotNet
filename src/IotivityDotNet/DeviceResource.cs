@@ -26,7 +26,8 @@ namespace IotivityDotNet
             OCStackException.ThrowIfError(result, "Failed to create resource");
             _uri = uri;
             _resourceProperties = new Dictionary<string, Dictionary<string, object>>();
-            _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
+            if(properties != null)
+                _resourceProperties.Add(resourceTypeName, new Dictionary<string, object>(properties));
         }
 
         protected void BindInterface(string resourceInterfaceName)

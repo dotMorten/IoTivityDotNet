@@ -20,8 +20,8 @@ namespace IotivityDotNet
             _observeCallbackData.cb = _observeCallbackHandler = OnObserveCallback;
             _resourceUri = resourceUri;
             _address = address;
-            var result = OCStack.OCDoResource(out _handle, OCMethod.OC_REST_OBSERVE, resourceUri, address.OCDevAddr, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, _observeCallbackData, null, 0);
-            OCStackException.ThrowIfError(result, "Failed to observe resource");
+            //var result = OCStack.OCDoResource(out _handle, OCMethod.OC_REST_OBSERVE, resourceUri, address.OCDevAddr, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, _observeCallbackData, null, 0);
+            //OCStackException.ThrowIfError(result, "Failed to observe resource");
         }
 
         ~ResourceClient()
@@ -68,16 +68,16 @@ namespace IotivityDotNet
             IntPtr payloadHandle = IntPtr.Zero;
             if (resourceTypeName != null)
             {
-                RepPayload payload = new RepPayload();
+                RepPayload payload = new RepPayload(data);
 
                 payload.SetUri(_resourceUri);
-                if (data != null)
-                payload.PopulateFromDictionary(data);
-                payload.AddResourceType(resourceTypeName);
-                payloadHandle = payload.Handle;
+                payload.Types.Add(resourceTypeName);
+                payloadHandle = payload.AsOCRepPayload();
             }
 
             var result = OCStack.OCDoResource(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
+            if (payloadHandle != IntPtr.Zero)
+                OCPayloadInterop.OCPayloadDestroy(payloadHandle);
             OCStackException.ThrowIfError(result, "Failed to send to resource");
             var response = await tcs.Task.ConfigureAwait(false);
             

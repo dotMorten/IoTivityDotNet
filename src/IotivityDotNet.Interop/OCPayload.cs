@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 //Using alias for pointers to easier see what type of pointer is returned
+using OCPayloadPtr = System.IntPtr;
 using OCDiscoveryPayloadPtr = System.IntPtr;
 using OCRepPayloadPtr = System.IntPtr;
 using OCResourcePayloadPtr = System.IntPtr;
@@ -24,7 +25,7 @@ namespace IotivityDotNet.Interop
         public static extern OCResourcePayloadPtr OCDiscoveryPayloadGetResource(OCDiscoveryPayloadPtr handle, UIntPtr index);
         
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void OCPayloadDestroy(OCDiscoveryPayloadPtr handle);
+        public static extern void OCPayloadDestroy(OCPayloadPtr handle);
 
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern OCRepPayloadPtr OCRepPayloadCreate();
@@ -169,41 +170,51 @@ namespace IotivityDotNet.Interop
         //
         //               bool OCRepPayloadSetIntArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //                       int64_t* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //               bool OCRepPayloadSetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               const int64_t* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               int64_t** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //
-        //               bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               double* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadSetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
+                       long[] array, UIntPtr[] dimensions);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadGetIntArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
+                       out long[] array, out UIntPtr[] dimensions);
+
+        //       bool OCRepPayloadSetDoubleArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
+        //               double* array, UIntPtr dimensions[MAX_REP_ARRAY_DEPTH]);
+
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadSetDoubleArray(OCRepPayloadPtr payload, string name,
                        double[] array, UIntPtr[] dimensions);
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
         public static extern bool OCRepPayloadGetDoubleArray(OCRepPayloadPtr payload, string name,
-                       out double[] array, UIntPtr[] dimensions);
-        //
+                       out double[] array, out UIntPtr[] dimensions);
+
         //       bool OCRepPayloadSetStringArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               char** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
+        //               char** array, UIntPtr dimensions[MAX_REP_ARRAY_DEPTH]);
         //       bool OCRepPayloadSetStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               const char** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
+        //               const char** array, UIntPtr dimensions[MAX_REP_ARRAY_DEPTH]);
         //       bool OCRepPayloadGetStringArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               char*** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
+        //               char*** array, UIntPtr dimensions[MAX_REP_ARRAY_DEPTH]);
         //
         //       bool OCRepPayloadSetBoolArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               bool* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadSetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               const bool* array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //       bool OCRepPayloadGetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
-        //               bool** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadSetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
+                       bool[] array, UIntPtr[] dimensions);
+
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern bool OCRepPayloadGetBoolArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
+                       out bool[] array, out UIntPtr[] dimensions);
+        
         //       bool OCRepPayloadSetPropObjectArrayAsOwner(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               OCRepPayload** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //               bool OCRepPayloadSetPropObjectArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               const OCRepPayload** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
         //       bool OCRepPayloadGetPropObjectArray(OCRepPayloadPtr payload, [MarshalAs(UnmanagedType.LPStr)] string name,
         //               OCRepPayload*** array, size_t dimensions[MAX_REP_ARRAY_DEPTH]);
-        //
-        //               void OCRepPayloadDestroy(OCRepPayloadPtr payload);
+        
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void OCRepPayloadDestroy(OCRepPayloadPtr payload);
     }
 }

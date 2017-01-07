@@ -61,20 +61,24 @@ namespace IotivityDotNet
         private OCEntityHandlerResult OCEntityHandler(OCEntityHandlerFlag flag, OCEntityHandlerRequest entityHandlerRequest, IntPtr callbackParam)
         {
             OCEntityHandlerResult result = OCEntityHandlerResult.OC_EH_OK;
-            Payload payload = null;
+            RepPayload payload = null;
+            RepPayload requestPayload = entityHandlerRequest.payload == IntPtr.Zero ? null : new RepPayload(entityHandlerRequest.payload);
             if (entityHandlerRequest != null && (flag.HasFlag(OCEntityHandlerFlag.OC_REQUEST_FLAG)))
             {
                 switch (entityHandlerRequest.method)
                 {
                     case OCMethod.OC_REST_GET:
                         {
-                            var rpayload = new RepPayload();
+                            var rpayload = payload = new RepPayload();
                             rpayload.SetUri(_uri);
                             foreach (var resource in _resourceProperties)
                             {
+                                if (requestPayload != null && !requestPayload.Types.Contains(resource.Key))
+                                    continue;
                                 var repayload = new RepPayload(resource.Value);
-                                repayload.AddResourceType(resource.Key);
-                                rpayload.Append(repayload);
+                                repayload.Types.Add(resource.Key);
+                                rpayload.Next = repayload;
+                                rpayload = repayload;
                             }
                             payload = rpayload;
                         }
@@ -95,7 +99,7 @@ namespace IotivityDotNet
                 response.requestHandle = entityHandlerRequest.requestHandle;
                 response.resourceHandle = entityHandlerRequest.resource;
                 response.ehResult = result;
-                response.payload = payload == null ? IntPtr.Zero : payload.Handle;
+                response.payload = payload == null ? IntPtr.Zero : payload.AsOCRepPayload();
                 response.numSendVendorSpecificHeaderOptions = 0;
                 response.sendVendorSpecificHeaderOptions = IntPtr.Zero;
                 response.resourceUri = string.Empty;

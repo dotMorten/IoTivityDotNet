@@ -8,47 +8,39 @@ using System.Threading.Tasks;
 
 namespace IotivityDotNet
 {
-    public class ResourcePayload : Payload
+    public class ResourcePayload  : Payload
     {
-        private OCResourcePayload _resource;
-
-        internal ResourcePayload(IntPtr ptr) : base(ptr)
+        internal ResourcePayload(IntPtr ptr) : base()
         {
-            _resource = Marshal.PtrToStructure<OCResourcePayload>(ptr);
-        }
-
-        public IEnumerable<string> Types
-        {
-            get
+            var _resource = Marshal.PtrToStructure<OCResourcePayload>(ptr);
+            Uri = _resource.uri;
+            Port = _resource.port;
+            Secure = _resource.secure;
+            if (_resource.interfaces != IntPtr.Zero)
             {
-                var ptr = _resource.types;
-                if (ptr != IntPtr.Zero)
-                {
-                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    return resource.Values;
-                }
-                return new string[] { };
+                var resource = Marshal.PtrToStructure<OCStringLL>(_resource.interfaces);
+                Interfaces = resource.Values.ToArray();
             }
-        }
+            else
+                Interfaces = Enumerable.Empty<string>();
 
-        public IEnumerable<string> Interfaces
-        {
-            get
+            if (_resource.types != IntPtr.Zero)
             {
-                var ptr = _resource.interfaces;
-                if (ptr != IntPtr.Zero)
-                {
-                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    return resource.Values;
-                }
-                return new string[] { };
+                var resource = Marshal.PtrToStructure<OCStringLL>(_resource.types);
+                Types = resource.Values.ToArray();
             }
+            else
+                Types = Enumerable.Empty<string>();
         }
 
-        public string Uri => _resource.uri;
+        public IEnumerable<string> Types { get; }
 
-        public ushort Port => _resource.port;
+        public IEnumerable<string> Interfaces { get; }
 
-        public bool Secure => _resource.secure;
+        public string Uri { get; }
+
+        public ushort Port { get; }
+
+        public bool Secure { get; }
     }
 }

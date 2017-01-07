@@ -541,9 +541,10 @@ namespace IotivityDotNet.Interop
         //    struct OCRepPayload* obj;
         //    OCRepPayloadValueArray arr;
         //};
+
         public IntPtr next;
     }
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Explicit)] // 32bit: Size 24. 64bit: Size 36
     public struct OCRepPayloadValueUnion
     {
         [FieldOffset(0)]
@@ -561,12 +562,44 @@ namespace IotivityDotNet.Interop
         // 
         [FieldOffset(0)]
         public IntPtr ocByteStr;
-
-        // [FieldOffset(0)]
-        // public IntPtr obj;
-        // [FieldOffset(0)]
-        // public IntPtr arr;
+        
+        [FieldOffset(0)]
+        public OCRepPayloadValueArray arr;
     }
+
+    public struct OCRepPayloadValueArray
+    {
+        public OCRepPayloadPropType type;
+        public UIntPtr dimensions0;
+        //public UIntPtr dimensions1;
+        //public UIntPtr dimensions2;
+
+        //public IntPtr V1;
+         public IntPtr V2;
+         public IntPtr V3;
+        public IntPtr value; //OCRepPayloadValueArrayUnion
+
+    }
+    [StructLayout(LayoutKind.Explicit)]
+    public struct OCRepPayloadValueArrayUnion
+    {
+        [FieldOffset(0)]
+        public long[] iArray;
+        [FieldOffset(0)]
+        public double[] dArray;
+        [FieldOffset(0)]
+        public bool[] bArray;
+        [FieldOffset(0)]
+        public string[] strArray;
+
+        /** pointer to ByteString array.*/
+        //[FieldOffset(0)]
+        //IntPtr ocByteStrArray; //OCByteString
+
+        //[FieldOffset(0)]
+        //IntPtr[] objArray;
+    }
+
     public enum OCRepPayloadPropType
     {
         OCREP_PROP_NULL,

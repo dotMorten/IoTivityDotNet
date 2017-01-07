@@ -5,219 +5,110 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace IotivityDotNet
 {
     public class RepPayload  : Payload
     {
-        OCRepPayload ocpayload;
+        public RepPayload() : base()
+        {
+            Interfaces = new List<string>();
+            Types = new List<string>();
+            Values = new IotivityValueDictionary();
+        }
+
+        internal RepPayload(IntPtr handle) : this()
+        {
+            var ocpayload = Marshal.PtrToStructure<OCRepPayload>(handle);
+            if (ocpayload.interfaces != IntPtr.Zero)
+            {
+                var resource = Marshal.PtrToStructure<OCStringLL>(ocpayload.interfaces);
+                Interfaces = resource.Values.ToArray();
+            }
+            if (ocpayload.types != IntPtr.Zero)
+            {
+                var resource = Marshal.PtrToStructure<OCStringLL>(ocpayload.types);
+                Types = resource.Values.ToArray();
+            }
+            if (ocpayload.next != IntPtr.Zero)
+                Next = new RepPayload(ocpayload.next);
+            Values = new IotivityValueDictionary(ocpayload);
+        }
         
-        internal RepPayload(IntPtr handle) : base(handle)
+
+        public IList<string> Types { get; }
+
+        public IList<string> Interfaces { get; }
+        
+        public RepPayload(IDictionary<string, object> data = null) : this()
         {
-            ocpayload = Marshal.PtrToStructure<OCRepPayload>(Handle);
+            Values = new IotivityValueDictionary(data);
         }
 
-        public IEnumerable<string> Types
-        {
-            get
-            {
-                var ptr = ocpayload.types;
-                if (ptr != IntPtr.Zero)
-                {
-                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    return resource.Values;
-                }
-                return Enumerable.Empty<string>();
-            }
-        }
+        public RepPayload Next { get; set; }
 
-        public IEnumerable<string> Interfaces
-        {
-            get
-            {
-                var ptr = ocpayload.interfaces;
-                if (ptr != IntPtr.Zero)
-                {
-                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
-                    return resource.Values;
-                }
-                return Enumerable.Empty<string>();
-            }
-        }
-        internal RepPayload(GCHandle handle) : base(handle)
-        {
-        }
+        public IDictionary<string,object> Values { get; }
 
-        public RepPayload(IDictionary<string, object> data = null) : this(OCPayloadInterop.OCRepPayloadCreate())
-        {
-            if(data != null)
-                PopulateFromDictionary(data);
-        }
-
-        public RepPayload Next
-        {
-            get
-            {
-                var ptr = ocpayload.next;
-                if(ptr != IntPtr.Zero)
-                {
-                    return new RepPayload(ptr);
-                }
-                return null;
-            }
-        }
-        public IEnumerable<KeyValuePair<string,object>> Values
-        {
-            get
-            {
-                var values = ocpayload.values;
-                while (values != IntPtr.Zero)
-                {
-                    var payloadValue = Marshal.PtrToStructure<OCRepPayloadValue>(values);
-                    var ptr = payloadValue.value;
-                    switch (payloadValue.type)
-                    {
-                        case OCRepPayloadPropType.OCREP_PROP_NULL:
-                            yield return new KeyValuePair<string, object>(payloadValue.name, null); break;
-                        case OCRepPayloadPropType.OCREP_PROP_STRING:
-                            {
-                                var strvalue = Marshal.PtrToStringAnsi(ptr.ocByteStr);
-                                yield return new KeyValuePair<string, object>(payloadValue.name, strvalue); break;
-                            }
-                        case OCRepPayloadPropType.OCREP_PROP_BOOL:
-                            {
-                                bool bvalue = payloadValue.value.b;
-                                yield return new KeyValuePair<string, object>(payloadValue.name, bvalue);
-                                break;
-                            }
-                        case OCRepPayloadPropType.OCREP_PROP_DOUBLE:
-                            {
-                                double dvalue = payloadValue.value.d;
-                                yield return new KeyValuePair<string, object>(payloadValue.name, dvalue);
-                                break;
-                            }
-                        case OCRepPayloadPropType.OCREP_PROP_INT:
-                            {
-                                long lvalue = payloadValue.value.i;
-                                yield return new KeyValuePair<string, object>(payloadValue.name, lvalue);
-                                break;
-                            }
-                        case OCRepPayloadPropType.OCREP_PROP_ARRAY:
-                            {
-                                IntPtr arr = payloadValue.value.ocByteStr;
-                                //var a = Marshal.PtrToStructure<double[]>(arr);
-                                break;
-                            }
-                        default:
-                            throw new NotImplementedException(payloadValue.type.ToString());
-                    }
-                    values = payloadValue.next;
-                }
-            }
-        }
         public void PopulateFromDictionary(IDictionary<string,object> data)
         {
             foreach (var property in data)
             {
-                if (property.Value == null)
-                {
-                    SetPropertyNull(property.Key);
-                }
-                else if (property.Value.GetType() == typeof(bool))
-                {
-                    SetProperty(property.Key, (bool)property.Value);
-                }
-                else if (property.Value.GetType() == typeof(double))
-                {
-                    SetProperty(property.Key, (double)property.Value);
-                }
-                else if (property.Value.GetType() == typeof(long))
-                {
-                    SetProperty(property.Key, (long)property.Value);
-                }
-                else if (property.Value is string)
-                {
-                    SetProperty(property.Key, (string)property.Value);
-                }
-                else if (property.Value.GetType().IsArray)
-                {
-                    if(property.Value is double[])
-                    {
-                        SetProperty(property.Key, (double[])property.Value);
-                    }
-                    //TODO
-                }
-                else throw new NotSupportedException("Property Type for key '" + property.Key + "' of type " + property.Value.GetType().FullName + " not supported");
+                Values.Add(property);
             }
-        }
-        public RepPayload Clone()
-        {
-            return new RepPayload(OCPayloadInterop.OCRepPayloadClone(Handle));
-        }
-        public bool SetProperty(string name, long value)
-        {
-            return OCPayloadInterop.OCRepPayloadSetPropInt(Handle, name, value);
-        }
-        public bool TryGetInt64(string name, out long value)
-        {
-            return OCPayloadInterop.OCRepPayloadGetPropInt(Handle, name, out value);
         }
 
-        public bool SetPropertyNull(string name)
+        private string _uri;
+
+        public void SetUri(string uri)
         {
-            return OCPayloadInterop.OCRepPayloadSetNull(Handle, name);
+            _uri = uri;
         }
-        public bool TryGetPropertyIsNull(string name, out bool isNull)
+
+
+        public IntPtr AsOCRepPayload()
         {
-            isNull = OCPayloadInterop.OCRepPayloadIsNull(Handle, name);
-            return true;
-        }
-        public bool SetProperty(string name, double value)
-        {
-            return OCPayloadInterop.OCRepPayloadSetPropDouble(Handle, name, value);
-        }
-        public bool TryGetDouble(string name, out double value)
-        {
-            return OCPayloadInterop.OCRepPayloadGetPropDouble(Handle, name, out value);
-        }
-        public bool SetProperty(string name, bool value)
-        {
-            return OCPayloadInterop.OCRepPayloadSetPropBool(Handle, name, value);
-        }
-        public bool TryGetBool(string name, out bool value)
-        {
-            return OCPayloadInterop.OCRepPayloadGetPropBool(Handle, name, out value);
-        }
-        public bool SetProperty(string name, string value)
-        {
-            return OCPayloadInterop.OCRepPayloadSetPropString(Handle, name, value);
-        }
-        public bool SetProperty(string name, double[] value)
-        {
-            return OCPayloadInterop.OCRepPayloadSetDoubleArray(Handle, name, value, new UIntPtr[] { (UIntPtr)value.Length });
-        }
-        public bool TryGetString(string name, out string value)
-        {
-            IntPtr ptr;
-            value = null;
-            bool result = OCPayloadInterop.OCRepPayloadGetPropString(Handle, name, out ptr);
-            if (result)
+            IntPtr handle = OCPayloadInterop.OCRepPayloadCreate();
+            bool ok = false;
+            if(!string.IsNullOrEmpty(_uri))
+                ok = OCPayloadInterop.OCRepPayloadSetUri(handle, _uri);
+            (Values as IotivityValueDictionary).AssignToOCRepPayload(handle);
+            foreach (var resourceType in Types)
+                ok = OCPayloadInterop.OCRepPayloadAddResourceType(handle, resourceType);
+            if(Next != null)
             {
-                value = Marshal.PtrToStringAnsi(ptr);
+                OCPayloadInterop.OCRepPayloadAppend(handle, Next.AsOCRepPayload());
             }
-            return result;
+            return handle;
         }
-        public bool SetUri(string uri)
+
+        public bool TryGetBool(string key, out bool value)
         {
-            return OCPayloadInterop.OCRepPayloadSetUri(Handle, uri);
+            return TryGet<bool>(key, out value);
         }
-        public bool AddResourceType(string resourceType)
+
+        public bool TryGetInt64(string key, out long value)
         {
-            return OCPayloadInterop.OCRepPayloadAddResourceType(Handle, resourceType);
+            return TryGet<long>(key, out value);
         }
-        public void Append(RepPayload child)
+
+        public bool TryGetDouble(string key, out double value)
         {
-            OCPayloadInterop.OCRepPayloadAppend(Handle, child.Handle);
+            return TryGet<double>(key, out value);
+        }
+
+        public bool TryGet<T>(string key, out T value)
+        {
+            value = default(T);
+            if (!Values.ContainsKey(key))
+                return false;
+            var v = Values[key];
+            if (v is T)
+            {
+                value = (T)v;
+                return true;
+            }
+            return false;
         }
     }
 }

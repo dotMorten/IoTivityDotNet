@@ -10,41 +10,5 @@ namespace IotivityDotNet
 {
     public abstract class Payload
     {
-        GCHandle gchandle;
-        internal static Payload FromOCPayload(OCPayload payload)
-        {
-            if (payload != null)
-            {
-      	       switch (payload.type)
-       		   {
-                  case OCPayloadType.PAYLOAD_TYPE_DISCOVERY:
-                     return new DiscoveryPayload(GCHandle.Alloc(payload));
-                  case OCPayloadType.PAYLOAD_TYPE_REPRESENTATION:
-                     return new RepPayload(GCHandle.Alloc(payload));
-               }
-            }
-            return null;
-        }
-
-        protected Payload(IntPtr handle)
-        {
-            if (handle == IntPtr.Zero)
-                throw new ArgumentNullException(nameof(handle));
-            Handle = handle;
-        }
-        protected Payload(GCHandle gchandle) : this(GCHandle.ToIntPtr(gchandle))
-        {
-            this.gchandle = gchandle;
-        }
-
-        public IntPtr Handle { get; }
-
-        ~Payload()
-        {
-           //  if (gchandle.IsAllocated)
-           //      gchandle.Free();
-           //  OCPayloadDestroy(Handle);
-        }
     }
-
 }

@@ -1,46 +1,28 @@
 ﻿using IotivityDotNet.Interop;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace IotivityDotNet
 {
-    public class DiscoveryPayload : Payload
+    public class DiscoveryPayload  : Payload
     {
-        public DiscoveryPayload() : this(OCPayloadInterop.OCDiscoveryPayloadCreate()) { }
-
-        internal DiscoveryPayload(IntPtr handle) : base(handle)
+        internal DiscoveryPayload(IntPtr handle) : base()
         {
-        }
-
-        internal DiscoveryPayload(GCHandle handle) : base(handle)
-        {
-        }
-
-        public static DiscoveryPayload Create()
-        {
-            return new DiscoveryPayload();
-        }
-      
-        public ulong ResourceCount { get { return (ulong)OCPayloadInterop.OCDiscoveryPayloadGetResourceCount(Handle); } }
-
-        public IEnumerable<ResourcePayload> Resources
-        {
-            get
+            ulong count = (ulong)OCPayloadInterop.OCDiscoveryPayloadGetResourceCount(handle);
+            var resources = new List<ResourcePayload>((int)count);
+            for (ulong i = 0; i < count; i++)
             {
-                for (ulong i = 0; i < ResourceCount; i++)
-                {
-                    yield return GetResource(i);
-                }
+                resources.Add(GetResource(handle, i));
             }
+            Resources = new ReadOnlyCollection<ResourcePayload>(resources);
         }
 
-        public ResourcePayload GetResource(ulong index)
+        public IReadOnlyList<ResourcePayload> Resources { get; }
+
+        private static ResourcePayload GetResource(IntPtr handle, ulong index)
         {
-            var ptr = OCPayloadInterop.OCDiscoveryPayloadGetResource(Handle, (UIntPtr)index);
+            var ptr = OCPayloadInterop.OCDiscoveryPayloadGetResource(handle, (UIntPtr)index);
             if (ptr == IntPtr.Zero)
                 return null;
             return new ResourcePayload(ptr);

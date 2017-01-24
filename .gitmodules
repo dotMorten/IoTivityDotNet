@@ -1,0 +1,3 @@
+[submodule "Dependencies/iotivity"]
+	path = Dependencies/iotivity
+	url = https://git.iotivity.org/iotivity/

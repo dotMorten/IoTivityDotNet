@@ -4,8 +4,6 @@ using System.Text;
 
 namespace IotivityDotNet.Interop
 {
-
-
     public enum OCMode
     {
         /// <summary>

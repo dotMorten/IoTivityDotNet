@@ -146,8 +146,8 @@ namespace IotivityDotNet.Interop
         *     OC_STACK_OK                    No errors; Success.
         *     OC_STACK_INVALID_PARAM         Invalid parameter.
         */
-        //  [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
-        //  public static extern OCStackResult OCRegisterPersistentStorageHandler(OCPersistentStorage* persistentStorageHandler);
+        [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = CallingConvention.Cdecl)]
+        public static extern OCStackResult OCRegisterPersistentStorageHandler(OCPersistentStorage persistentStorageHandler);
 
         /**
         * When operating in  OCServer or  OCClientServer mode,

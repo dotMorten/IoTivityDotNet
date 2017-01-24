@@ -660,4 +660,60 @@ namespace IotivityDotNet.Interop
         public IntPtr dataModelVersions;
     }
 
+
+
+    /// <summary>
+    /// Persistent storage handlers. An APP must provide OCPersistentStorage handler pointers
+    /// when it calls OCRegisterPersistentStorageHandler.
+    /// Persistent storage open handler points to default file path.
+    /// It should check file path and whether the file is symbolic link or no.
+    /// Application can point to appropriate SVR database path for it's IoTivity Server.
+    /// </summary>
+    //[StructLayout(LayoutKind.Sequential)]
+    //public class OCPersistentStorage
+    //{
+    //    /** Persistent storage file path.*/
+    //    public FileOpenDelegate Open;
+
+    //    /** Persistent storage read handler.*/
+    //    public FileReadDelegate Read;
+
+    //    /** Persistent storage write handler.*/
+    //    public FileWriteDelegate Write;
+
+    //    /** Persistent storage close handler.*/
+    //    public FileCloseDelegate Close;
+
+    //    /** Persistent storage unlink handler.*/
+    //    public FileUnlinkDelegate Unlink;
+    //}
+    [StructLayout(LayoutKind.Sequential)]
+    public class OCPersistentStorage
+    {
+        /** Persistent storage file path.*/
+        public IntPtr Open;
+
+        /** Persistent storage read handler.*/
+        public IntPtr Read;
+
+        /** Persistent storage write handler.*/
+        public IntPtr Write;
+
+        /** Persistent storage close handler.*/
+        public IntPtr Close;
+
+        /** Persistent storage unlink handler.*/
+        public IntPtr Unlink;
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate IntPtr FileOpenDelegate([MarshalAs(UnmanagedType.LPStr)]string path, [MarshalAs(UnmanagedType.LPStr)]string mode); // FILE* (* open)(const char* path, const char* mode);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate UIntPtr FileReadDelegate(IntPtr data, UIntPtr size, UIntPtr nmemb, IntPtr file); // size_t(* read)(void* ptr, size_t size, size_t nmemb, FILE * stream);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate UIntPtr FileWriteDelegate(IntPtr data, UIntPtr size, UIntPtr nmemb, IntPtr file); // size_t(* write)(const void* ptr, size_t size, size_t nmemb, FILE * stream);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FileCloseDelegate(IntPtr file); // int (* close)(FILE* fp);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FileUnlinkDelegate([MarshalAs(UnmanagedType.LPStr)]string path); // int (* unlink)(const char* path);
 }

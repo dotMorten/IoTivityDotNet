@@ -76,8 +76,8 @@ namespace IotivityDotNet
             }
 
             var result = OCStack.OCDoResource(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
-            if (payloadHandle != IntPtr.Zero)
-                OCPayloadInterop.OCPayloadDestroy(payloadHandle);
+            // if (payloadHandle != IntPtr.Zero)
+            //     OCPayloadInterop.OCPayloadDestroy(payloadHandle);
             OCStackException.ThrowIfError(result, "Failed to send to resource");
             var response = await tcs.Task.ConfigureAwait(false);
             

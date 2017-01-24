@@ -10,6 +10,7 @@ namespace IotivityDotNet
     public class DiscoverResource
     {
         private string requestUri;
+        private bool isRunning;
         private OCCallbackData cbData;
         private IntPtr handle;
         private GCHandle gchandle;
@@ -30,8 +31,7 @@ namespace IotivityDotNet
             gchandle.Free();
             gchandle2.Free();
         }
-        bool isRunning;
-
+        
         public async void Start()
         {
             isRunning = true;

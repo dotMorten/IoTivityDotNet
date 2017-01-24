@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSDK Headers", "CSDK Header
 		..\Dependencies\iotivity\resource\csdk\stack\include\ocpresence.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocpresence.h
 		..\Dependencies\iotivity\resource\csdk\stack\include\ocstack.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocstack.h
 		..\Dependencies\iotivity\resource\csdk\stack\include\ocstackconfig.h = ..\Dependencies\iotivity\resource\csdk\stack\include\ocstackconfig.h
-		..\Dependencies\iotivity\resource\csdk\stack\include\octypes.h = ..\Dependencies\iotivity\resource\csdk\stack\include\octypes.h
+		..\Dependencies\iotivity\resource\csdk\include\octypes.h = ..\Dependencies\iotivity\resource\csdk\include\octypes.h
 		..\Dependencies\iotivity\resource\csdk\stack\include\payload_logging.h = ..\Dependencies\iotivity\resource\csdk\stack\include\payload_logging.h
 	EndProjectSection
 EndProject

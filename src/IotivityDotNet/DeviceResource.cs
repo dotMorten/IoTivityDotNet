@@ -22,7 +22,7 @@ namespace IotivityDotNet
         public DeviceResource(string uri, string resourceTypeName, IDictionary<string,object> properties, string resourceInterfaceName = IotivityDotNet.Interop.Defines.OC_RSRVD_INTERFACE_DEFAULT)
         {
             _resourceCallback = this.OCEntityHandler;
-            OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE);
+            OCStackResult result = OCStack.OCCreateResource(out _handle, resourceTypeName, resourceInterfaceName, uri, _resourceCallback, IntPtr.Zero, OCResourceProperty.OC_DISCOVERABLE | OCResourceProperty.OC_OBSERVABLE | OCResourceProperty.OC_SECURE);
             OCStackException.ThrowIfError(result, "Failed to create resource");
             _uri = uri;
             _resourceProperties = new Dictionary<string, IotivityValueDictionary>();

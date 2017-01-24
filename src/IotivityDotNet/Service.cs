@@ -23,9 +23,9 @@ namespace IotivityDotNet
         private static OCEntityHandler globalHandler;
         private static StorageHandler storageHandler;
         private static GCHandle storageHandle;
-        public static void Initialize(ServiceMode mode)
+        public static void Initialize(ServiceMode mode, string dataPath = "")
         {
-            storageHandler = new StorageHandler();
+            storageHandler = new StorageHandler(dataPath);
             storageHandle = GCHandle.Alloc(storageHandler);
             var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle);
             OCStackException.ThrowIfError(fileresult, "Failed to create storage handler");
@@ -132,9 +132,10 @@ namespace IotivityDotNet
             private GCHandle pHandle;
             public OCPersistentStorage Handle { get; }
             //public OCPersistentStorage2 Handle2 { get; }
-
-            public StorageHandler()
+            private string _dataPath;
+            public StorageHandler(string dataPath)
             {
+                _dataPath = dataPath;
                 openDelegate =new FileOpenDelegate(FileOpen);
                 readDelegate = new FileReadDelegate(FileRead);
                 closeDelegate = new FileCloseDelegate(FileClose);
@@ -192,7 +193,7 @@ namespace IotivityDotNet
                     case "a+":
                     case "ab":
                     case "ab+":
-                        fmode = System.IO.FileMode.Append;break;
+                        fmode = System.IO.FileMode.Append; break;
                     case "w+":
                     case "w":
                     case "wb":
@@ -204,7 +205,7 @@ namespace IotivityDotNet
                     access = System.IO.FileAccess.Read;
                 else if (mode.Contains("w"))
                     access = System.IO.FileAccess.ReadWrite;
-                
+
                 if (System.IO.File.Exists(path))
                 {
                 }
@@ -213,12 +214,12 @@ namespace IotivityDotNet
                     return IntPtr.Zero;
                 }
 
-                
-                    var fs = System.IO.File.Open(path, fmode, access);
-                    id++;
-                    var ptr = new IntPtr(id);
-                    streams[ptr] = fs;
-                    return ptr;
+                path = System.IO.Path.Combine(_dataPath, path);
+                var fs = System.IO.File.Open(path, fmode, access);
+                id++;
+                var ptr = new IntPtr(id);
+                streams[ptr] = fs;
+                return ptr;
             }
             public UIntPtr FileRead(IntPtr data, UIntPtr size, UIntPtr nmemb, IntPtr file)
             {

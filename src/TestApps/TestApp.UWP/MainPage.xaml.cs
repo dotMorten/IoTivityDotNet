@@ -32,7 +32,7 @@ namespace TestApp.UWP
 
             Log.OnLogEvent += (s, e) => { var _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => { logOutput.Text += e + "\n"; }); };
             Log.WriteLine("Initializing OCSTACK...");
-            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
+            IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer, Windows.Storage.ApplicationData.Current.LocalFolder.Path);
             Log.WriteLine("Initialized");
 
             Log.WriteLine("Creating devices...");

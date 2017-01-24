@@ -17,8 +17,8 @@
       <reference file="IotivityDotNet.dll" />
     </references>
     <dependencies>
-      <group targetFramework=".NETStandard1.2">
-        <dependency id="dotMorten.IotivityDotNet.Interop" version="$version$" />
+      <group targetFramework=".NETStandard1.4">
+        <dependency id="dotMorten.IotivityDotNet.Interop" version="0.1.0" />
       </group>
     </dependencies>
   </metadata>

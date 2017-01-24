@@ -27,8 +27,7 @@ namespace IotivityDotNet
         {
             storageHandler = new StorageHandler();
             storageHandle = GCHandle.Alloc(storageHandler);
-            //var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle);
-            var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle2);
+            var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle);
             OCStackException.ThrowIfError(fileresult, "Failed to create storage handler");
 
             var result = OCStack.OCInit(null, 0, (OCMode)mode);

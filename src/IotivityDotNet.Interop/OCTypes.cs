@@ -126,25 +126,6 @@ namespace IotivityDotNet.Interop
     [StructLayout(LayoutKind.Sequential)]
     public class OCStringLL : IEnumerable<string>
     {
-/*typedef struct OCStringLL
-{
-    struct OCStringLL *next;
-    char* value;
-    }
-    OCStringLL;
-*/
-        /*public static OCStringLL Create(IEnumerable<string> values)
-        {
-            if (values == null) return null;
-            IntPtr nextInstance = IntPtr.Zero;
-            IntPtr ptr = IntPtr.Zero;
-            foreach(var item in values.Reverse())
-            {
-                OCStringLL v = new OCStringLL() { value = item, next = nextInstance };
-                nextInstance = v;
-            }
-            return nextInstance;
-        }*/
         public static IntPtr Create(IEnumerable<string> values)
         {
             if (values == null) return IntPtr.Zero;
@@ -176,7 +157,6 @@ namespace IotivityDotNet.Interop
         /// Type: OCStringLL
         /// </summary>
         public IntPtr next;
-        //public OCStringLL next;
 
         [MarshalAs(UnmanagedType.LPStr)]
         public string value;
@@ -185,7 +165,6 @@ namespace IotivityDotNet.Interop
         {
             get
             {
-                //return next;
                 if (next == IntPtr.Zero) return null;
                 return Marshal.PtrToStructure<OCStringLL>(next);
             }
@@ -196,12 +175,12 @@ namespace IotivityDotNet.Interop
             get
             {
                 yield return value;
-                var ptr = Next;
-                while (ptr != null)
+                var ptr = next;
+                while (ptr != IntPtr.Zero)
                 {
-                    var resource = ptr;
+                    var resource = Marshal.PtrToStructure<OCStringLL>(ptr);
                     yield return resource.value;
-                    ptr = resource.Next;
+                    ptr = resource.next;
                 }
             }
         }

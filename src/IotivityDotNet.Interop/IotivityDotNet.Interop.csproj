@@ -1,66 +1,68 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+   <IoTivityOutputFolder>$(MSBuildThisFileDirectory)..\..\..\..\..\..\iotivity.org\iotivity\out\</IoTivityOutputFolder>
+   <IoTivity_AndroidNDKFolder>$(IoTivityOutputFolder)..\extlibs\android\ndk\android-ndk-r10e\</IoTivity_AndroidNDKFolder>
+   <IoTivity_AndroidTargetFramework>monoandroid50</IoTivity_AndroidTargetFramework>
+   <DefineConstants>NETSTANDARD</DefineConstants>
+</PropertyGroup>
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79C16808-5FB5-456E-A31B-6F1B9A9F5474}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IotivityDotNet.Interop</RootNamespace>
-    <AssemblyName>IotivityDotNet.Interop</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <PackageId>dotMorten.IoTivity.Interop</PackageId>
+    <TargetFrameworks>netstandard1.4;net452;$(IoTivity_AndroidTargetFramework);xamarinios10</TargetFrameworks>
+    <Title>IoTivity .NET (Interop)</Title>
+    <Description>Low-level .NET Wrapper classes for the IoTivity C-API.</Description>
+    <PackageTags>IoTivity IoT</PackageTags>
+    <Version>1.0.0-beta1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Morten Nielsen</Authors>
+    <Company>Morten Nielsen</Company>
+    <PackageLicenseUrl>https://github.com/dotMorten/IoTivityDotNet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/dotMorten/IoTivityDotNet</PackageProjectUrl>
+    <Product>IoTivity C-API Interop</Product>
+    <Copyright>Copyright © 2017 Morten Nielsen. All rights reserved.</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\IotivityDotNet.Interop.xml</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="nuget\dotMorten.IotivityDotNet.Interop.nuspec" />
-    <None Include="GenerateNugetPackage.targets" />
-    <None Include="nuget\build\net451\dotMorten.IotivityDotNet.Interop.targets" />
-    <None Include="project.json" />
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <None Include="$(IoTivityOutputFolder)windows\win32\amd64\release\octbstack.dll" Pack="true" PackagePath="Dependencies\net452\x64" />
+    <None Include="$(IoTivityOutputFolder)windows\win32\x86\release\octbstack.dll" Pack="true" PackagePath="Dependencies\net452\x86" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Defines.cs" />
-    <Compile Include="Init.cs" />
-    <Compile Include="OCEnums.cs" />
-    <Compile Include="OCImports.cs" />
-    <Compile Include="OCPayload.cs" />
-    <Compile Include="OCStack.cs" />
-    <Compile Include="OCTypes.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="all" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)GenerateNugetPackage.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  
+  <Choose>
+    <When Condition="'$(TargetFramework)' == '$(IoTivity_AndroidTargetFramework)'">
+      <PropertyGroup>
+        <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+      </PropertyGroup>
+      <ItemGroup>
+        <EmbeddedNativeLibrary Include="$(IoTivityOutputFolder)android\armeabi\release\lib*.so">
+          <Link>libs\armeabi\%(Filename)%(Extension)</Link>
+        </EmbeddedNativeLibrary>
+        <EmbeddedNativeLibrary Include="$(IoTivityOutputFolder)android\armeabi-v7a\release\lib*.so">
+          <Link>libs\armeabi-v7a\%(Filename)%(Extension)</Link>
+        </EmbeddedNativeLibrary>
+        <EmbeddedNativeLibrary Include="$(IoTivityOutputFolder)android\x86\release\lib*.so">
+          <Link>libs\x86\%(Filename)%(Extension)</Link>
+        </EmbeddedNativeLibrary>
+        <EmbeddedNativeLibrary Include="$(IoTivityOutputFolder)android\x86_64\release\lib*.so">
+          <Link>libs\x86_64\%(Filename)%(Extension)</Link>
+        </EmbeddedNativeLibrary>
+      </ItemGroup>
+    </When>
+  </Choose>
+
+
+  <Target Name="ValidateIoTivityOutput" BeforeTargets="Pack">
+    <Error Condition="!Exists('$(IoTivityOutputFolder)')" Text="IoTivity Output folder '$(IoTivityOutputFolder)' not found! Please set the 'IoTivityOutputFolder' defined in this project to the build output folder of IoTivity." />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  
+  <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

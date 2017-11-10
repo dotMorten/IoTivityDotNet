@@ -28,9 +28,12 @@ namespace IotivityDotNet
             storageHandler = new StorageHandler(dataPath);
             storageHandle = GCHandle.Alloc(storageHandler);
             var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle);
+            
             OCStackException.ThrowIfError(fileresult, "Failed to create storage handler");
-
-            var result = OCStack.OCInit(null, 0, (OCMode)mode);
+            
+            //var result = OCStack.OCInit(null, 0, (OCMode)mode);
+            var result = OCStack.OCInit2((OCMode)mode, OCTransportFlags.OC_DEFAULT_FLAGS, OCTransportFlags.OC_DEFAULT_FLAGS, OCTransportAdapter.OC_ADAPTER_IP);
+            // result = OCStack.OCInit("0.0.0.0", 0, (OCMode)mode);
             OCStackException.ThrowIfError(result);
             globalHandler = OCDefaultDeviceEntityHandler;
             GC.KeepAlive(storageHandler);
@@ -94,11 +97,11 @@ namespace IotivityDotNet
         /// </summary>
         public static void SetDeviceInfo(string deviceName, IEnumerable<string> types, string specVersion, IEnumerable<string> dataModelVersions)
         {
-            IntPtr octypes = OCStringLL.Create(types);
-            IntPtr ocdataModelVersions = OCStringLL.Create(dataModelVersions);
+            var octypes = OCStringLL.Create(types);
+            var ocdataModelVersions = OCStringLL.Create(dataModelVersions);
             var info = new OCDeviceInfo()
             {
-                deviceName =  deviceName,
+                deviceName = deviceName,
                 types = octypes,
                 specVersion = specVersion,
                 dataModelVersions = ocdataModelVersions

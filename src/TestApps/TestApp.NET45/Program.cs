@@ -12,17 +12,21 @@ namespace ClientTestApp
 
         static Server server;
         static Client client;
-
+        //static LifxBridge lifxBridge;
         static void Main(string[] args)
         {
             Console.WriteLine("Initializing...");
-            EnableAggressiveGC();
+            //EnableAggressiveGC();
             IotivityDotNet.Service.Initialize(IotivityDotNet.ServiceMode.ClientServer);
             IotivityDotNet.Service.SetDeviceInfo(".NET Console Test App", new string[] { "oic.wk.d" }, null, null);
             Log.OnLogEvent += (s, e) => Console.WriteLine(e);
 
             Console.WriteLine("Creating devices...");
             server = new Server();
+            //lifxBridge = new LifxBridge();
+            //lifxBridge.Start();
+            //Task.Delay(3000).Wait();
+            Console.ReadKey();
 
             Console.WriteLine("Creating client...");
             client = new Client();

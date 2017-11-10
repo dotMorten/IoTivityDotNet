@@ -2,28 +2,38 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-	<IotivityDeployX86 Condition="'$(PlatformTarget)' == 'x86' OR '$(PlatformTarget)' == 'AnyCPU'" >true</IotivityDeployX86>
-	<IotivityDeployX64 Condition="('$(Prefer32Bit)' == 'false' and '$(PlatformTarget)' == 'AnyCPU') or '$(PlatformTarget)' == 'x64'" >true</IotivityDeployX64>
+    <IoTivityOutputFolder>$(MSBuildThisFileDirectory)..\..\..\..\..\..\..\iotivity.org\iotivity\out\</IoTivityOutputFolder>
+    <IotivityDeployX86 Condition="'$(PlatformTarget)' == 'x86' OR '$(PlatformTarget)' == 'AnyCPU'" >true</IotivityDeployX86>
+  	<IotivityDeployX64 Condition="('$(Prefer32Bit)' == 'false' and '$(PlatformTarget)' == 'AnyCPU') or '$(PlatformTarget)' == 'x64'" >true</IotivityDeployX64>
   </PropertyGroup>
   
   
+  
   <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
-    <Content Include="..\..\..\libs\octbstack\Windows\x64\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\amd64\release\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
       <Link>x64\octbstack.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x86\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\x86\release\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
       <Link>x86\octbstack.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <Content Include="..\..\..\libs\octbstack\Windows\x64-debug\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\amd64\debug\octbstack.dll" Condition=" '$(IotivityDeployX64)' == 'true' ">
       <Link>x64\octbstack.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\..\libs\octbstack\Windows\x86-debug\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\amd64\debug\octbstack.pdb" Condition=" '$(IotivityDeployX64)' == 'true' ">
+      <Link>x64\octbstack.pdb</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\x86\debug\octbstack.dll" Condition=" '$(IotivityDeployX86)' == 'true' ">
       <Link>x86\octbstack.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(IoTivityOutputFolder)\Windows\win32\x86\debug\octbstack.pdb" Condition=" '$(IotivityDeployX86)' == 'true' ">
+      <Link>x86\octbstack.pdb</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -11,7 +11,7 @@ namespace IotivityDotNet.Interop
     {
         private static object initLock = new object();
         static bool isInitialized = false;
-#if !__ANDROID__ && !NETFX_CORE
+#if !__ANDROID__ && !NETFX_CORE && !__IOS__
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetDllDirectory(string lpPathName);
@@ -25,7 +25,7 @@ namespace IotivityDotNet.Interop
                 {
                     try
                     {
-#if !__ANDROID__ && !NETFX_CORE
+#if !__ANDROID__ && !NETFX_CORE && !__IOS__
                         bool ok = true;
                         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         {

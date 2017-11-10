@@ -95,15 +95,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TestApp.NET45\Client.cs">
-      <Link>Client.cs</Link>
-    </Compile>
-    <Compile Include="..\TestApp.NET45\Log.cs">
-      <Link>Log.cs</Link>
-    </Compile>
-    <Compile Include="..\TestApp.NET45\Server.cs">
-      <Link>Server.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -148,6 +139,7 @@
       <Name>IotivityDotNet</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\TestApp.Shared\TestApp.Shared.projitems" Label="Shared" />
   <Import Project="DeployNativeResources.targets" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -22,6 +22,8 @@ namespace IotivityDotNet.Interop
     public class OCResourcePayload
     {
         public string uri;
+        public string rel;
+        public string anchor;
         /// <summary>
         /// Type: OCStringLL
         /// </summary>

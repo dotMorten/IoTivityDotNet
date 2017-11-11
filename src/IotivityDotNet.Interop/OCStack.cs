@@ -124,7 +124,7 @@ namespace IotivityDotNet.Interop
         /// <param name="numOptions">Number of header options to be included.</param>
         /// <returns>OC_STACK_OK on success, some other value upon failure.</returns>
         [DllImport(Constants.DLL_IMPORT_TARGET, CallingConvention = Constants.CallConvention)]
-        public static extern OCStackResult OCDoResource(out IntPtr handle,
+        public static extern OCStackResult OCDoRequest(out IntPtr handle,
                                    OCMethod method,
                            [MarshalAs(UnmanagedType.LPStr)] string requestUri,
                            OCDevAddr destination,
@@ -136,7 +136,7 @@ namespace IotivityDotNet.Interop
                            byte numOptions);
 
         /// <summary>
-        /// This function cancels a request associated with a specific <see cref="OCDoResource"/> invocation.
+        /// This function cancels a request associated with a specific <see cref="OCDoRequest"/> invocation.
         /// </summary>
         /// <param name="handle">Used to identify a specific OCDoResource invocation.</param>
         /// <param name="qos">Used to specify Quality of Service(read below).</param>

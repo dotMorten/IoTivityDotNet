@@ -23,9 +23,9 @@ namespace IotivityDotNet
         private static OCEntityHandler globalHandler;
         private static StorageHandler storageHandler;
         private static GCHandle storageHandle;
-        public static void Initialize(ServiceMode mode, string dataPath = "")
+        public static void Initialize(ServiceMode mode, string dataPath = "", string securityDBDatFilename = null)
         {
-            storageHandler = new StorageHandler(dataPath);
+            storageHandler = new StorageHandler(dataPath, securityDBDatFilename);
             storageHandle = GCHandle.Alloc(storageHandler);
             var fileresult = OCStack.OCRegisterPersistentStorageHandler(storageHandler.Handle);
             
@@ -136,9 +136,11 @@ namespace IotivityDotNet
             public OCPersistentStorage Handle { get; }
             //public OCPersistentStorage2 Handle2 { get; }
             private string _dataPath;
-            public StorageHandler(string dataPath)
+            private string _SECURITY_DB_DAT_FILE_NAME;
+            public StorageHandler(string dataPath, string SecurityDBDatFilename = null)
             {
                 _dataPath = dataPath;
+                _SECURITY_DB_DAT_FILE_NAME = SecurityDBDatFilename;
                 openDelegate =new FileOpenDelegate(FileOpen);
                 readDelegate = new FileReadDelegate(FileRead);
                 closeDelegate = new FileCloseDelegate(FileClose);
@@ -183,6 +185,8 @@ namespace IotivityDotNet
             Dictionary<IntPtr, System.IO.FileStream> streams = new Dictionary<IntPtr, System.IO.FileStream>();
             public IntPtr FileOpen(string path, string mode)
             {
+                if (path == Defines.OC_SECURITY_DB_DAT_FILE_NAME && _SECURITY_DB_DAT_FILE_NAME != null)
+                    path = this._SECURITY_DB_DAT_FILE_NAME;
                 System.IO.FileMode fmode = System.IO.FileMode.Create;
                 System.IO.FileAccess access = System.IO.FileAccess.Read;
                 switch (mode)
@@ -216,7 +220,8 @@ namespace IotivityDotNet
                 {
                     return IntPtr.Zero;
                 }
-
+                if (!string.IsNullOrEmpty(_dataPath) && !System.IO.Directory.Exists(_dataPath))
+                    System.IO.Directory.CreateDirectory(_dataPath);
                 path = System.IO.Path.Combine(_dataPath, path);
                 var fs = System.IO.File.Open(path, fmode, access);
                 id++;
@@ -249,6 +254,7 @@ namespace IotivityDotNet
             }
             public int FileUnlink(string path)
             {
+                path = System.IO.Path.Combine(_dataPath, path);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);

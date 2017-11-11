@@ -39,7 +39,7 @@ namespace IotivityDotNet
                 return;
             while (isRunning)
             {
-                var ret = OCStack.OCDoResource(out handle, OCMethod.OC_REST_DISCOVER, requestUri, null, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, cbData, null, 0);
+                var ret = OCStack.OCDoRequest(out handle, OCMethod.OC_REST_DISCOVER, requestUri, null, IntPtr.Zero, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, cbData, null, 0);
                 OCStackException.ThrowIfError(ret);
                 await Task.Delay(5000);
                 ret = OCStack.OCCancel(handle, OCQualityOfService.OC_LOW_QOS, null, 0);

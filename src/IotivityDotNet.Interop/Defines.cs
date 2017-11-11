@@ -184,6 +184,12 @@ namespace IotivityDotNet.Interop
         /// <summary>For security.</summary>
         public const string OC_RSRVD_SECURE = "sec";
 
+        /// <summary> Security Database persistent store name(json).</summary>
+        public const string OC_SECURITY_DB_FILE_NAME = "oic_svr_db.json";
+
+        /// <summary> Security Database persistent store name(dat).</summary>
+        public const string OC_SECURITY_DB_DAT_FILE_NAME = "oic_svr_db.dat";
+
         /// <summary>Port. </summary>
         public const string OC_RSRVD_HOSTING_PORT = "port";
 

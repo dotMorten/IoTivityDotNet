@@ -45,7 +45,15 @@ namespace ClientTestApp
                         {
                             var client = new IotivityDotNet.ResourceClient(e.Address, r.Uri);
                             //Get all the properties from the resource
-                            var response = await client.GetAsync(type);
+                            IotivityDotNet.ClientResponse<IotivityDotNet.Payload> response;
+                            try
+                            {
+                                response = await client.GetAsync(type);
+                            }
+                            catch
+                            {
+                                continue;
+                            }
                             var p = response.Payload as IotivityDotNet.RepPayload;
                             while(p != null)
                             {

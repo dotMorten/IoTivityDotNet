@@ -53,7 +53,8 @@ namespace IotivityDotNet
                 GCHandle.FromIntPtr(context).Free();
                 if (clientResponse.result > OCStackResult.OC_STACK_RESOURCE_CHANGED)
                 {
-                    tcs.SetException(new Exception("Resource returned error: " + clientResponse.result.ToString()));
+                    var err = OCStackException.CreateException(clientResponse.result, "Resource returned error");
+                    tcs.SetException(err);
                 }
                 else
                 {
@@ -74,10 +75,10 @@ namespace IotivityDotNet
                 payload.Types.Add(resourceTypeName);
                 payloadHandle = payload.AsOCRepPayload();
             }
-
-            var result = OCStack.OCDoResource(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
-            // if (payloadHandle != IntPtr.Zero)
-            //     OCPayloadInterop.OCPayloadDestroy(payloadHandle);
+            
+            var result = OCStack.OCDoRequest(out _handle, method, _resourceUri, _address.OCDevAddr, payloadHandle, OCConnectivityType.CT_DEFAULT, OCQualityOfService.OC_LOW_QOS, callbackData, null, 0);
+             if (payloadHandle != IntPtr.Zero)
+                 OCPayloadInterop.OCPayloadDestroy(payloadHandle);
             OCStackException.ThrowIfError(result, "Failed to send to resource");
             var response = await tcs.Task.ConfigureAwait(false);
             
